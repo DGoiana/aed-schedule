@@ -10,4 +10,5 @@ class Student {
         string studentName;
         Schedule studentSchedule;
     public:
-}
+        Student(long studentCode, string studentName, Schedule studentSchedule);
+};
