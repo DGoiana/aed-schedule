@@ -1,3 +1,6 @@
+#ifndef AED_SCHEDULE_LESSON_H
+#define AED_SCHEDULE_LESSON_H
+
 #include <string>
 #include <list>
 #include "Uc.h"
@@ -35,3 +38,5 @@ class Lesson{
         CollegeClass get_LessonClass() const;
         void set_LessonClass(const CollegeClass& new_lessonClass);
 };
+
+#endif

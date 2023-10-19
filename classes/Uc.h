@@ -1,3 +1,6 @@
+#ifndef AED_SCHEDULE_UC_H
+#define AED_SCHEDULE_UC_H
+
 #include <string>
 #include <list>
 
@@ -13,3 +16,5 @@ class Uc{
         string get_ucCode() const;
         void set_ucCode(const string& new_ucCode);
 };
+
+#endif

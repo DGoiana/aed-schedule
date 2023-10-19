@@ -1,3 +1,6 @@
+#ifndef AED_SCHEDULE_STUDENT_H
+#define AED_SCHEDULE_STUDENT_H
+
 #include <string>
 #include <list>
 #include "Schedule.h"
@@ -19,3 +22,5 @@ class Student {
         void set_studentName(const string& new_studentName);
         void set_studentSchedule(const Schedule& new_studentSchedule);
 };
+
+#endif
