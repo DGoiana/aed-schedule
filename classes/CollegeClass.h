@@ -1,3 +1,6 @@
+#ifndef AED_SCHEDULE_COLLEGECLASS_H
+#define AED_SCHEDULE_COLLEGECLASS_H
+
 #include <list>
 #include <string>
 
@@ -13,3 +16,5 @@ class CollegeClass {
         string get_classCode() const;
         void set_classCode(const string& new_classCode);
 };
+
+#endif

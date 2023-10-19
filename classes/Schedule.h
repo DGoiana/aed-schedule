@@ -1,3 +1,6 @@
+#ifndef AED_SCHEDULE_SCHEDULE_H
+#define AED_SCHEDULE_SCHEDULE_H
+
 #include <string>
 #include <list>
 #include "Lesson.h"
@@ -13,3 +16,5 @@ class Schedule {
         list<Lesson> get_scheduleLessons() const;
         void set_scheduleLessons(list<Lesson> new_scheduleLessons);
 };
+
+#endif
