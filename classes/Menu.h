@@ -14,7 +14,7 @@ class Menu{
     public:
         Menu(string inputPrompt, vector<string> menuOptions);
         void printMenu();
-        string getInput();
+        string get_input() const;
 };
 
 #endif
