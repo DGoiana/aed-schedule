@@ -18,8 +18,12 @@ class Lesson{
         CollegeClass lessonClass;
     public:
         Lesson();
-        Lesson(string lessonWeekday,double lessonStartHour,double lessonDuration,string lessonType,Uc lessonUc,CollegeClass lessonClass);
-        
+        Lesson(CollegeClass lessonClass,Uc lessonUc,
+               string lessonWeekday,
+               double lessonStartHour,
+               double lessonDuration,
+               string lessonType);
+
         string get_LessonWeekday() const;
         void set_LessonWeekday(const string& new_lessonWeekday);
 
@@ -37,6 +41,8 @@ class Lesson{
 
         CollegeClass get_LessonClass() const;
         void set_LessonClass(const CollegeClass& new_lessonClass);
+
+        void printLesson();
 };
 
 #endif

@@ -21,6 +21,7 @@ class Student {
         void set_studentCode(long new_studentCode);
         void set_studentName(const string& new_studentName);
         void set_studentSchedule(const Schedule& new_studentSchedule);
+        bool operator<(Student student2) const;
 };
 
 #endif
