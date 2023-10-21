@@ -1,4 +1,5 @@
 #include "Lesson.h"
+#include <iostream>
 
 Lesson::Lesson(){
     this->lessonWeekday = "";
@@ -9,7 +10,7 @@ Lesson::Lesson(){
     this->lessonClass = CollegeClass(); 
 }
 
-Lesson::Lesson(string lessonWeekday, double lessonStartHour, double lessonDuration, string lessonType, Uc lessonUc, CollegeClass lessonClass){
+Lesson::Lesson(CollegeClass lessonClass,Uc lessonUc,string lessonWeekday,double lessonStartHour,double lessonDuration,string lessonType){
     this->lessonWeekday = lessonWeekday;
     this->lessonStartHour = lessonStartHour;
     this->lessonDuration = lessonDuration;
@@ -64,4 +65,12 @@ CollegeClass Lesson::get_LessonClass() const {
 
 void Lesson::set_LessonClass(const CollegeClass& new_lessonClass) {
     this->lessonClass = new_lessonClass;
+}
+
+void Lesson::printLesson() {
+    cout << this->lessonClass.get_classCode() << ", ";
+    cout << this->lessonUc.get_ucCode() << ", ";
+    cout << this->lessonStartHour << ", ";
+    cout << this->lessonDuration << ", ";
+    cout << this->lessonType << endl;
 }
