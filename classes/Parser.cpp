@@ -1,12 +1,8 @@
 #include "Parser.h"
 #include "Student.h"
-#include <set>
-#include <vector>
 #include <fstream>
-#include <iostream>
 
 using namespace std;
-
 vector<string> Parser::split(std::string line, const string &delimiter) {
     size_t pos;
     string token;
