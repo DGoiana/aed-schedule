@@ -1,6 +1,7 @@
 #include "Parser.h"
 #include "Student.h"
 #include <fstream>
+#include <iostream>
 
 using namespace std;
 vector<string> Parser::split(std::string line, const string &delimiter) {
@@ -31,7 +32,7 @@ list<vector<string>> Parser::readFile(const string &path) {
 
 list<Lesson> Parser::parseClassesFile() {
     list<Lesson> lessons;
-    list<vector<string>> fileRead = readFile("schedule/classes.csv");
+    list<vector<string>> fileRead = readFile("../schedule/classes.csv"); // something like this: [{1LEIC01,L.EIC001,Monday,10.5,1.5,TP}, {1LEIC02,L.EIC001,Thursday,9.5,1.5,TP}]
     for (vector<string> lesson: fileRead) {
         CollegeClass lessonClass = CollegeClass(lesson[0]);
         Uc lessonUc = Uc(lesson[1]);
@@ -46,7 +47,7 @@ list<Lesson> Parser::parseClassesFile() {
 
 set<Student> Parser::parseStudentClasses() {
     set<Student> students;
-    list<vector<string>> fileRead = readFile("schedule/students_classes.csv");
+    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv"); // something like this: [{202025232,Iara,L.EIC002,1LEIC05}, ...]
     list<Lesson> globalLessons = parseClassesFile();
     for(vector<string> student : fileRead) {
         string studentCollegeClassTrimmed = student[3].substr(0,student[3].length()-1);
@@ -71,7 +72,6 @@ set<Student> Parser::parseStudentClasses() {
                                         newSchedule);
             students.erase(findStudent);
             students.insert(newStudent);
-
         }
     }
     return students;
