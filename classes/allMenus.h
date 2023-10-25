@@ -5,8 +5,8 @@ class AllMenus{
     public:
         AllMenus();
         void menu_principal();
-        void menu_schedule();
-        void menu_students();
+        void menu_consulting();
+        void menu_requests();
         void menu_uc();
 };
 

@@ -13,21 +13,22 @@ AllMenus::AllMenus() {
 void AllMenus::menu_principal(){
     string input;
     vector<string> menuOptions = {
-        "Schedules",
-        "UC's",
-        "Students"
+        "Consulting",
+        "Requests",
+        "Exit"
     };
     Menu principal = Menu("Choose an option: ", menuOptions);
     principal.printMenu();
     switch (stoi(principal.get_input()))
     {
     case 0:
-        menu_schedule();
+        menu_consulting();
         break;
     case 1:
-        menu_uc();
+        menu_requests();
+        break;
     case 2:
-        menu_students();
+        exit(0);
         break;
     default:
         cout << "Invalid option\n";
@@ -35,12 +36,15 @@ void AllMenus::menu_principal(){
     }
 }
 
-void AllMenus::menu_schedule(){
+void AllMenus::menu_consulting(){
     string input;
     vector<string> menuOptions = {
-        "Consult schedule of a student",
-        "Consult schedule of a class",
-        "Go back"
+        "Schedules",
+        "Students",
+        "Classes",
+        "Years",
+        "UC's",
+        "Back"
     };
     Menu schedule = Menu("Choose an option: ", menuOptions);
     schedule.printMenu();
@@ -53,18 +57,49 @@ void AllMenus::menu_schedule(){
         //TODO
         break;
     case 2:
+        //TODO
+        break;
+    case 3:
+        //TODO
+        break;
+    case 4:
+        //TODO
+        break;
+    case 5:
         menu_principal();
         break;
     default:
         cout << "Invalid option\n";
-        menu_schedule();
+        menu_consulting();
     }
 }
 
-void AllMenus::menu_students(){
-    //TODO
-}
-
-void AllMenus::menu_uc(){
-    //TODO
+void AllMenus::menu_requests(){
+    string input;
+    vector<string> menuOptions = {
+        "Registration",
+        "Switch",
+        "Removal",
+        "Back"
+    };
+    Menu schedule = Menu("Choose an option: ", menuOptions);
+    schedule.printMenu();
+    switch (stoi(schedule.get_input()))
+    {
+    case 0:
+        //TODO
+        break;
+    case 1:
+        //TODO
+        break;
+    case 2:
+        //TODO
+        break;
+    case 3:
+        menu_principal();
+        break;
+    default:
+        cout << "Invalid option\n";
+        menu_requests();
+    }
 }
