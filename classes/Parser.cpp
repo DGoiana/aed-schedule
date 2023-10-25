@@ -2,6 +2,7 @@
 #include "Student.h"
 #include <fstream>
 #include <iostream>
+#include <map>
 
 using namespace std;
 vector<string> Parser::split(std::string line, const string &delimiter) {
@@ -45,10 +46,11 @@ list<Lesson> Parser::parseClassesFile() {
     return lessons;
 }
 
-set<Student> Parser::parseStudentClasses() {
-    set<Student> students;
-    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv"); // something like this: [{202025232,Iara,L.EIC002,1LEIC05}, ...]
+map<long long, Student> Parser::parseStudentClasses() {
+    map<long long, Student> students;
+    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv");
     list<Lesson> globalLessons = parseClassesFile();
+
     for(vector<string> student : fileRead) {
         string studentCollegeClassTrimmed = student[3].substr(0,student[3].length()-1);
         Lesson studentLesson = Lesson(
@@ -57,21 +59,15 @@ set<Student> Parser::parseStudentClasses() {
                 "*",0,0,"*"
         );
         Schedule studentSchedule= Schedule(findLesson(globalLessons,studentLesson));
-        Student studentToAdd =Student(stoll(student[0]),
-                                      student[1],
-                                      studentSchedule);
-        auto findStudent = students.find(studentToAdd);
-        if(findStudent == students.end()){
-            students.insert(studentToAdd);
+        long long studentCode = stoll(student[0]);
+
+        if(students.count(studentCode) == 0){
+            students[studentCode] = Student(studentCode, student[1], studentSchedule);
         }
         else{
-            list<Lesson> newSchedule = findStudent->get_studentSchedule().get_scheduleLessons();
-            newSchedule.push_back(studentSchedule.get_scheduleLessons().front());
-            Student newStudent =Student(findStudent->get_studentCode(),
-                                        findStudent->get_studentName(),
-                                        newSchedule);
-            students.erase(findStudent);
-            students.insert(newStudent);
+            list<Lesson> studentCurrentLessons = students[studentCode].get_studentSchedule().get_scheduleLessons();
+            studentCurrentLessons.push_back(studentSchedule.get_scheduleLessons().front());
+            students[studentCode].set_studentSchedule(Schedule(studentCurrentLessons));
         }
     }
     return students;
