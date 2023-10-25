@@ -13,7 +13,7 @@ using namespace std;
 class Parser {
 public:
     vector<string> split(std::string line,const std::string& delimiter);
-    list<vector<string>> readFile(const std::string& path);
+    list<vector<string>> readFile(const std::string &path);
     list<Lesson> parseClassesFile();
     set<Student> parseStudentClasses();
     list<Lesson> findLesson(list<Lesson> globalLessons, Lesson lessonToFind);
