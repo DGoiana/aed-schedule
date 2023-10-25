@@ -2,6 +2,7 @@
 #include "Student.h"
 #include <fstream>
 #include <iostream>
+#include <map>
 
 using namespace std;
 vector<string> Parser::split(std::string line, const string &delimiter) {
@@ -45,33 +46,29 @@ list<Lesson> Parser::parseClassesFile() {
     return lessons;
 }
 
-set<Student> Parser::parseStudentClasses() {
-    set<Student> students;
-    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv"); // something like this: [{202025232,Iara,L.EIC002,1LEIC05}, ...]
-    list<Lesson> globalLessons = parseClassesFile();
+map<long long, Student> Parser::parseStudentClasses() {
+    map<long long, Student> students;
+    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv"); // [{202025232,Iara,L.EIC002,1LEIC05}]
+    list<Lesson> globalLessons = parseClassesFile(); // [{1LEIC01,L.EIC001,Monday,10.5,1.5,TP}]
+
     for(vector<string> student : fileRead) {
         string studentCollegeClassTrimmed = student[3].substr(0,student[3].length()-1);
         Lesson studentLesson = Lesson(
                 CollegeClass(studentCollegeClassTrimmed),
                 Uc(student[2]),
                 "*",0,0,"*"
-        );
-        Schedule studentSchedule= Schedule(findLesson(globalLessons,studentLesson));
-        Student studentToAdd =Student(stoll(student[0]),
-                                      student[1],
-                                      studentSchedule);
-        auto findStudent = students.find(studentToAdd);
-        if(findStudent == students.end()){
-            students.insert(studentToAdd);
+        ); // {1LEIC01, L.EIC001, *, 0, 0, *}
+        Schedule studentSchedule= Schedule(findLesson(globalLessons,studentLesson)); // [{1LEIC01,L.EIC001,Monday,10.5,1.5,TP}]
+        long long studentCode = stoll(student[0]);
+
+        if(students.count(studentCode) == 0){
+            students[studentCode] = Student(studentCode, student[1], studentSchedule);
         }
         else{
-            list<Lesson> newSchedule = findStudent->get_studentSchedule().get_scheduleLessons();
-            newSchedule.push_back(studentSchedule.get_scheduleLessons().front());
-            Student newStudent =Student(findStudent->get_studentCode(),
-                                        findStudent->get_studentName(),
-                                        newSchedule);
-            students.erase(findStudent);
-            students.insert(newStudent);
+            list<Lesson> currentStudentLessons = students[studentCode].get_studentSchedule().get_scheduleLessons();
+            currentStudentLessons.push_back(studentSchedule.get_scheduleLessons().front());
+            Schedule new_schedule = Schedule(currentStudentLessons);
+            students[studentCode].set_studentSchedule(new_schedule);
         }
     }
     return students;
@@ -91,3 +88,8 @@ list<Lesson> Parser::findLesson(list<Lesson> globalLessons, Lesson lessonToFind)
     }
     return list<Lesson>();
 }
+
+/*
+L.EIC001: {1LEIC01, 1LEIC02, 1LEIC03}
+
+*/

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-class CollegeClass {
+class CollegeClass { // GUESS USELESS
     private:
         string classCode;
         // if parsing through all students classes takes too long, create a list of students
