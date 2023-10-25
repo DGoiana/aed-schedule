@@ -8,6 +8,7 @@ class AllMenus{
         void menu_consulting();
         void menu_requests();
         void menu_uc();
+        void menu_schedule_consulting();
 };
 
 #endif 

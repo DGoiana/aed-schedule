@@ -51,7 +51,7 @@ void AllMenus::menu_consulting(){
     switch (stoi(schedule.get_input()))
     {
     case 0:
-        //TODO
+        menu_schedule_consulting();
         break;
     case 1:
         //TODO
@@ -102,4 +102,9 @@ void AllMenus::menu_requests(){
         cout << "Invalid option\n";
         menu_requests();
     }
+}
+
+void AllMenus::menu_schedule_consulting(){
+    string input;
+    vector<string> menuOptions;
 }
