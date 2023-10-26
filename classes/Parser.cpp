@@ -35,31 +35,35 @@ list<Lesson> Parser::parseClassesFile() {
     list<Lesson> lessons;
     list<vector<string>> fileRead = readFile("../schedule/classes.csv"); // something like this: [{1LEIC01,L.EIC001,Monday,10.5,1.5,TP}, {1LEIC02,L.EIC001,Thursday,9.5,1.5,TP}]
     for (vector<string> lesson: fileRead) {
-        CollegeClass lessonClass = CollegeClass(lesson[0]);
-        Uc lessonUc = Uc(lesson[1]);
+        CollegeClass lessonClass = CollegeClass(lesson[0], lesson[1]);
         string lessonWeekday = lesson[2];
         double lessonStartHour = stod(lesson[3]);
         double lessonDuration = stod(lesson[4]);
         string lessonType = lesson[5];
-        lessons.push_back(Lesson(lessonClass,lessonUc,lessonWeekday,lessonStartHour,lessonDuration,lessonType));
+        lessons.push_back(Lesson(lessonClass,lessonWeekday,lessonStartHour,lessonDuration,lessonType));
     }
     return lessons;
 }
 
-map<long long, Student> Parser::parseStudentClasses() {
-    map<long long, Student> students;
-    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv");
-    list<Lesson> globalLessons = parseClassesFile();
+map<CollegeClass, list<Lesson>> Parser::mapLessons(){
+    list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv"); // [{L.EIC001,1LEIC01}, {L.EIC001,1LEIC02}, ...]
+    list<Lesson> allClasses = parseClassesFile();
+    map<CollegeClass, list<Lesson>> mappedLessons;
+    for(vector<string> classAndUc : classesPerUc){
+        string collegeClassTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
+        mappedLessons[CollegeClass(classAndUc[0], collegeClassTrimmed)] = findLesson(allClasses, Lesson(CollegeClass(collegeClassTrimmed, classAndUc[0]), "*", 0, 0, "*"));
+    }
+    return mappedLessons;
+}
+
+map<long, Student> Parser::parseStudentClasses() {
+    map<long, Student> students;
+    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv"); // [{202042572,Manuel Andre,L.EIC011,2LEIC12}]
+    map<CollegeClass, list<Lesson>> mappedLessons = mapLessons();
 
     for(vector<string> student : fileRead) {
-        string studentCollegeClassTrimmed = student[3].substr(0,student[3].length()-1);
-        Lesson studentLesson = Lesson(
-                CollegeClass(studentCollegeClassTrimmed),
-                Uc(student[2]),
-                "*",0,0,"*"
-        );
-        Schedule studentSchedule= Schedule(findLesson(globalLessons,studentLesson));
-        long long studentCode = stoll(student[0]);
+        Schedule studentSchedule = Schedule(mappedLessons[CollegeClass(student[2], student[3])]);
+        long studentCode = stoll(student[0]);
 
         if(students.count(studentCode) == 0){
             students[studentCode] = Student(studentCode, student[1], studentSchedule);
@@ -80,10 +84,10 @@ void Parser::printLessons(list<Lesson> lessons) {
 }
 
 list<Lesson> Parser::findLesson(list<Lesson> globalLessons, Lesson lessonToFind) {
+    list<Lesson> lessons;
     for(Lesson lesson : globalLessons) {
-        if(lesson.get_LessonClass().get_classCode() == lessonToFind.get_LessonClass().get_classCode()
-        && lesson.get_LessonUc().get_ucCode() == lessonToFind.get_LessonUc().get_ucCode())
-            return {lesson};
+        if(lesson.get_LessonClass() == lessonToFind.get_LessonClass())
+            lessons.push_back(lesson);
     }
-    return list<Lesson>();
+    return lessons;
 }
