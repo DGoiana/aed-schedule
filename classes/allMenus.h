@@ -8,6 +8,8 @@ class AllMenus{
         void menu_schedule();
         void menu_students();
         void menu_uc();
+        void menu_occupations();
+        void menu_requests();
 };
 
 #endif 
