@@ -18,7 +18,6 @@ void AllMenus::menu_principal(){
         "Students",
         "Occupations",
         "Requests",
-        "Exit"
     };
     Menu principal = Menu("Choose an option: ", menuOptions);
     principal.printMenu();
@@ -37,8 +36,6 @@ void AllMenus::menu_principal(){
         break;
     case 4:
         menu_requests();
-        break;
-    case 5:
         break;
     default:
         cout << "Invalid option\n";
