@@ -7,6 +7,7 @@
 #include <set>
 #include "Lesson.h"
 #include "Student.h"
+#include <map>
 
 using namespace std;
 
@@ -15,7 +16,7 @@ public:
     vector<string> split(std::string line,const std::string& delimiter);
     list<vector<string>> readFile(const std::string &path);
     list<Lesson> parseClassesFile();
-    set<Student> parseStudentClasses();
+    map<long long, Student> parseStudentClasses();
     list<Lesson> findLesson(list<Lesson> globalLessons, Lesson lessonToFind);
     void printLessons(list<Lesson> lessons);
 };
