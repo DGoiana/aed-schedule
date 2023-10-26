@@ -7,7 +7,7 @@
 
 ## General info
 The main purpose of this project is to manage schedules after they have been elaborated.
-The system includes various functionalities related to schedules, such as modifying,<br>
+The system includes various functionalities related to schedules, such as modifying,
 searching, viewing, sorting, listing, among others.
 	
 ## Technologies
