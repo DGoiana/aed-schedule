@@ -11,24 +11,26 @@ class DataSet{
         set<Student> students;
         list<Lesson> lessons;
     public:
-        void showStudentSchedule(Student student);
-        void showClassSchedule(CollegeClass collegeClass);
+        DataSet();
+
+        Schedule getScheduleByStudent(Student student);
+        Schedule getScheduleByClass(CollegeClass collegeClass);
         
         list<Student> getStudentsByClass(CollegeClass collegeClass);
         list<Student> getStudentsByCourse(Uc uc);
-        list<Student> getStudentsByYear(string year);
+        list<Student> getStudentsByYear(std::string year);
 
         int numStudentsRegisteredInUcs(int num);
 
         list<Student> consultClassOccupation(CollegeClass collegeClass);
-        list<Student> consultYearOccupation(string year);
+        list<Student> consultYearOccupation(std::string year);
         list<Student> consultUcOccupation(Uc uc);
 
-        void sortByUcAscending(list<Student>& students);
-        void sortByUcDescending(list<Student>& students);
-        void sortByClassAscending(list<Student>& students);
-        void sortByClassDescending(list<Student>& students);
-        
+        void sortByUcAscending(std::list<Student>& students);
+        void sortByUcDescending(std::list<Student>& students);
+        void sortByClassAscending(std::list<Student>& students);
+        void sortByClassDescending(std::list<Student>& students);
+
         int getMostStudentsUC();
 };
 #endif
