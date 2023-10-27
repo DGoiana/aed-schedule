@@ -17,7 +17,8 @@ void AllMenus::menu_principal(){
         "UC's",
         "Students",
         "Occupations",
-        "Requests"
+        "Requests",
+        "Exit"
     };
     Menu principal = Menu("Choose an option: ", menuOptions);
     principal.printMenu();
@@ -36,6 +37,9 @@ void AllMenus::menu_principal(){
         break;
     case 4:
         menu_requests();
+        break;
+    case 5:
+        exit(0);
         break;
     default:
         cout << "Invalid option\n";
@@ -76,7 +80,8 @@ void AllMenus::menu_students(){
         "Consult students within a given course",
         "Consult students within a given year",
         "Consult number of students registered in at least n UCs",
-        "Go back"
+        "Go back",
+        "exit"
     };
     Menu students = Menu("Choose an option: ", menuOptions);
     students.printMenu();
@@ -96,6 +101,8 @@ void AllMenus::menu_students(){
             break;
         case 4:
             menu_principal();
+            break;
+        case 5:
             break;
         default:
             cout << "Invalid option\n";
