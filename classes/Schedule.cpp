@@ -15,3 +15,7 @@ list<Lesson> Schedule::get_scheduleLessons() const{
 void Schedule::set_scheduleLessons(list<Lesson> new_scheduleLessons){
     this->scheduleLessons = new_scheduleLessons;
 }
+
+void Schedule::addLessonsFromList(list<Lesson> lessons){
+    for(Lesson l : lessons) this->scheduleLessons.push_back(l);
+}

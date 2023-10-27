@@ -2,18 +2,18 @@
 #include "Schedule.h"
 
 Student::Student(){
-    this->studentCode = 0;
+    this->studentCode = "";
     this->studentName = "";
     this->studentSchedule = Schedule();
 }
 
-Student::Student(long studentCode, string studentName, Schedule studentSchedule){
+Student::Student(string studentCode, string studentName, Schedule studentSchedule){
     this->studentCode = studentCode;
     this->studentName = studentName;
     this->studentSchedule = studentSchedule;
 }
 
-long Student::get_studentCode() const{
+string Student::get_studentCode() const{
     return this->studentCode;
 }
 
@@ -25,7 +25,7 @@ Schedule Student::get_studentSchedule() const{
     return this->studentSchedule;
 }
 
-void Student::set_studentCode(long new_studentCode){
+void Student::set_studentCode(string new_studentCode){
     this->studentCode = new_studentCode;
 }
 
