@@ -64,15 +64,7 @@ map<long, Student> Parser::parseStudentClasses() {
     for(vector<string> student : fileRead) {
         Schedule studentSchedule = Schedule(mappedLessons[CollegeClass(student[2], student[3])]);
         long studentCode = stoll(student[0]);
-
-        if(students.count(studentCode) == 0){
-            students[studentCode] = Student(studentCode, student[1], studentSchedule);
-        }
-        else{
-            list<Lesson> studentCurrentLessons = students[studentCode].get_studentSchedule().get_scheduleLessons();
-            studentCurrentLessons.push_back(studentSchedule.get_scheduleLessons().front());
-            students[studentCode].set_studentSchedule(Schedule(studentCurrentLessons));
-        }
+        students[studentCode] = Student(studentCode, student[1], studentSchedule);
     }
     return students;
 }
