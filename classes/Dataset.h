@@ -8,23 +8,23 @@
 
 class DataSet{
     private:
-        set<Student> students;
+        map<long, Student> students;
         list<Lesson> lessons;
     public:
         DataSet();
 
-        Schedule getScheduleByStudent(Student student);
+        Schedule getScheduleByStudent(long studentCode);
         Schedule getScheduleByClass(CollegeClass collegeClass);
         
         list<Student> getStudentsByClass(CollegeClass collegeClass);
-        list<Student> getStudentsByCourse(Uc uc);
+        list<Student> getStudentsByCourse(CollegeClass collegeClass);
         list<Student> getStudentsByYear(std::string year);
 
         int numStudentsRegisteredInUcs(int num);
 
         list<Student> consultClassOccupation(CollegeClass collegeClass);
         list<Student> consultYearOccupation(std::string year);
-        list<Student> consultUcOccupation(Uc uc);
+        list<Student> consultUcOccupation(CollegeClass collegeClass);
 
         void sortByUcAscending(std::list<Student>& students);
         void sortByUcDescending(std::list<Student>& students);
