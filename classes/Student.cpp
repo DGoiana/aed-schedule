@@ -36,3 +36,8 @@ void Student::set_studentName(const string& new_studentName){
 void Student::set_studentSchedule(const Schedule& new_studentSchedule){
     this->studentSchedule = new_studentSchedule;
 }
+
+bool Student::operator<(Student student2) const
+{
+    return this->get_studentCode() < student2.get_studentCode();
+}
