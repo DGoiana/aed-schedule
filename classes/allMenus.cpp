@@ -288,13 +288,13 @@ void AllMenus::menu_requests(){
     }
 }
 
-// Função para desenhar um retângulo com texto
+// Function to design a rectangle with text inside
 void AllMenus::draw_rectangle(int width, int height, const std::vector<std::string>& text) {
-    string reset = "\033[0m";  // Código de escape para redefinir a formatação
-    string fg_blue = "\033[34m";  // Código de escape para texto azul
-    string border_char = "█";     // Caractere para a borda
+    string reset = "\033[0m";  // Escape code to reset formatting
+    string fg_blue = "\033[34m";  // Escape code for blue text
+    string border_char = "█";     // Character for the border
 
-    // Calcula a largura máxima do texto
+    // Calculate the maximum width of the text
     int max_text_width = 0;
     for (const string& line : text) {
         if (line.length() > max_text_width) {
@@ -302,20 +302,20 @@ void AllMenus::draw_rectangle(int width, int height, const std::vector<std::stri
         }
     }
 
-    // Loop para desenhar o retângulo e imprimir o texto
+    // Loop to draw the rectangle and print the text
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
             if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
-                cout << fg_blue << border_char << reset;  // Borda do retângulo
+                cout << fg_blue << border_char << reset;  // Rectangle border
             } else {
-                // Centraliza o texto verticalmente no retângulo
+                // Center the text vertically in the rectangle
                 int text_x = (width - max_text_width) / 2;
                 int text_y = (height - text.size()) / 2;
 
                 if (text_y <= i && text_y + text.size() > i && j - text_x >= 1 && j - text_x <= text[i - text_y].length()) {
                     cout << text[i - text_y][j - text_x - 1];
                 } else {
-                    cout << " ";  // Espaço em branco dentro do retângulo
+                    cout << " ";  // Blank space inside the rectangle
                 }
             }
         }
