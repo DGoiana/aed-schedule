@@ -16,8 +16,8 @@ class DataSet{
         Schedule getScheduleByStudent(string studentCode);
         Schedule getScheduleByClass(string classCode);
         
-        list<Student> getStudentsByClassOrUc(string code, string id);
-        list<Student> getStudentsByYear(string year);
+        set<Student> getStudentsByClassOrUc(string code, string id);
+        set<Student> getStudentsByYear(string year);
 
         int numStudentsRegisteredInUcs(int num);
 

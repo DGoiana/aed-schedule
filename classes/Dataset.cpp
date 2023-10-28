@@ -28,36 +28,38 @@ Schedule DataSet::getScheduleByClass(string classCode){
     return result;
 }
 
-list<Student> DataSet::getStudentsByClassOrUc(string code, string id){
-    list<Student> students;
+set<Student> DataSet::getStudentsByClassOrUc(string code, string id){
+    set<Student> students;
     for(Student s : this->students){
         for(Lesson l : s.get_studentSchedule().get_scheduleLessons()){
-            if(l.get_LessonClass().get_classCode() == code && id == "class") students.push_back(s);
-            if(l.get_LessonClass().get_ucCode() == code && id == "uc") students.push_back(s);
+            if(l.get_LessonClass().get_classCode() == code && id == "class") students.insert(s);
+            if(l.get_LessonClass().get_ucCode() == code && id == "uc") students.insert(s);
         }
     }
     return students;
 }
 
-list<Student> DataSet::getStudentsByYear(string year){
-    list<Student> students;
+set<Student> DataSet::getStudentsByYear(string year){
+    set<Student> students;
     for(Student s : this->students){
-        if(s.get_studentCode().substr(0,4) == year) students.push_back(s);
+        if(s.get_studentCode().substr(0,4) == year) students.insert(s);
     }
     return students;
 }
 
 int DataSet::numStudentsRegisteredInUcs(int num){
-    int result = 0;
+    int count = 0;
     map<Student, list<CollegeClass>> mappedCollegeClasses = Parser::mapCollegeClasses();
     for(auto p : mappedCollegeClasses){
+        int result = 0;
         string ucToCheck = "";
         for(CollegeClass c : p.second){
             if(c.get_ucCode() != ucToCheck) result++;
             ucToCheck = c.get_ucCode();
         }
+        if(result >= num) count++;
     }
-    return result;
+    return count;
 }
 
 int DataSet::consultClassorUcOccupation(string code, string id){
