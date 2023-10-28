@@ -1,8 +1,8 @@
 #include "allMenus.h"
 #include <vector>
 #include <string>
+#include <limits>
 #include <iostream>
-#include "Menu.h"
 
 using namespace std;
 
@@ -11,18 +11,32 @@ AllMenus::AllMenus() {
 }
 
 void AllMenus::menu_principal(){
-    string input;
+    int input;
     vector<string> menuOptions = {
-        "Schedules",
-        "UC's",
-        "Students",
-        "Occupations",
-        "Requests",
-        "Exit"
-    };
-    Menu principal = Menu("Choose an option: ", menuOptions);
-    principal.printMenu();
-    switch (stoi(principal.get_input()))
+        "0-Schedules",
+        "1-UC's",
+        "2-Students",
+        "3-Occupations",
+        "4-Requests",
+        "5-Exit"
+    }; 
+
+    int width = 20;
+    int height = 9;
+    draw_rectangle(width, height, menuOptions);
+
+    while (true) {
+        cout << "Choose an option: ";
+        if (cin >> input) {
+            break;
+        } else {
+            cout << "Invalid input" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+        }
+    }
+
+    switch (input)
     {
     case 0:
         menu_schedule();
@@ -48,15 +62,29 @@ void AllMenus::menu_principal(){
 }
 
 void AllMenus::menu_schedule(){
-    string input;
+    int input;
     vector<string> menuOptions = {
-        "Consult schedule of a student",
-        "Consult schedule of a class",
-        "Go back"
+        "0-Consult schedule of a student",
+        "1-Consult schedule of a class",
+        "2-Go back"
     };
-    Menu schedule = Menu("Choose an option: ", menuOptions);
-    schedule.printMenu();
-    switch (stoi(schedule.get_input()))
+
+    int width = 38;
+    int height = 6;
+    draw_rectangle(width, height, menuOptions);
+
+    while (true) {
+        cout << "Choose an option: ";
+        if (cin >> input) {
+            break;
+        } else {
+            cout << "Invalid input" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+        }
+    }
+
+    switch (input)
     {
     case 0:
         //TODO
@@ -74,18 +102,31 @@ void AllMenus::menu_schedule(){
 }
 
 void AllMenus::menu_students(){
-    string input;
+    int input;
     vector<string> menuOptions = {
-        "Consult students within a given class",
-        "Consult students within a given course",
-        "Consult students within a given year",
-        "Consult number of students registered in at least n UCs",
-        "Go back",
-        "exit"
+        "0-Consult students within a given class",
+        "1-Consult students within a given course",
+        "2-Consult students within a given year",
+        "3-Consult number of students registered in at least n UCs",
+        "4-Go back"
     };
-    Menu students = Menu("Choose an option: ", menuOptions);
-    students.printMenu();
-    switch (stoi(students.get_input()))
+
+    int width = 64;
+    int height = 8;
+    draw_rectangle(width, height, menuOptions);
+
+    while (true) {
+        cout << "Choose an option: ";
+        if (cin >> input) {
+            break;
+        } else {
+            cout << "Invalid input" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+        }
+    }
+
+    switch (input)
     {
         case 0:
             //TODO
@@ -102,8 +143,6 @@ void AllMenus::menu_students(){
         case 4:
             menu_principal();
             break;
-        case 5:
-            break;
         default:
             cout << "Invalid option\n";
             menu_students();
@@ -111,14 +150,28 @@ void AllMenus::menu_students(){
 }
 
 void AllMenus::menu_uc(){
-    string input;
+    int input;
     vector<string> menuOptions = {
-        "Consult UCs with the greatest number of students",
-        "Go back"
+        "0-Consult UCs with the greatest number of students",
+        "1-Go back"
     };
-    Menu uc = Menu("Choose an option: ", menuOptions);
-    uc.printMenu();
-    switch(stoi(uc.get_input()))
+
+    int width = 57;
+    int height = 5;
+    draw_rectangle(width, height, menuOptions);
+
+    while (true) {
+        cout << "Choose an option: ";
+        if (cin >> input) {
+            break;
+        } else {
+            cout << "Invalid input" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+        }
+    }
+
+    switch(input)
     {
         case 0:
             //TODO
@@ -134,16 +187,30 @@ void AllMenus::menu_uc(){
 }
 
 void AllMenus::menu_occupations(){
-    string input;
+    int input;
     vector<string> menuOptions = {
-        "Consult class occupation",
-        "Consult year occupation",
-        "Consult UC occupation",
-        "Go back"
+        "0-Consult class occupation",
+        "1-Consult year occupation",
+        "2-Consult UC occupation",
+        "3-Go back"
     };
-    Menu occupation = Menu("Choose an option: ", menuOptions);
-    occupation.printMenu();
-    switch(stoi(occupation.get_input()))
+
+    int width = 33;
+    int height = 7;
+    draw_rectangle(width, height, menuOptions);
+
+    while (true) {
+        cout << "Choose an option: ";
+        if (cin >> input) {
+            break;
+        } else {
+            cout << "Invalid input" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+        }
+    }
+
+    switch(input)
     {
         case 0:
             //TODO
@@ -165,19 +232,33 @@ void AllMenus::menu_occupations(){
 }
 
 void AllMenus::menu_requests(){
-    string input;
+    int input;
     vector<string> menuOptions = {
-        "Add class request",
-        "Add Uc request",
-        "Remove class request",
-        "Remove Uc request",
-        "Change class request",
-        "Change Uc request",
-        "Go back"
+        "0-Add class request",
+        "1-Add Uc request",
+        "2-Remove class request",
+        "3-Remove Uc request",
+        "4-Change class request",
+        "5-Change Uc request",
+        "6-Go back"
     };
-    Menu requests = Menu("Choose an option: ", menuOptions);
-    requests.printMenu();
-    switch(stoi(requests.get_input()))
+
+    int width = 29;
+    int height = 10;
+    draw_rectangle(width, height, menuOptions);
+
+    while (true) {
+        cout << "Choose an option: ";
+        if (cin >> input) {
+            break;
+        } else {
+            cout << "Invalid input" << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+        }
+    }
+
+    switch(input)
     {
         case 0:
             //TODO
@@ -204,5 +285,40 @@ void AllMenus::menu_requests(){
             cout << "Invalid option\n";
             menu_requests();
 
+    }
+}
+
+// Function to design a rectangle with text inside
+void AllMenus::draw_rectangle(int width, int height, const std::vector<std::string>& text) {
+    string reset = "\033[0m";  // Escape code to reset formatting
+    string fg_blue = "\033[34m";  // Escape code for blue text
+    string border_char = "█";     // Character for the border
+
+    // Calculate the maximum width of the text
+    int max_text_width = 0;
+    for (const string& line : text) {
+        if (line.length() > max_text_width) {
+            max_text_width = line.length();
+        }
+    }
+
+    // Loop to draw the rectangle and print the text
+    for (int i = 0; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            if (i == 0 || i == height - 1 || j == 0 || j == width - 1) {
+                cout << fg_blue << border_char << reset;  // Rectangle border
+            } else {
+                // Center the text vertically in the rectangle
+                int text_x = (width - max_text_width) / 2;
+                int text_y = (height - text.size()) / 2;
+
+                if (text_y <= i && text_y + text.size() > i && j - text_x >= 1 && j - text_x <= text[i - text_y].length()) {
+                    cout << text[i - text_y][j - text_x - 1];
+                } else {
+                    cout << " ";  // Blank space inside the rectangle
+                }
+            }
+        }
+        cout << endl;
     }
 }

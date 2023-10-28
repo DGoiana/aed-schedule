@@ -16,6 +16,7 @@ Schedule DataSet::getScheduleByStudent(string studentCode){
     for(Student s : students){
         if(s.get_studentCode() == studentCode) return s.get_studentSchedule();
     }
+    return Schedule();
 }
 
 Schedule DataSet::getScheduleByClass(string classCode){
