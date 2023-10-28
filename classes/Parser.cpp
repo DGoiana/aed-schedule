@@ -50,21 +50,35 @@ map<CollegeClass, list<Lesson>> Parser::mapLessons(){
     list<Lesson> allClasses = parseClassesFile();
     map<CollegeClass, list<Lesson>> mappedLessons;
     for(vector<string> classAndUc : classesPerUc){
-        string collegeClassTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
-        mappedLessons[CollegeClass(classAndUc[0], collegeClassTrimmed)] = findLesson(allClasses, Lesson(CollegeClass(collegeClassTrimmed, classAndUc[0]), "*", 0, 0, "*"));
+        string classCodeTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
+        mappedLessons[CollegeClass(classCodeTrimmed, classAndUc[0])] = findLesson(allClasses, Lesson(CollegeClass(classCodeTrimmed, classAndUc[0]), "*", 0, 0, "*"));
     }
     return mappedLessons;
 }
 
-map<long, Student> Parser::parseStudentClasses() {
-    map<long, Student> students;
-    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv"); // [{202042572,Manuel Andre,L.EIC011,2LEIC12}]
+set<Student> Parser::parseStudents() {
+    set<Student> students;
+    map<Student, list<CollegeClass>> mappedCollegeClasses = mapCollegeClasses();
     map<CollegeClass, list<Lesson>> mappedLessons = mapLessons();
 
-    for(vector<string> student : fileRead) {
-        Schedule studentSchedule = Schedule(mappedLessons[CollegeClass(student[2], student[3])]);
-        long studentCode = stoll(student[0]);
-        students[studentCode] = Student(studentCode, student[1], studentSchedule);
+    for(const pair<Student, list<CollegeClass>> &p : mappedCollegeClasses) {
+        Schedule toCreate;
+        for(CollegeClass c : p.second){
+            toCreate.addLessonsFromList(mappedLessons[c]);
+        }
+        students.insert(Student(p.first.get_studentCode(), p.first.get_studentName(), toCreate));
+    }
+    return students;
+}
+
+map<Student, list<CollegeClass>> Parser::mapCollegeClasses(){
+    map<Student, list<CollegeClass>> students;
+    Schedule schedule;
+    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv");
+    for(vector<string> student: fileRead){
+        string classCodeTrimmed = student[3].substr(0, student[3].length() - 1);
+        Student studentObject = Student(student[0], student[1], schedule);
+        students[studentObject].push_back(CollegeClass(classCodeTrimmed, student[2]));
     }
     return students;
 }

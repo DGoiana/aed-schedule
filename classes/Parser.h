@@ -19,8 +19,9 @@ public:
     static vector<string> split(std::string line,const std::string& delimiter);
     static list<vector<string>> readFile(const std::string &path);
     static list<Lesson> parseClassesFile();
-    static map<long, Student> parseStudentClasses();
+    static set<Student> parseStudents();
     static list<Lesson> findLesson(list<Lesson> globalLessons, Lesson lessonToFind);
+    static map<Student, list<CollegeClass>> mapCollegeClasses();
     void printLessons(list<Lesson> lessons);
 };
 #endif //AED_SCHEDULE_PARSER_H

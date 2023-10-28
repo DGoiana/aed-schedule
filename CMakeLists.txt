@@ -24,5 +24,5 @@ else(DOXYGEN_FOUND)
 endif(DOXYGEN_FOUND)
 
 add_executable(aed_schedule_project main.cpp classes/allMenus.h classes/allMenus.cpp classes/CollegeClass.h classes/CollegeClass.cpp
-    classes/Lesson.h classes/Lesson.cpp classes/Parser.h classes/Parser.cpp classes/Schedule.h 
+    classes/Lesson.h classes/Lesson.cpp classes/Menu.h classes/Menu.cpp classes/Parser.h classes/Parser.cpp classes/Schedule.h 
     classes/Schedule.cpp classes/Student.h classes/Student.cpp classes/Dataset.cpp classes/Dataset.cpp)
