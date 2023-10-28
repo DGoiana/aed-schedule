@@ -77,7 +77,7 @@ map<Student, list<CollegeClass>> Parser::mapCollegeClasses(){
     list<vector<string>> fileRead = readFile("../schedule/students_classes.csv");
     for(vector<string> student: fileRead){
         string classCodeTrimmed = student[3].substr(0, student[3].length() - 1);
-        Student studentObject = Student(stol(student[0]), student[1], schedule);
+        Student studentObject = Student(student[0], student[1], schedule);
         students[studentObject].push_back(CollegeClass(classCodeTrimmed, student[2]));
     }
     return students;
