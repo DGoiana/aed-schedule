@@ -33,7 +33,7 @@ list<vector<string>> Parser::readFile(const string &path) {
 
 list<Lesson> Parser::parseClassesFile() {
     list<Lesson> lessons;
-    list<vector<string>> fileRead = readFile("../schedule/classes.csv"); // something like this: [{1LEIC01,L.EIC001,Monday,10.5,1.5,TP}, {1LEIC02,L.EIC001,Thursday,9.5,1.5,TP}]
+    list<vector<string>> fileRead = readFile("./schedule/classes.csv"); // something like this: [{1LEIC01,L.EIC001,Monday,10.5,1.5,TP}, {1LEIC02,L.EIC001,Thursday,9.5,1.5,TP}]
     for (vector<string> lesson: fileRead) {
         CollegeClass lessonClass = CollegeClass(lesson[0], lesson[1]);
         string lessonWeekday = lesson[2];
@@ -46,7 +46,7 @@ list<Lesson> Parser::parseClassesFile() {
 }
 
 map<CollegeClass, list<Lesson>> Parser::mapLessons(){
-    list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv"); // [{L.EIC001,1LEIC01}, {L.EIC001,1LEIC02}, ...]
+    list<vector<string>> classesPerUc= readFile("./schedule/classes_per_uc.csv"); // [{L.EIC001,1LEIC01}, {L.EIC001,1LEIC02}, ...]
     list<Lesson> allClasses = parseClassesFile();
     map<CollegeClass, list<Lesson>> mappedLessons;
     for(vector<string> classAndUc : classesPerUc){
@@ -74,7 +74,7 @@ set<Student> Parser::parseStudents() {
 map<Student, list<CollegeClass>> Parser::mapCollegeClasses(){
     map<Student, list<CollegeClass>> students;
     Schedule schedule;
-    list<vector<string>> fileRead = readFile("../schedule/students_classes.csv");
+    list<vector<string>> fileRead = readFile("./schedule/students_classes.csv");
     for(vector<string> student: fileRead){
         string classCodeTrimmed = student[3].substr(0, student[3].length() - 1);
         Student studentObject = Student(student[0], student[1], schedule);
