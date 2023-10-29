@@ -41,3 +41,8 @@ bool Student::operator<(Student student2) const
 {
     return this->get_studentCode() < student2.get_studentCode();
 }
+
+bool Student::operator==(Student student2) const
+{
+    return this->get_studentCode() == student2.get_studentCode();
+}

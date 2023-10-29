@@ -1,4 +1,5 @@
 #include "CollegeClass.h"
+#include "Dataset.h"
 #include <list>
 #include "Student.h"
 
@@ -15,33 +16,30 @@ enum OPTION {
 
 class Request {
     private:
+        DataSet& dataset;
         CollegeClass collegeClass;
         CollegeClass newCollegeClass;
-        Student& student;
+        Student student;
         TYPE type;
         OPTION option;
         static list<Request> globalRequests;
-    private:
-        Request(CollegeClass collegeClass,Student& student, TYPE type, OPTION option) : 
-        collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option) {}; // SHHH
-        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option) : 
-        collegeClass(collegeClass),student(student),type(type),option(option) {};
+    public:
+        Request(CollegeClass collegeClass,Student& student, TYPE type, OPTION option, DataSet& dataset) : 
+        collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH
+        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option,DataSet dataset) : 
+        collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option),dataset(dataset) {};
 
         bool handleRequest();
-        bool isConflictingLesson(list<Lesson> studentLessons, Lesson lessonToCompare);
+        bool isConflictingUcClass(list<Lesson> studentLessons, list<Lesson> lessonsToCompare);
 
-        bool addClass(CollegeClass classToAdd);
-        bool isConflictingClass();
-        bool maintainsClassBalance();
-        bool removeClass(CollegeClass classToRemove);
-        bool switchClass(CollegeClass classToRemove,CollegeClass classToAdd);
+        bool addClass(DataSet& dataset,CollegeClass classToAdd);
+        bool removeClass(DataSet& dataset,CollegeClass classToRemove);
+        bool switchClass(DataSet& dataset,CollegeClass classToRemove,CollegeClass classToAdd);
 
 
-        bool addUc(CollegeClass UcToAdd);
-        bool isConflictingUc();
-        list<Lesson> getVacancies(list<Lesson> currentUcLessons);
-        bool removeUc(CollegeClass UcToRemove);
-        bool switchUc(CollegeClass UcToRemove,CollegeClass UcToAdd);
+        bool addUc(DataSet& dataset,CollegeClass ucToAdd);
+        bool removeUc(DataSet& dataset,CollegeClass UcToRemove);
+        bool switchUc(DataSet& dataset,CollegeClass UcToRemove,CollegeClass UcToAdd);
 
 
 
