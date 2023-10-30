@@ -38,6 +38,7 @@ class Lesson{
         void set_LessonClass(const CollegeClass& new_lessonClass);
 
         void printLesson();
+        bool operator==(Lesson lesson2) const;
 };
 
 #endif
