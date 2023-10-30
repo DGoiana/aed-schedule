@@ -114,6 +114,70 @@ int DataSet::consultYearOccupation(string year){
     return num;
 }
 
+void DataSet::sortStudentsByName(vector<Student> &students, string order){
+    if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
+        return s1.get_studentName() < s2.get_studentName();
+    });
+    else sort(students.begin(), students.end(), [](Student s1, Student s2){
+        return s1.get_studentName() > s2.get_studentName();
+    });
+}
+
+void DataSet::sortStudentsByYear(vector<Student> &students, string order){
+    if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
+        return s1.get_studentCode() < s2.get_studentCode();
+    });
+    else sort(students.begin(), students.end(), [](Student s1, Student s2){
+        return s1.get_studentCode() > s2.get_studentCode();
+    });
+}
+
+void DataSet::sortClassesByOccupation(vector<string> &codes, string order){
+    if(order == "ascending") sort(codes.begin(), codes.end(), [this](string code1, string code2){
+        return consultClassorUcOccupation(code1, "class") < consultClassorUcOccupation(code2, "class");
+    });
+    else sort(codes.begin(), codes.end(), [this](string code1, string code2){
+        return consultClassorUcOccupation(code1, "class") > consultClassorUcOccupation(code2, "class");
+    });
+}
+
+void DataSet::sortUcsByOccupation(vector<string> &codes, string order){
+    if(order == "ascending") sort(codes.begin(), codes.end(), [this](string code1, string code2){
+        return consultClassorUcOccupation(code1, "uc") < consultClassorUcOccupation(code2, "uc");
+    });
+    else sort(codes.begin(), codes.end(), [this](string code1, string code2){
+        return consultClassorUcOccupation(code1, "uc") > consultClassorUcOccupation(code2, "uc");
+    });
+}
+
+void DataSet::sortYearsByOccupation(vector<string> &years, string order){
+    if(order == "ascending") sort(years.begin(), years.end(), [this](string year1, string year2){
+        return consultYearOccupation(year1) < consultYearOccupation(year2);
+    });
+    else sort(years.begin(), years.end(), [this](string year1, string year2){
+        return consultYearOccupation(year1) > consultYearOccupation(year2);
+    });
+}
+
+pair<string, int> DataSet::getMostStudentsUC(){
+    map<Student, list<CollegeClass>> mappedCollegeClasses = Parser::mapCollegeClasses(); // [{Student, {{1LEIC01, L.EIC001}, {1LEIC01, L.EIC002}}, ...}]
+    map<string, int> ucByNumStudents;
+    for(auto p : mappedCollegeClasses){
+        string ucToCheck = "";
+        for(CollegeClass c : p.second){
+            if(c.get_ucCode() != ucToCheck) ucByNumStudents[c.get_ucCode()]++;
+            ucToCheck = c.get_ucCode();
+        }
+    }
+    pair<string, int> result = {"", 0};
+    for(auto it = ucByNumStudents.begin(); it != ucByNumStudents.end(); it++){
+        if(it->second > result.second){
+            result = *it;
+        }
+    }
+    return result;
+}
+
 void DataSet::setStudentSchedule(list<Lesson> newLessons,Student student) {
     this->students.erase(this->students.find(student));
     student.set_studentSchedule(newLessons);

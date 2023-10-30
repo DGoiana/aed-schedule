@@ -32,14 +32,16 @@ class DataSet{
         list<int> consultOccupationClassByUc(string classCode);
         int consultYearOccupation(std::string year);
 
+        void sortStudentsByName(vector<Student> &students, string order);
+        void sortStudentsByYear(vector<Student> &students, string order);
+
         Student getStudentByNumber(string studentCode);
         list<Student> getStudentByName(string studentName);
 
-        void sortByUcAscending(std::list<Student>& students);
-        void sortByUcDescending(std::list<Student>& students);
-        void sortByClassAscending(std::list<Student>& students);
-        void sortByClassDescending(std::list<Student>& students);
+        void sortClassesByOccupation(vector<string> &codes, string order);
+        void sortUcsByOccupation(vector<string> &codes, string order);
+        void sortYearsByOccupation(vector<string> &years, string order);
 
-        int getMostStudentsUC();
+        pair<string, int> getMostStudentsUC();
 };
 #endif
