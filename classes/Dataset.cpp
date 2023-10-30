@@ -43,7 +43,7 @@ list<Student> DataSet::getStudentsByClassOrUc(string code, string id){
     return students;
 }
 
-int DataSet::getNumStudentsInClass(CollegeClass ucClass)
+int DataSet::getNumStudentsInClassAndUc(CollegeClass ucClass)
 {
     list<Student> resultStudents;
     for(Student student : this->students) {
@@ -55,7 +55,26 @@ int DataSet::getNumStudentsInClass(CollegeClass ucClass)
     return resultStudents.size();
 }
 
-list<Student> DataSet::getStudentsByYear(string year){
+int DataSet::getNumStudentsInClass(string classCode)
+{
+    list<Student> resultStudents = getStudentsByClassOrUc(classCode,"class");
+    return resultStudents.size();
+}
+
+int DataSet::maxStudentUcInClass(string classCode)
+{
+    map<string,list<string>> ucsByClasses = Parser::getUcsByClasses();
+    list<string> ucsByClass = ucsByClasses[classCode];
+    int max = 0;
+    for(string uc : ucsByClass) {
+        int ucClassStudents =  getNumStudentsInClassAndUc(CollegeClass(classCode,uc));
+        if(ucClassStudents > max) max = ucClassStudents;
+    }
+    return max;
+}
+
+list<Student> DataSet::getStudentsByYear(string year)
+{
     list<Student> students;
     for(Student s : this->students){
         if(s.get_studentCode().substr(0,4) == year) students.push_back(s);

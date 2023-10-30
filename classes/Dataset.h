@@ -17,8 +17,10 @@ class DataSet{
         Schedule getScheduleByClass(string classCode);
         
         list<Student> getStudentsByClassOrUc(string code, string id);
-        int getNumStudentsInClass(CollegeClass ucClass);
+        int getNumStudentsInClassAndUc(CollegeClass ucClass);
+        int getNumStudentsInClass(string classCode);
         int getNumStudentsInUc(CollegeClass ucClass);
+        int maxStudentUcInClass(string classCode);
         list<Student> getStudentsByYear(string year);
 
         int numStudentsRegisteredInUcs(int num);

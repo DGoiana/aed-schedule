@@ -30,9 +30,10 @@ class Request {
         collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option),dataset(dataset) {};
 
         bool handleRequest();
-        bool isConflictingUcClass(list<Lesson> studentLessons, list<Lesson> lessonsToCompare);
+        bool isConflictingLessons(list<Lesson> studentLessons, list<Lesson> lessonsToCompare);
 
         bool addClass(DataSet& dataset,CollegeClass classToAdd);
+        bool maintainsClassBalance(string classCode,int sizeStudentCompare);
         bool removeClass(DataSet& dataset,CollegeClass classToRemove);
         bool switchClass(DataSet& dataset,CollegeClass classToRemove,CollegeClass classToAdd);
 

@@ -6,7 +6,7 @@
 #include "Parser.h"
 #include <iostream>
 
-#define CLASS_CAP 30
+#define CLASS_CAP 25
 
 bool Request::handleRequest() {
     switch (this->option)
@@ -27,19 +27,53 @@ bool Request::handleRequest() {
 }
 
 bool Request::addClass(DataSet& dataset,CollegeClass classToAdd) {
+    Parser parser;
+    list<Lesson> classLessons = (dataset.getScheduleByClass(classToAdd.get_classCode())).get_scheduleLessons();
+    list<Lesson> studentLessons = dataset.getScheduleByStudent(this->student.get_studentCode()).get_scheduleLessons();
+    int numStudentsClass = dataset.maxStudentUcInClass(classToAdd.get_classCode());
+    if(!isConflictingLessons(studentLessons,classLessons) && maintainsClassBalance(classToAdd.get_classCode(),numStudentsClass)
+     && numStudentsClass < CLASS_CAP){
+        for(Lesson lesson : studentLessons) classLessons.push_back(lesson);
+        dataset.setStudentSchedule(classLessons,this->student);
+        return true;
+    }
+    return false;
+}
 
+bool Request::maintainsClassBalance(string classCode,int sizeStudentCompare) {
+    map<string,list<string>> ucsByClasses = Parser::getUcsByClasses();
+    for(auto ucClass : ucsByClasses){
+        if(ucClass.first[0] == classCode[0]){
+            if(abs(dataset.maxStudentUcInClass(ucClass.first) - (sizeStudentCompare+1)) > 4 
+            && abs(dataset.maxStudentUcInClass(ucClass.first) - (sizeStudentCompare-1)) > 4)
+                return false;
+        }
+    }
     return true;
 }
 
 bool Request::removeClass(DataSet& dataset,CollegeClass classToRemove) {
+    list<Lesson> newLessons;
+    // ERROR HERE IM TIRED OKAY??!?!?!?!??!
+    list<Lesson> studentLessons = this->student.get_studentSchedule().get_scheduleLessons();
+    cout<<"asd"<<'\n';
+    int numStudentsClass = dataset.maxStudentUcInClass(classToRemove.get_classCode());
+    cout<<"asd"<<'\n';
+    if(maintainsClassBalance(classToRemove.get_classCode(),numStudentsClass)){
+        for(Lesson lesson : studentLessons){
+            if(lesson.get_LessonClass().get_classCode() != classToRemove.get_classCode()) {
+                newLessons.push_back(lesson);
+            }
+        }
+    }
+    dataset.setStudentSchedule(newLessons,this->student);
     return true;
 }
 
 bool Request::switchClass(DataSet& dataset,CollegeClass classToRemove, CollegeClass classToAdd) {
-    return true;
 }
 
-bool Request::isConflictingUcClass(list<Lesson> studentLessons, list<Lesson> lessonsToCompare) {
+bool Request::isConflictingLessons(list<Lesson> studentLessons, list<Lesson> lessonsToCompare) {
     for(Lesson lessonToCompare : lessonsToCompare) {
         for(Lesson studentLesson : studentLessons){
             double studentStartTime = studentLesson.get_LessonStartHour();
@@ -65,8 +99,8 @@ bool Request::addUc(DataSet& dataset,CollegeClass ucToAdd) {
     map<string,list<string>> allUcClass = Parser::getClassesByUcs();
     list<Lesson> studentSchedule = this->student.get_studentSchedule().get_scheduleLessons();
     list<Lesson> lessonsToCompare = Parser::mapLessons()[ucToAdd];
-    if(dataset.getNumStudentsInClass(ucToAdd) < CLASS_CAP
-    && !isConflictingUcClass(studentSchedule,lessonsToCompare)) {
+    if(dataset.getNumStudentsInClassAndUc(ucToAdd) < CLASS_CAP
+    && !isConflictingLessons(studentSchedule,lessonsToCompare)) {
         for(Lesson lesson : studentSchedule) lessonsToCompare.push_back(lesson);
         dataset.setStudentSchedule(lessonsToCompare,this->student);
         return true;
