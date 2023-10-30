@@ -56,6 +56,28 @@ map<CollegeClass, list<Lesson>> Parser::mapLessons(){
     return mappedLessons;
 }
 
+map<string, list<string>> Parser::getUcsByClasses()
+{
+    map<string,list<string>> result;
+    list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv");
+    for(vector<string> classAndUc : classesPerUc) {
+        string classCodeTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
+        result[classCodeTrimmed].push_back(classAndUc[0]);
+    }
+    return result;
+}
+
+map<string, list<string>> Parser::getClassesByUcs()
+{
+    map<string,list<string>> result;
+    list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv");
+    for(vector<string> classAndUc : classesPerUc) {
+        string classCodeTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
+        result[classAndUc[0]].push_back(classCodeTrimmed);
+    }
+    return result;
+}
+
 set<Student> Parser::parseStudents() {
     set<Student> students;
     map<Student, list<CollegeClass>> mappedCollegeClasses = mapCollegeClasses();
@@ -84,6 +106,7 @@ map<Student, list<CollegeClass>> Parser::mapCollegeClasses(){
 }
 
 void Parser::printLessons(list<Lesson> lessons) {
+    if(lessons.size() == 0) return;
     for(Lesson lesson : lessons) {
         lesson.printLesson();
     }

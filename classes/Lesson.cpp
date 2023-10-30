@@ -60,7 +60,13 @@ void Lesson::set_LessonClass(const CollegeClass& new_lessonClass) {
 void Lesson::printLesson() {
     cout << this->lessonClass.get_classCode() << ", ";
     cout << this->lessonClass.get_ucCode() << ", ";
+    cout << this->lessonWeekday << ", ";
     cout << this->lessonStartHour << ", ";
     cout << this->lessonDuration << ", ";
     cout << this->lessonType << endl;
+}
+
+bool Lesson::operator==(Lesson lesson2) const {
+    return this->get_LessonClass() == lesson2.get_LessonClass() 
+    && this->get_LessonType() == lesson2.get_LessonType();
 }
