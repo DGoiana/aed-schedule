@@ -24,11 +24,13 @@ class DataSet{
         int consultClassorUcOccupation(string code, string id);
         int consultYearOccupation(std::string year);
 
-        void sortByUcAscending(std::list<Student>& students);
-        void sortByUcDescending(std::list<Student>& students);
-        void sortByClassAscending(std::list<Student>& students);
-        void sortByClassDescending(std::list<Student>& students);
+        void sortStudentsByName(vector<Student> &students, string order);
+        void sortStudentsByYear(vector<Student> &students, string order);
 
-        int getMostStudentsUC();
+        void sortClassesByOccupation(vector<string> &codes, string order);
+        void sortUcsByOccupation(vector<string> &codes, string order);
+        void sortYearsByOccupation(vector<string> &years, string order);
+
+        pair<string, int> getMostStudentsUC();
 };
 #endif
