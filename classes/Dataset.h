@@ -21,16 +21,13 @@ class DataSet{
   
         int getNumStudentsInClassAndUc(CollegeClass ucClass);
         int getNumStudentsInClass(string classCode);
-        int getNumStudentsInUc(CollegeClass ucClass);
         int maxStudentUcInClass(string classCode);
 
         int numStudentsRegisteredInUcs(int num);
 
         void setStudentSchedule(list<Lesson> lessonToAdd,Student student);
-        void setStudentsList(set<Student> newStudentList);
 
         int consultClassorUcOccupation(string code, string id);
-        list<int> consultOccupationClassByUc(string classCode);
         int consultYearOccupation(std::string year);
 
         void sortStudentsByName(vector<Student> &students, string order);
