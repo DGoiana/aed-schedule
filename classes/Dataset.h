@@ -17,15 +17,26 @@ class DataSet{
         Schedule getScheduleByClass(string classCode);
         
         list<Student> getStudentsByClassOrUc(string code, string id);
+        int getNumStudentsInClassAndUc(CollegeClass ucClass);
+        int getNumStudentsInClass(string classCode);
+        int getNumStudentsInUc(CollegeClass ucClass);
+        int maxStudentUcInClass(string classCode);
         list<Student> getStudentsByYear(string year);
 
         int numStudentsRegisteredInUcs(int num);
 
+        void setStudentSchedule(list<Lesson> lessonToAdd,Student student);
+        void setStudentsList(set<Student> newStudentList);
+
         int consultClassorUcOccupation(string code, string id);
+        list<int> consultOccupationClassByUc(string classCode);
         int consultYearOccupation(std::string year);
 
         void sortStudentsByName(vector<Student> &students, string order);
         void sortStudentsByYear(vector<Student> &students, string order);
+
+        Student getStudentByNumber(string studentCode);
+        list<Student> getStudentByName(string studentName);
 
         void sortClassesByOccupation(vector<string> &codes, string order);
         void sortUcsByOccupation(vector<string> &codes, string order);

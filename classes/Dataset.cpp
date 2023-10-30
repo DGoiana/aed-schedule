@@ -3,11 +3,13 @@
 #include <string>
 #include "Student.h"
 #include "Lesson.h"
+#include <iostream>
 #include "Parser.h"
 
 using namespace std;
 
 DataSet::DataSet(){
+    // CHANGE TO POINTER
     this->students = Parser::parseStudents();
     this->lessons = Parser::mapLessons();
 }
@@ -37,10 +39,42 @@ list<Student> DataSet::getStudentsByClassOrUc(string code, string id){
             if(l.get_LessonClass().get_ucCode() == code && id == "uc") students.push_back(s);
         }
     }
+    students.unique();
     return students;
 }
 
-list<Student> DataSet::getStudentsByYear(string year){
+int DataSet::getNumStudentsInClassAndUc(CollegeClass ucClass)
+{
+    list<Student> resultStudents;
+    for(Student student : this->students) {
+        for(Lesson lesson : student.get_studentSchedule().get_scheduleLessons()) {
+            if(lesson.get_LessonClass() == ucClass) resultStudents.push_back(student); 
+        }
+    }
+    resultStudents.unique();
+    return resultStudents.size();
+}
+
+int DataSet::getNumStudentsInClass(string classCode)
+{
+    list<Student> resultStudents = getStudentsByClassOrUc(classCode,"class");
+    return resultStudents.size();
+}
+
+int DataSet::maxStudentUcInClass(string classCode)
+{
+    map<string,list<string>> ucsByClasses = Parser::getUcsByClasses();
+    list<string> ucsByClass = ucsByClasses[classCode];
+    int max = 0;
+    for(string uc : ucsByClass) {
+        int ucClassStudents =  getNumStudentsInClassAndUc(CollegeClass(classCode,uc));
+        if(ucClassStudents > max) max = ucClassStudents;
+    }
+    return max;
+}
+
+list<Student> DataSet::getStudentsByYear(string year)
+{
     list<Student> students;
     for(Student s : this->students){
         if(s.get_studentCode().substr(0,4) == year) students.push_back(s);
@@ -142,4 +176,25 @@ pair<string, int> DataSet::getMostStudentsUC(){
         }
     }
     return result;
+}
+
+void DataSet::setStudentSchedule(list<Lesson> newLessons,Student student) {
+    this->students.erase(this->students.find(student));
+    student.set_studentSchedule(newLessons);
+    this->students.insert(student);
+}
+
+Student DataSet::getStudentByNumber(string studentCode)
+{
+    return *this->students.find(Student(studentCode,"",Schedule()));
+}
+
+list<Student> DataSet::getStudentByName(string studentName)
+{
+    list<Student> sameNameStudents;
+    for(Student student : this->students){
+        if(student.get_studentName() == studentName)
+            sameNameStudents.push_back(student);
+    }
+    return sameNameStudents;
 }
