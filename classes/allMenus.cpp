@@ -218,7 +218,7 @@ void AllMenus::menu_students(){
                     cout << "n: ";
                     cin >> n;
 
-                    cout << dataSet.numStudentsRegisteredInUcs(n) << endl;
+                    cout << dataSet.numStudentsRegisteredInNUcs(n) << endl;
                     break;
                 case 4:
                     menu_principal();
@@ -256,7 +256,7 @@ void AllMenus::menu_uc(){
             switch(input)
             {
                 case 0:
-                    cout << dataSet.getMostStudentsUC().first << " -> " << dataSet.getMostStudentsUC().second << endl;
+                    cout << dataSet.getMostStudentsUC();
                     break;
                 case 1:
                     menu_principal();
@@ -290,7 +290,7 @@ void AllMenus::menu_occupations(){
 
     string classCode, ucCode, year, id;
     
-    DataSet dataSet;
+    DataSet dataSet = DataSet();
 
     while (true) {
         cout << "Choose an option: ";
@@ -306,7 +306,9 @@ void AllMenus::menu_occupations(){
                     switch (input)
                     {
                     case 0:
-                        /* code */
+                        for(string class: dataSet.getClasses()){
+                            cout << class << ':' << 
+                        }
                         break;
                     case 1:
 
