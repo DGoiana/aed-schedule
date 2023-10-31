@@ -1,6 +1,10 @@
 #ifndef AED_SCHEDULE_ALLMENUS_H
 #define AED_SCHEDULE_ALLMENUS_H
 
+#include "Schedule.h"
+#include "Dataset.h"
+#include "Lesson.h"
+#include "CollegeClass.h"
 #include <string>
 #include <vector>
 

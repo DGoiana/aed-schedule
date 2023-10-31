@@ -54,7 +54,6 @@ bool Request::maintainsClassBalance(string classCode,int sizeStudentCompare) {
 
 bool Request::removeClass(DataSet& dataset,CollegeClass classToRemove) {
     list<Lesson> newLessons;
-    // ERROR HERE IM TIRED OKAY??!?!?!?!??!
     list<Lesson> studentLessons = this->student.get_studentSchedule().get_scheduleLessons();
     cout<<"asd"<<'\n';
     int numStudentsClass = dataset.maxStudentUcInClass(classToRemove.get_classCode());
@@ -71,6 +70,9 @@ bool Request::removeClass(DataSet& dataset,CollegeClass classToRemove) {
 }
 
 bool Request::switchClass(DataSet& dataset,CollegeClass classToRemove, CollegeClass classToAdd) {
+    removeClass(dataset,classToRemove);
+    addClass(dataset,classToAdd);
+    return true;
 }
 
 bool Request::isConflictingLessons(list<Lesson> studentLessons, list<Lesson> lessonsToCompare) {

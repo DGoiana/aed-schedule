@@ -5,6 +5,7 @@
 #include "Lesson.h"
 #include <iostream>
 #include "Parser.h"
+#include <algorithm>
 
 using namespace std;
 

@@ -1,7 +1,13 @@
 #include "allMenus.h"
+#include "Schedule.h"
+#include "Dataset.h"
+#include "Lesson.h"
+#include "Student.h"
 #include <vector>
+#include <list>
 #include <string>
 #include <limits>
+#include <utility>
 #include <iostream>
 
 using namespace std;
@@ -61,7 +67,7 @@ void AllMenus::menu_principal(){
     }
 }
 
-void AllMenus::menu_schedule(){
+void AllMenus::menu_schedule() {
     int input;
     vector<string> menuOptions = {
         "0-Consult schedule of a student",
@@ -73,39 +79,52 @@ void AllMenus::menu_schedule(){
     int height = 6;
     draw_rectangle(width, height, menuOptions);
 
+    string studentCode; 
+    string classCode;
+
+    DataSet dataSet;
+
     while (true) {
         cout << "Choose an option: ";
         if (cin >> input) {
+            switch (input) {
+                case 0:
+                    cout << "studentCode: ";
+                    cin >> studentCode;
+                    for (Lesson l : dataSet.getScheduleByStudent(studentCode).get_scheduleLessons()) {
+                        cout << l.get_LessonClass().get_classCode() << "," << l.get_LessonClass().get_ucCode() << "," << l.get_LessonStartHour() << "," << l.get_LessonDuration() << "," << l.get_LessonType() << endl;
+                    }
+                    break;
+                case 1:
+                    cout << "classCode: ";
+                    cin >> classCode;
+                    for (Lesson l : dataSet.getScheduleByClass(classCode).get_scheduleLessons()) {
+                        cout << l.get_LessonClass().get_classCode() << "," << l.get_LessonClass().get_ucCode() << "," << l.get_LessonStartHour() << "," << l.get_LessonDuration() << "," << l.get_LessonType() << endl;
+                    }
+                    break;
+                case 2:
+                    menu_principal();
+                    break;
+                default:
+                    cout << "Invalid option\n";
+                    break;
+            }
             break;
         } else {
             cout << "Invalid input" << endl;
             cin.clear();
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-
-    switch (input)
-    {
-    case 0:
-        //TODO
-        break;
-    case 1:
-        //TODO
-        break;
-    case 2:
-        menu_principal();
-        break;
-    default:
-        cout << "Invalid option\n";
-        menu_schedule();
-    }
+    menu_schedule();
 }
+
 
 void AllMenus::menu_students(){
     int input;
     vector<string> menuOptions = {
         "0-Consult students within a given class",
-        "1-Consult students within a given course",
+        "1-Consult students within a given Uc",
         "2-Consult students within a given year",
         "3-Consult number of students registered in at least n UCs",
         "4-Go back"
@@ -115,38 +134,95 @@ void AllMenus::menu_students(){
     int height = 8;
     draw_rectangle(width, height, menuOptions);
 
+    string classCode, ucCode, id;
+    string year;
+    int n;
+    int sort;
+
+    DataSet dataSet;
+    
     while (true) {
         cout << "Choose an option: ";
         if (cin >> input) {
+            switch (input)
+            {
+                case 0:
+                    cout << "classCode: ";
+                    cin >> classCode;
+                    id = "class";
+
+                    for(Student s : dataSet.getStudentsByClassOrUc(classCode,id)){
+                        cout << s.get_studentCode() << "," << s.get_studentName() << endl;
+                    }
+
+                    /* cout << "0-ascending\n1-descending";
+                    cout << "sort: ";
+                    cin >> sort;
+                    if(sort == 0){
+
+                    }
+                    else if(sort == 1){
+
+                    } */
+                    break;
+                case 1:
+                    cout << "ucCode: ";
+                    cin >> ucCode;
+                    id = "uc";
+
+                    for(Student s : dataSet.getStudentsByClassOrUc(ucCode,id)){
+                        cout << s.get_studentCode() << "," << s.get_studentName() << endl;
+                    }
+
+                    /* cout << "0-ascending\n1-descending";
+                    cout << "sort: ";
+                    cin >> sort;
+                    if(sort == 0){
+
+                    }
+                    else if(sort == 1){
+
+                    } */
+                    break;
+                case 2:
+                    cout << "year: ";
+                    cin >> year;
+
+                    for(Student s : dataSet.getStudentsByYear(year)){
+                        cout << s.get_studentCode() << "," << s.get_studentName() << endl;
+                    }
+
+                    /* cout << "0-ascending\n1-descending";
+                    cout << "sort: ";
+                    cin >> sort;
+                    if(sort == 0){
+
+                    }
+                    else if(sort == 1){
+
+                    } */
+                    break;
+                case 3:
+                    cout << "n: ";
+                    cin >> n;
+
+                    cout << dataSet.numStudentsRegisteredInUcs(n) << endl;
+                    break;
+                case 4:
+                    menu_principal();
+                    break;
+                default:
+                    cout << "Invalid option\n";
+                    menu_students();
+            }
             break;
         } else {
             cout << "Invalid input" << endl;
             cin.clear();
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-
-    switch (input)
-    {
-        case 0:
-            //TODO
-            break;
-        case 1:
-            //TODO
-            break;
-        case 2:
-            //TODO
-            break;
-        case 3:
-            //TODO
-            break;
-        case 4:
-            menu_principal();
-            break;
-        default:
-            cout << "Invalid option\n";
-            menu_students();
-    }
+    menu_students();
 }
 
 void AllMenus::menu_uc(){
@@ -160,30 +236,31 @@ void AllMenus::menu_uc(){
     int height = 5;
     draw_rectangle(width, height, menuOptions);
 
+    DataSet dataSet;
+
     while (true) {
         cout << "Choose an option: ";
         if (cin >> input) {
+            switch(input)
+            {
+                case 0:
+                    cout << dataSet.getMostStudentsUC().first << " -> " << dataSet.getMostStudentsUC().second << endl;
+                    break;
+                case 1:
+                    menu_principal();
+                    break;
+                default:
+                    cout << "Invalid option\n";
+                    menu_uc();
+            }
             break;
         } else {
             cout << "Invalid input" << endl;
             cin.clear();
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-
-    switch(input)
-    {
-        case 0:
-            //TODO
-            break;
-        case 1:
-            menu_principal();
-            break;
-        default:
-            cout << "Invalid option\n";
-            menu_uc();
-
-    }
+    menu_uc();
 }
 
 void AllMenus::menu_occupations(){
@@ -199,36 +276,51 @@ void AllMenus::menu_occupations(){
     int height = 7;
     draw_rectangle(width, height, menuOptions);
 
+    string classCode, ucCode, year, id;
+    
+    DataSet dataSet;
+
     while (true) {
         cout << "Choose an option: ";
         if (cin >> input) {
+            switch(input)
+            {
+                case 0:
+                    cout << "classCode: ";
+                    cin >> classCode;
+                    id = "class";
+
+                    cout << dataSet.consultClassorUcOccupation(classCode,id) << endl;
+                    break;
+                case 1:
+                    cout << "year: ";
+                    cin >> year;
+
+                    cout << dataSet.consultYearOccupation(year) << endl;
+                    break;
+                case 2:
+                    cout << "ucCode: ";
+                    cin >> ucCode;
+                    id = "uc";
+
+                    cout << dataSet.consultClassorUcOccupation(ucCode,id) << endl;
+                    break;
+                case 3:
+                    menu_principal();
+                    break;
+                default:
+                    cout << "Invalid option\n";
+                    menu_occupations();
+
+            }
             break;
         } else {
             cout << "Invalid input" << endl;
             cin.clear();
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-
-    switch(input)
-    {
-        case 0:
-            //TODO
-            break;
-        case 1:
-            //TODO
-            break;
-        case 2:
-            //TODO
-            break;
-        case 3:
-            menu_principal();
-            break;
-        default:
-            cout << "Invalid option\n";
-            menu_occupations();
-
-    }
+    menu_occupations();
 }
 
 void AllMenus::menu_requests(){
