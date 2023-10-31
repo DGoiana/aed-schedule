@@ -53,19 +53,25 @@ bool Request::maintainsClassBalance(string classCode,int sizeStudentCompare) {
 }
 
 bool Request::removeClass(DataSet& dataset,CollegeClass classToRemove) {
+    int removed = 0;
     list<Lesson> newLessons;
     list<Lesson> studentLessons = this->student.get_studentSchedule().get_scheduleLessons();
-    cout<<"asd"<<'\n';
     int numStudentsClass = dataset.maxStudentUcInClass(classToRemove.get_classCode());
-    cout<<"asd"<<'\n';
     if(maintainsClassBalance(classToRemove.get_classCode(),numStudentsClass)){
         for(Lesson lesson : studentLessons){
             if(lesson.get_LessonClass().get_classCode() != classToRemove.get_classCode()) {
                 newLessons.push_back(lesson);
             }
+            else{
+                removed++;
+            }
         }
+        dataset.setStudentSchedule(newLessons,this->student);
     }
-    dataset.setStudentSchedule(newLessons,this->student);
+    
+    if(removed == 0){
+        return false;
+    }
     return true;
 }
 
@@ -110,14 +116,23 @@ bool Request::addUc(DataSet& dataset,CollegeClass ucToAdd) {
 }
 
 bool Request::removeUc(DataSet& dataset,CollegeClass ucToRemove){
+    int removed = 0;
     list<Lesson> newLessons;
     list<Lesson> studentLessons = dataset.getScheduleByStudent(this->student.get_studentCode()).get_scheduleLessons();
     for(Lesson lesson : studentLessons){
         if(lesson.get_LessonClass().get_ucCode() != ucToRemove.get_ucCode()) {
             newLessons.push_back(lesson);
         }
+        else{
+            removed++;
+        }
     }
+
     dataset.setStudentSchedule(newLessons,this->student);
+    
+    if(removed == 0){
+        return false;
+    }
     return true;
 }
 
