@@ -7,6 +7,7 @@
 #include <list>
 #include <string>
 #include <limits>
+#include <utility>
 #include <iostream>
 
 using namespace std;
@@ -235,30 +236,31 @@ void AllMenus::menu_uc(){
     int height = 5;
     draw_rectangle(width, height, menuOptions);
 
+    DataSet dataSet;
+
     while (true) {
         cout << "Choose an option: ";
         if (cin >> input) {
+            switch(input)
+            {
+                case 0:
+                    cout << dataSet.getMostStudentsUC().first << " -> " << dataSet.getMostStudentsUC().second << endl;
+                    break;
+                case 1:
+                    menu_principal();
+                    break;
+                default:
+                    cout << "Invalid option\n";
+                    menu_uc();
+            }
             break;
         } else {
             cout << "Invalid input" << endl;
             cin.clear();
-            cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
+            cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
     }
-
-    switch(input)
-    {
-        case 0:
-            //TODO
-            break;
-        case 1:
-            menu_principal();
-            break;
-        default:
-            cout << "Invalid option\n";
-            menu_uc();
-
-    }
+    menu_uc();
 }
 
 void AllMenus::menu_occupations(){
