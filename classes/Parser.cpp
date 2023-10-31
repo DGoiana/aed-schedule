@@ -72,7 +72,34 @@ map<CollegeClass, list<Lesson>> Parser::mapLessons(){
     }
     return mappedLessons;
 }
-
+/**
+ * @brief Gets a map of classes and their Ucs
+ * @return a map of classCode as keys and ucCode as values
+ */
+map<string, list<string>> Parser::getUcsByClasses()
+{
+    map<string,list<string>> result;
+    list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv");
+    for(vector<string> classAndUc : classesPerUc) {
+        string classCodeTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
+        result[classCodeTrimmed].push_back(classAndUc[0]);
+    }
+    return result;
+}
+/**
+ * @brief Gets a map of Ucs and their classes
+ * @return a map of ucCode as keys and classCode as values
+ */
+map<string, list<string>> Parser::getClassesByUcs()
+{
+    map<string,list<string>> result;
+    list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv");
+    for(vector<string> classAndUc : classesPerUc) {
+        string classCodeTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
+        result[classAndUc[0]].push_back(classCodeTrimmed);
+    }
+    return result;
+}
 /**
  * @brief Creates a set of students with their lessons from a map of Student and their classes and a map of classes and its lessons 
  * @return a set of students and their lessons
@@ -93,7 +120,7 @@ set<Student> Parser::parseStudents() {
 }
 /**
  * @brief Creates a map of Student and their current classes from students_classes.csv
- * @return map of students and their classes
+ * @return a map of students and their classes
  */
 map<Student, list<CollegeClass>> Parser::mapCollegeClasses(){
     map<Student, list<CollegeClass>> students;
@@ -117,10 +144,10 @@ void Parser::printLessons(list<Lesson> lessons) {
     }
 }
 /**
- * Gets all the lessons for a given combination of Uc and Class of the lessonToFind
+ * @brief Gets all the lessons for a given combination of Uc and Class of the lessonToFind
  * @param globalLessons list of all lessons
  * @param lessonToFind lesson to be found
- * @return list of lessons for the combination of Uc and Class of the lessonToFind
+ * @return a list of lessons for the combination of Uc and Class of the lessonToFind
  */
 list<Lesson> Parser::findLesson(list<Lesson> globalLessons, Lesson lessonToFind) {
     list<Lesson> lessons;
