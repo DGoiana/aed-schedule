@@ -7,7 +7,11 @@
 #include <iostream>
 
 #define CLASS_CAP 25
-
+/**
+ * Handles the request according to its type and option
+ * Time Complexity: O(1)
+ * @return if the request was successful
+ */
 bool Request::handleRequest() {
     switch (this->option)
     {
@@ -17,7 +21,6 @@ bool Request::handleRequest() {
     case REMOVE:
         if(this->type == UC) return removeUc(this->dataset,this->collegeClass);
         else return removeClass(this->dataset,this->collegeClass);
-        break;
     case SWITCH:
         if(this->type == UC) return switchUc(this->dataset,this->collegeClass,this->newCollegeClass);
         else return switchClass(this->dataset,this->collegeClass,this->newCollegeClass);
@@ -25,9 +28,14 @@ bool Request::handleRequest() {
         return false;
     }
 }
-
+/**
+ * Adds all the UCs of a Class into the Student Schedule
+ * Time Complexity: O(n²)
+ * @param dataset dataset to be changed
+ * @param classToAdd classCode of the Class to add
+ * @return if the request was successful
+ */
 bool Request::addClass(DataSet& dataset,CollegeClass classToAdd) {
-    Parser parser;
     list<Lesson> classLessons = (dataset.getScheduleByClass(classToAdd.get_classCode())).get_scheduleLessons();
     list<Lesson> studentLessons = dataset.getScheduleByStudent(this->student.get_studentCode()).get_scheduleLessons();
     int numStudentsClass = dataset.maxStudentUcInClass(classToAdd.get_classCode());
@@ -39,7 +47,13 @@ bool Request::addClass(DataSet& dataset,CollegeClass classToAdd) {
     }
     return false;
 }
-
+/**
+ * Checks if the alteration (Adding or Removing) destroys the balances between the classes
+ * Time Complexity: O(n)
+ * @param classCode classCode of the classed to be checked
+ * @param sizeStudentCompare size of the class to be compared
+ * @return if the alteration maintains the class balance
+ */
 bool Request::maintainsClassBalance(string classCode,int sizeStudentCompare) {
     map<string,list<string>> ucsByClasses = Parser::getUcsByClasses();
     for(auto ucClass : ucsByClasses){
@@ -51,7 +65,13 @@ bool Request::maintainsClassBalance(string classCode,int sizeStudentCompare) {
     }
     return true;
 }
-
+/**
+ * Removes all the UCs of a Class of the Student Schedule
+ * Time Complexity: O(n)
+ * @param dataset dataset to be changed
+ * @param classToRemove classCode of the Class to Remove
+ * @return if the request was successful
+ */
 bool Request::removeClass(DataSet& dataset,CollegeClass classToRemove) {
     list<Lesson> newLessons;
     list<Lesson> studentLessons = this->student.get_studentSchedule().get_scheduleLessons();
@@ -68,13 +88,26 @@ bool Request::removeClass(DataSet& dataset,CollegeClass classToRemove) {
     dataset.setStudentSchedule(newLessons,this->student);
     return true;
 }
-
+/**
+ * Switches all the UCs of a Class into the Student Schedule
+ * Time Complexity: O(n)
+ * @param dataset
+ * @param classToRemove classCode of the Class to Remove
+ * @param classToAdd classCode of the Class to Add
+ * @return
+ */
 bool Request::switchClass(DataSet& dataset,CollegeClass classToRemove, CollegeClass classToAdd) {
     removeClass(dataset,classToRemove);
     addClass(dataset,classToAdd);
     return true;
 }
-
+/**
+ * Checks if a given list of Lesson conflicts with the Student Schedule
+ * Time Complexity: O(n²)
+ * @param studentLessons list of lessons of the Student Schedule
+ * @param lessonsToCompare list of Lesson to be compared
+ * @return if the Schedule conflicts with the list of Lesson
+ */
 bool Request::isConflictingLessons(list<Lesson> studentLessons, list<Lesson> lessonsToCompare) {
     for(Lesson lessonToCompare : lessonsToCompare) {
         for(Lesson studentLesson : studentLessons){
@@ -94,10 +127,15 @@ bool Request::isConflictingLessons(list<Lesson> studentLessons, list<Lesson> les
     }
     return false;
 }
-
+/**
+ * Adds a given UC into the Student Schedule
+ * Time Complexity: O(n²)
+ * @param dataset dataset to be changed
+ * @param ucToAdd ucCode of the Uc to add
+ * @return if the request was successful
+ */
 bool Request::addUc(DataSet& dataset,CollegeClass ucToAdd) {
     map<Student,list<CollegeClass>> currentUcs = Parser::mapCollegeClasses();
-    int numUcs = currentUcs[this->student].size();
     map<string,list<string>> allUcClass = Parser::getClassesByUcs();
     list<Lesson> studentSchedule = this->student.get_studentSchedule().get_scheduleLessons();
     list<Lesson> lessonsToCompare = Parser::mapLessons()[ucToAdd];
@@ -109,7 +147,13 @@ bool Request::addUc(DataSet& dataset,CollegeClass ucToAdd) {
         }
     return false;
 }
-
+/**
+ * Removes a given Uc of the Student Schedule
+ * Time Complexity: O(n)
+ * @param dataset dataset to be changed
+ * @param classToRemove ucCode of the Uc to Remove
+ * @return if the request was successful
+ */
 bool Request::removeUc(DataSet& dataset,CollegeClass ucToRemove){
     list<Lesson> newLessons;
     list<Lesson> studentLessons = dataset.getScheduleByStudent(this->student.get_studentCode()).get_scheduleLessons();
@@ -121,7 +165,14 @@ bool Request::removeUc(DataSet& dataset,CollegeClass ucToRemove){
     dataset.setStudentSchedule(newLessons,this->student);
     return true;
 }
-
+/**
+ * Switches a given UC of the Student Schedule
+ * Time Complexity: O(n)
+ * @param dataset
+ * @param ucToRemove ucCode of the Uc to Remove
+ * @param ucToAdd ucCode of the Uc to Add
+ * @return
+ */
 bool Request::switchUc(DataSet& dataset,CollegeClass UcToRemove,CollegeClass UcToAdd) {
     return removeUc(dataset,UcToRemove) && addUc(dataset,UcToAdd);
 }
