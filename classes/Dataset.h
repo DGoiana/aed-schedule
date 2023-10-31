@@ -10,6 +10,8 @@ class DataSet{
     private:
         set<Student> students;
         map<CollegeClass, list<Lesson>> lessons;
+        set<string> classes;
+        set<string> ucs;
     public:
         DataSet();
 
@@ -19,18 +21,14 @@ class DataSet{
         set<Student> getStudentsByClassOrUc(string code, string id);
         set<Student> getStudentsByYear(string year);
   
-        int getNumStudentsInClassAndUc(CollegeClass ucClass);
-        int getNumStudentsInClass(string classCode);
-        int getNumStudentsInUc(CollegeClass ucClass);
+        int getNumStudentsInClassAndUc(CollegeClass ucClass);;
         int maxStudentUcInClass(string classCode);
 
-        int numStudentsRegisteredInUcs(int num);
+        int numStudentsRegisteredInNUcs(int num);
 
         void setStudentSchedule(list<Lesson> lessonToAdd,Student student);
-        void setStudentsList(set<Student> newStudentList);
 
         int consultClassorUcOccupation(string code, string id);
-        list<int> consultOccupationClassByUc(string classCode);
         int consultYearOccupation(std::string year);
 
         void sortStudentsByName(vector<Student> &students, string order);
@@ -43,6 +41,6 @@ class DataSet{
         void sortUcsByOccupation(vector<string> &codes, string order);
         void sortYearsByOccupation(vector<string> &years, string order);
 
-        pair<string, int> getMostStudentsUC();
+        string getMostStudentsUC();
 };
 #endif

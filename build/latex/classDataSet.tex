@@ -1,0 +1,65 @@
+\doxysection{Data\+Set Class Reference}
+\hypertarget{classDataSet}{}\label{classDataSet}\index{DataSet@{DataSet}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\Hypertarget{classDataSet_a96086d126fb87b97db0bd7916adabbea}\label{classDataSet_a96086d126fb87b97db0bd7916adabbea} 
+\mbox{\hyperlink{classSchedule}{Schedule}} {\bfseries get\+Schedule\+By\+Student} (string student\+Code)
+\item 
+\Hypertarget{classDataSet_a6ff03ba5a5502f4213a9e383665ad64d}\label{classDataSet_a6ff03ba5a5502f4213a9e383665ad64d} 
+\mbox{\hyperlink{classSchedule}{Schedule}} {\bfseries get\+Schedule\+By\+Class} (string class\+Code)
+\item 
+\Hypertarget{classDataSet_ac1ff633f3e21342f1281135503373c88}\label{classDataSet_ac1ff633f3e21342f1281135503373c88} 
+set$<$ \mbox{\hyperlink{classStudent}{Student}} $>$ {\bfseries get\+Students\+By\+Class\+Or\+Uc} (string code, string id)
+\item 
+\Hypertarget{classDataSet_aa76a4859af9a0621b930db8809a9a4c9}\label{classDataSet_aa76a4859af9a0621b930db8809a9a4c9} 
+set$<$ \mbox{\hyperlink{classStudent}{Student}} $>$ {\bfseries get\+Students\+By\+Year} (string year)
+\item 
+\Hypertarget{classDataSet_afa93782acc3e96dfc758ac6d61635141}\label{classDataSet_afa93782acc3e96dfc758ac6d61635141} 
+int {\bfseries get\+Num\+Students\+In\+Class\+And\+Uc} (\mbox{\hyperlink{classCollegeClass}{College\+Class}} uc\+Class)
+\item 
+\Hypertarget{classDataSet_aec8914c55bf4f8bd81a4b83c1b76b168}\label{classDataSet_aec8914c55bf4f8bd81a4b83c1b76b168} 
+int {\bfseries max\+Student\+Uc\+In\+Class} (string class\+Code)
+\item 
+\Hypertarget{classDataSet_a71546ce8ec65be87fde541d8e1a2f7cb}\label{classDataSet_a71546ce8ec65be87fde541d8e1a2f7cb} 
+int {\bfseries num\+Students\+Registered\+In\+NUcs} (int num)
+\item 
+\Hypertarget{classDataSet_a5656cdb0ea213e8e1267a95c1a43e699}\label{classDataSet_a5656cdb0ea213e8e1267a95c1a43e699} 
+void {\bfseries set\+Student\+Schedule} (list$<$ \mbox{\hyperlink{classLesson}{Lesson}} $>$ lesson\+To\+Add, \mbox{\hyperlink{classStudent}{Student}} student)
+\item 
+\Hypertarget{classDataSet_ad1717082045092d9d3c99bf860aae489}\label{classDataSet_ad1717082045092d9d3c99bf860aae489} 
+int {\bfseries consult\+Classor\+Uc\+Occupation} (string code, string id)
+\item 
+\Hypertarget{classDataSet_a300bd67cea3b20c9c191356cb09d63b6}\label{classDataSet_a300bd67cea3b20c9c191356cb09d63b6} 
+int {\bfseries consult\+Year\+Occupation} (std\+::string year)
+\item 
+\Hypertarget{classDataSet_acef3cdf9e6260d864d323df7e437d69c}\label{classDataSet_acef3cdf9e6260d864d323df7e437d69c} 
+void {\bfseries sort\+Students\+By\+Name} (vector$<$ \mbox{\hyperlink{classStudent}{Student}} $>$ \&students, string order)
+\item 
+\Hypertarget{classDataSet_abbacd03c9879680b643f451601b4c229}\label{classDataSet_abbacd03c9879680b643f451601b4c229} 
+void {\bfseries sort\+Students\+By\+Year} (vector$<$ \mbox{\hyperlink{classStudent}{Student}} $>$ \&students, string order)
+\item 
+\Hypertarget{classDataSet_a0418ea42753f30b55b30e795beb0d16f}\label{classDataSet_a0418ea42753f30b55b30e795beb0d16f} 
+\mbox{\hyperlink{classStudent}{Student}} {\bfseries get\+Student\+By\+Number} (string student\+Code)
+\item 
+\Hypertarget{classDataSet_ad6a8b892a9e1ee8bb2fc3d4ead54fedd}\label{classDataSet_ad6a8b892a9e1ee8bb2fc3d4ead54fedd} 
+list$<$ \mbox{\hyperlink{classStudent}{Student}} $>$ {\bfseries get\+Student\+By\+Name} (string student\+Name)
+\item 
+\Hypertarget{classDataSet_a2821e078cd2aedd43acd57109c52d91c}\label{classDataSet_a2821e078cd2aedd43acd57109c52d91c} 
+void {\bfseries sort\+Classes\+By\+Occupation} (vector$<$ string $>$ \&codes, string order)
+\item 
+\Hypertarget{classDataSet_a2c98d573ee239dadaeb0c1cf3a2cdad1}\label{classDataSet_a2c98d573ee239dadaeb0c1cf3a2cdad1} 
+void {\bfseries sort\+Ucs\+By\+Occupation} (vector$<$ string $>$ \&codes, string order)
+\item 
+\Hypertarget{classDataSet_a482ed20c4c3bb10517a67f0c410990c3}\label{classDataSet_a482ed20c4c3bb10517a67f0c410990c3} 
+void {\bfseries sort\+Years\+By\+Occupation} (vector$<$ string $>$ \&years, string order)
+\item 
+\Hypertarget{classDataSet_a0536693d94d46e8b333565b6b60e44e6}\label{classDataSet_a0536693d94d46e8b333565b6b60e44e6} 
+string {\bfseries get\+Most\+Students\+UC} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+/\+Users/goiana/\+Desktop/\+Faculdade/2º\+ANO/1º\+SEM/aed/projeto/classes/Dataset.\+h\item 
+/\+Users/goiana/\+Desktop/\+Faculdade/2º\+ANO/1º\+SEM/aed/projeto/classes/Dataset.\+cpp\end{DoxyCompactItemize}

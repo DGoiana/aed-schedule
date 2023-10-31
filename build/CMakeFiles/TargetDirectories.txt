@@ -1,0 +1,4 @@
+/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/build/CMakeFiles/Doxygen.dir
+/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/build/CMakeFiles/aed_schedule_project.dir
+/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/build/CMakeFiles/edit_cache.dir
+/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/build/CMakeFiles/rebuild_cache.dir

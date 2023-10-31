@@ -1,0 +1,53 @@
+\doxysection{Request.\+h}
+\hypertarget{Request_8h_source}{}\label{Request_8h_source}\index{/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/classes/Request.h@{/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/classes/Request.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#include\ "{}CollegeClass.h"{}}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#include\ "{}Dataset.h"{}}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}Student.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{keyword}{enum}\ TYPE\ \{}
+\DoxyCodeLine{00007\ \ \ \ \ UC,}
+\DoxyCodeLine{00008\ \ \ \ \ CLASS}
+\DoxyCodeLine{00009\ \};}
+\DoxyCodeLine{00010\ }
+\DoxyCodeLine{00011\ \textcolor{keyword}{enum}\ OPTION\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ ADD,}
+\DoxyCodeLine{00013\ \ \ \ \ REMOVE,}
+\DoxyCodeLine{00014\ \ \ \ \ SWITCH}
+\DoxyCodeLine{00015\ \};}
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classRequest}{Request}}\ \{}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset;}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ collegeClass;}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ newCollegeClass;}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classStudent}{Student}}\ student;}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ TYPE\ type;}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ OPTION\ option;}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \textcolor{keyword}{static}\ list<Request>\ globalRequests;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRequest}{Request}}(\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ collegeClass,\mbox{\hyperlink{classStudent}{Student}}\&\ student,\ TYPE\ type,\ OPTION\ option,\ \mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset)\ :\ }
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset)\ \{\};\ \textcolor{comment}{//\ SHHH}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{classRequest}{Request}}(\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ collegeClass,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ newCollegeClass,\mbox{\hyperlink{classStudent}{Student}}\&\ student,\ TYPE\ type,\ OPTION\ option,\mbox{\hyperlink{classDataSet}{DataSet}}\ dataset)\ :\ }
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option),dataset(dataset)\ \{\};}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ handleRequest();}
+\DoxyCodeLine{00033\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ isConflictingLessons(list<Lesson>\ studentLessons,\ list<Lesson>\ lessonsToCompare);}
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ addClass(\mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ classToAdd);}
+\DoxyCodeLine{00036\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ maintainsClassBalance(\textcolor{keywordtype}{string}\ classCode,\textcolor{keywordtype}{int}\ sizeStudentCompare);}
+\DoxyCodeLine{00037\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ removeClass(\mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ classToRemove);}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ switchClass(\mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ classToRemove,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ classToAdd);}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ addUc(\mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ ucToAdd);}
+\DoxyCodeLine{00042\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ removeUc(\mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ UcToRemove);}
+\DoxyCodeLine{00043\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ switchUc(\mbox{\hyperlink{classDataSet}{DataSet}}\&\ dataset,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ UcToRemove,\mbox{\hyperlink{classCollegeClass}{CollegeClass}}\ UcToAdd);}
+\DoxyCodeLine{00044\ }
+\DoxyCodeLine{00045\ }
+\DoxyCodeLine{00046\ }
+\DoxyCodeLine{00047\ \};}
+
+\end{DoxyCode}

@@ -1,0 +1,36 @@
+\doxysection{Parser.\+h}
+\hypertarget{Parser_8h_source}{}\label{Parser_8h_source}\index{/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/classes/Parser.h@{/Users/goiana/Desktop/Faculdade/2ºANO/1ºSEM/aed/projeto/classes/Parser.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ AED\_SCHEDULE\_PARSER\_H}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ AED\_SCHEDULE\_PARSER\_H}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <utility>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <list>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}Lesson.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ "{}Student.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}CollegeClass.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <map>}}
+\DoxyCodeLine{00013\ }
+\DoxyCodeLine{00014\ \textcolor{keyword}{using\ namespace\ }std;}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classParser}{Parser}}\ \{}
+\DoxyCodeLine{00017\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keyword}{static}\ map<CollegeClass,\ list<Lesson>>\ mapLessons();}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keyword}{static}\ map<string,list<string>>\ getUcsByClasses();}
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{keyword}{static}\ set<string>\ parseClassCodes();}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keyword}{static}\ set<string>\ parseUcCodes();}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{static}\ vector<string>\ split(std::string\ line,\textcolor{keyword}{const}\ std::string\&\ delimiter);}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{static}\ list<vector<string>>\ readFile(\textcolor{keyword}{const}\ std::string\ \&path);}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keyword}{static}\ list<Lesson>\ parseClassesFile();}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keyword}{static}\ set<Student>\ parseStudents();}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{static}\ list<Lesson>\ findLesson(list<Lesson>\ globalLessons,\ \mbox{\hyperlink{classLesson}{Lesson}}\ lessonToFind);}
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{static}\ map<Student,\ list<CollegeClass>>\ mapCollegeClasses();}
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{void}\ printLessons(list<Lesson>\ lessons);}
+\DoxyCodeLine{00029\ \};}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{//AED\_SCHEDULE\_PARSER\_H}}
+
+\end{DoxyCode}
