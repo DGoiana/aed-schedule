@@ -44,6 +44,38 @@ vector<string> AllMenus::showSortOptions(){
     return options;
 }
 
+vector<string> occupationsOptions = {
+    "0-Consult full list",
+    "1-Consult specific one",
+};
+
+vector<string> AllMenus::showSortOptions(){
+    int result;
+    vector<string> options;
+    vector<string> sortOptions = {
+        "0-Sort by name",
+        "1-Sort by year",
+    };
+    vector<string> sortOrder = {
+        "0-Sort ascending",
+        "1-Sort descending",
+    };
+    draw_rectangle(20, 5, sortOptions);
+    cout << "Choose a sort option: ";
+    cin >> result;
+
+    if(result == 0) options.push_back("name");
+    else options.push_back("year");
+
+    draw_rectangle(20, 5, sortOrder);
+    cout << "Choose a sort order: ";
+    cin >> result;
+
+    if(result == 0) options.push_back("ascending");
+    else options.push_back("descending");
+    return options;
+}
+
 AllMenus::AllMenus() {
     menu_principal();
 }
