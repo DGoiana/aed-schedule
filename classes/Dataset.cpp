@@ -5,6 +5,7 @@
 #include "Lesson.h"
 #include <iostream>
 #include "Parser.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -39,7 +40,6 @@ set<Student> DataSet::getStudentsByClassOrUc(string code, string id){
             if(l.get_LessonClass().get_ucCode() == code && id == "uc") students.insert(s);
         }
     }
-    students.unique();
     return students;
 }
 
@@ -57,8 +57,7 @@ int DataSet::getNumStudentsInClassAndUc(CollegeClass ucClass)
 
 int DataSet::getNumStudentsInClass(string classCode)
 {
-    list<Student> resultStudents = getStudentsByClassOrUc(classCode,"class");
-    return resultStudents.size();
+    return getStudentsByClassOrUc(classCode,"class").size();
 }
 
 int DataSet::maxStudentUcInClass(string classCode)
