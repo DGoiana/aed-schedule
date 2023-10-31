@@ -56,7 +56,7 @@ map<CollegeClass, list<Lesson>> Parser::mapLessons(){
     return mappedLessons;
 }
 
-map<string, list<string>> Parser::getUcsByClasses()
+map<string, list<string>> Parser::getUcsByClasses() // [LEIC01: {L.EIC01, L.EIC02}, ...]
 {
     map<string,list<string>> result;
     list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv");
@@ -67,15 +67,20 @@ map<string, list<string>> Parser::getUcsByClasses()
     return result;
 }
 
-map<string, list<string>> Parser::getClassesByUcs()
-{
-    map<string,list<string>> result;
-    list<vector<string>> classesPerUc = readFile("../schedule/classes_per_uc.csv");
-    for(vector<string> classAndUc : classesPerUc) {
-        string classCodeTrimmed = classAndUc[1].substr(0, classAndUc[1].length() - 1);
-        result[classAndUc[0]].push_back(classCodeTrimmed);
+set<string> Parser::parseClassCodes() {
+    set<string> classes;
+    for(auto p: mapLessons()){
+        classes.insert(p.first.get_classCode());
     }
-    return result;
+    return classes;
+}
+
+set<string> Parser::parseUcCodes() {
+    set<string> ucs;
+    for(auto p: mapLessons()){
+        ucs.insert(p.first.get_ucCode());
+    }
+    return ucs;
 }
 
 set<Student> Parser::parseStudents() {

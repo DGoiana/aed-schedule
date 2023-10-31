@@ -13,6 +13,8 @@ DataSet::DataSet(){
     // CHANGE TO POINTER
     this->students = Parser::parseStudents();
     this->lessons = Parser::mapLessons();
+    this->ucs = Parser::parseUcCodes();
+    this->classes = Parser::parseClassCodes();
 }
 
 Schedule DataSet::getScheduleByStudent(string studentCode){
@@ -45,19 +47,13 @@ set<Student> DataSet::getStudentsByClassOrUc(string code, string id){
 
 int DataSet::getNumStudentsInClassAndUc(CollegeClass ucClass)
 {
-    list<Student> resultStudents;
+    set<Student> resultStudents;
     for(Student student : this->students) {
         for(Lesson lesson : student.get_studentSchedule().get_scheduleLessons()) {
-            if(lesson.get_LessonClass() == ucClass) resultStudents.push_back(student); 
+            if(lesson.get_LessonClass() == ucClass) resultStudents.insert(student); 
         }
     }
-    resultStudents.unique();
     return resultStudents.size();
-}
-
-int DataSet::getNumStudentsInClass(string classCode)
-{
-    return getStudentsByClassOrUc(classCode,"class").size();
 }
 
 int DataSet::maxStudentUcInClass(string classCode)
@@ -80,7 +76,7 @@ set<Student> DataSet::getStudentsByYear(string year){
     return students;
 }
 
-int DataSet::numStudentsRegisteredInUcs(int num){
+int DataSet::numStudentsRegisteredInNUcs(int num){
     int count = 0;
     map<Student, list<CollegeClass>> mappedCollegeClasses = Parser::mapCollegeClasses();
     for(auto p : mappedCollegeClasses){
@@ -159,31 +155,27 @@ void DataSet::sortYearsByOccupation(vector<string> &years, string order){
     });
 }
 
-pair<string, int> DataSet::getMostStudentsUC(){
-    map<Student, list<CollegeClass>> mappedCollegeClasses = Parser::mapCollegeClasses(); // [{Student, {{1LEIC01, L.EIC001}, {1LEIC01, L.EIC002}}, ...}]
-    map<string, int> ucByNumStudents;
-    for(auto p : mappedCollegeClasses){
-        string ucToCheck = "";
-        for(CollegeClass c : p.second){
-            if(c.get_ucCode() != ucToCheck) ucByNumStudents[c.get_ucCode()]++;
-            ucToCheck = c.get_ucCode();
-        }
-    }
-    pair<string, int> result = {"", 0};
-    for(auto it = ucByNumStudents.begin(); it != ucByNumStudents.end(); it++){
-        if(it->second > result.second){
-            result = *it;
+string DataSet::getMostStudentsUC(){
+    string result;
+    int num = 0;
+    for(string uc: ucs){
+        if(consultClassorUcOccupation(uc, "uc") > num){
+            result = uc;
+            num = consultClassorUcOccupation(uc, "uc");
         }
     }
     return result;
 }
 
+
+//CHECK
 void DataSet::setStudentSchedule(list<Lesson> newLessons,Student student) {
     this->students.erase(this->students.find(student));
     student.set_studentSchedule(newLessons);
     this->students.insert(student);
 }
 
+//CHECK
 Student DataSet::getStudentByNumber(string studentCode)
 {
     return *this->students.find(Student(studentCode,"",Schedule()));

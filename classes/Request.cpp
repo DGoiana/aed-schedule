@@ -98,7 +98,6 @@ bool Request::isConflictingLessons(list<Lesson> studentLessons, list<Lesson> les
 bool Request::addUc(DataSet& dataset,CollegeClass ucToAdd) {
     map<Student,list<CollegeClass>> currentUcs = Parser::mapCollegeClasses();
     int numUcs = currentUcs[this->student].size();
-    map<string,list<string>> allUcClass = Parser::getClassesByUcs();
     list<Lesson> studentSchedule = this->student.get_studentSchedule().get_scheduleLessons();
     list<Lesson> lessonsToCompare = Parser::mapLessons()[ucToAdd];
     if(dataset.getNumStudentsInClassAndUc(ucToAdd) < CLASS_CAP
