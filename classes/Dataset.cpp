@@ -192,8 +192,7 @@ void DataSet::sortStudentsByYear(vector<Student> &students, string order){
     });
 }
 /**
- * Sorts a Class vector by its occupation (ascending or descending)
- * DON'T KNOw
+ * Sorts a Classes by its occupation (ascending or descending)
  * Time Complexity: O(nlogn)
  * @param students
  * @param order
@@ -207,8 +206,7 @@ void DataSet::sortClassesByOccupation(vector<string> &codes, string order){
     });
 }
 /**
- * Sorts a Uc vector by their occupation (ascending or descending)
- * DON'T KNOw
+ * Sorts a Ucs by their occupation (ascending or descending)
  * Time Complexity: O(nlogn)
  * @param students
  * @param order
@@ -222,8 +220,7 @@ void DataSet::sortUcsByOccupation(vector<string> &codes, string order){
     });
 }
 /**
- * Sorts a Year vector by their occupation (ascending or descending)
- * DON'T KNOw
+ * Sorts a Years by their occupation (ascending or descending)
  * Time Complexity: O(nlogn)
  * @param students
  * @param order
@@ -237,8 +234,9 @@ void DataSet::sortYearsByOccupation(vector<string> &years, string order){
     });
 }
 /**
- * Don't know
- * @return
+ * Gets the Uc with the most number of Student
+ * Time Complexity: O(n²)
+ * @return a pair of the ucCode and the number of Student
  */
 pair<string, int> DataSet::getMostStudentsUC(){
     map<Student, list<CollegeClass>> mappedCollegeClasses = Parser::mapCollegeClasses(); // [{Student, {{1LEIC01, L.EIC001}, {1LEIC01, L.EIC002}}, ...}]
