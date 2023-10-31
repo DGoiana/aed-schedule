@@ -18,8 +18,8 @@ class DataSet{
         Schedule getScheduleByStudent(string studentCode);
         Schedule getScheduleByClass(string classCode);
         
-        set<Student> getStudentsByClassOrUc(string code, string id);
-        set<Student> getStudentsByYear(string year);
+        vector<Student> getStudentsByClassOrUc(string code, string id);
+        vector<Student> getStudentsByYear(string year);
   
         int getNumStudentsInClassAndUc(CollegeClass ucClass);;
         int maxStudentUcInClass(string classCode);
@@ -31,8 +31,7 @@ class DataSet{
         int consultClassorUcOccupation(string code, string id);
         int consultYearOccupation(std::string year);
 
-        void sortStudentsByName(vector<Student> &students, string order);
-        void sortStudentsByYear(vector<Student> &students, string order);
+        void sortStudentsByNameOrYear(vector<Student> &students, string order, string input);
 
         Student getStudentByNumber(string studentCode);
         list<Student> getStudentByName(string studentName);

@@ -11,6 +11,7 @@
 class AllMenus{
     public:
         AllMenus();
+        vector<string> showSortOptions();
         void menu_principal();
         void menu_schedule();
         void menu_students();

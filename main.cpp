@@ -61,8 +61,8 @@ int main(){
     DataSet dataset;
     //testAddClassFunction(dataset);
     //testRemoveClassFunction(dataset);
-    testSwitchClassFunction(dataset);
-    //AllMenus();
+    //testSwitchClassFunction(dataset);
+    AllMenus();
     /*    
     DataSet dataset;
     map<string,list<string>> test = Parser::getUcsByClasses();
