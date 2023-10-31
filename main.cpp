@@ -54,7 +54,7 @@ void testSwitchClassFunction(DataSet& dataset) {
         parser.printLessons(dataset.getStudentByNumber("202054727").get_studentSchedule().get_scheduleLessons());
     }
     return;
-}
+} 
 
 
 int main(){
