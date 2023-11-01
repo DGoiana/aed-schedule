@@ -7,7 +7,7 @@
 
 using namespace std;
 
-void testAddClassFunction(DataSet& dataset) {
+/* void testAddClassFunction(DataSet& dataset) {
     Parser parser;
     string classToAdd;
     cout << "Class to Add: "; 
@@ -54,11 +54,11 @@ void testSwitchClassFunction(DataSet& dataset) {
         parser.printLessons(dataset.getStudentByNumber("202054727").get_studentSchedule().get_scheduleLessons());
     }
     return;
-} 
+}  */
 
 
 int main(){
-    DataSet dataset;
+    //DataSet dataset;
     //testAddClassFunction(dataset);
     //testRemoveClassFunction(dataset);
     //testSwitchClassFunction(dataset);
@@ -128,4 +128,6 @@ int main(){
     cout << max << '\n';
     return 0;
     */
+    AllMenus();
+    return 0;
 }
