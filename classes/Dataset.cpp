@@ -96,9 +96,19 @@ int DataSet::numStudentsRegisteredInNUcs(int num){
 int DataSet::consultClassorUcOccupation(string code, string id){
     int num = 0;
     for(Student s : this->students){
+        string codeToCheck = "";
         for(Lesson l : s.get_studentSchedule().get_scheduleLessons()){
-            if(l.get_LessonClass().get_classCode() == code && id == "class") num++;
-            if(l.get_LessonClass().get_ucCode() == code && id == "uc") num++;
+            if(id == "class"){
+                if(l.get_LessonClass().get_classCode() == code && l.get_LessonClass().get_classCode() != codeToCheck){
+                    num++;
+                    codeToCheck = l.get_LessonClass().get_classCode();
+                }
+            } else{
+                if(l.get_LessonClass().get_ucCode() == code && l.get_LessonClass().get_ucCode() != codeToCheck){
+                    num++;
+                    codeToCheck = l.get_LessonClass().get_ucCode();
+                }
+            }
         }
     }
     return num;
@@ -192,4 +202,12 @@ list<Student> DataSet::getStudentByName(string studentName)
             sameNameStudents.push_back(student);
     }
     return sameNameStudents;
+}
+
+vector<string> DataSet::getClasses(){
+    return this->classes;
+}
+
+vector<string> DataSet::getUcs(){
+    return this->ucs;
 }

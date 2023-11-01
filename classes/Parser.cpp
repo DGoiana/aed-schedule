@@ -67,20 +67,22 @@ map<string, list<string>> Parser::getUcsByClasses() // [LEIC01: {L.EIC01, L.EIC0
     return result;
 }
 
-set<string> Parser::parseClassCodes() {
+vector<string> Parser::parseClassCodes() {
     set<string> classes;
     for(auto p: mapLessons()){
         classes.insert(p.first.get_classCode());
     }
-    return classes;
+    vector<string> result(classes.begin(), classes.end());
+    return result;
 }
 
-set<string> Parser::parseUcCodes() {
+vector<string> Parser::parseUcCodes() {
     set<string> ucs;
     for(auto p: mapLessons()){
         ucs.insert(p.first.get_ucCode());
     }
-    return ucs;
+    vector<string> result(ucs.begin(), ucs.end());
+    return result;
 }
 
 set<Student> Parser::parseStudents() {

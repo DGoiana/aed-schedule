@@ -10,8 +10,8 @@ class DataSet{
     private:
         set<Student> students;
         map<CollegeClass, list<Lesson>> lessons;
-        set<string> classes;
-        set<string> ucs;
+        vector<string> classes;
+        vector<string> ucs;
     public:
         DataSet();
 
@@ -35,6 +35,9 @@ class DataSet{
 
         Student getStudentByNumber(string studentCode);
         list<Student> getStudentByName(string studentName);
+
+        vector<string> getClasses();
+        vector<string> getUcs();
 
         void sortClassesByOccupation(vector<string> &codes, string order);
         void sortUcsByOccupation(vector<string> &codes, string order);
