@@ -9,8 +9,10 @@
 #include <vector>
 
 class AllMenus{
+    private:
+        DataSet dataset;
     public:
-        AllMenus();
+        AllMenus(DataSet &dataset);
         vector<string> showSortOptions(string id);
         void menu_principal();
         void menu_schedule();
@@ -19,12 +21,12 @@ class AllMenus{
         void menu_occupations();
         void menu_requests();
         void draw_rectangle(int width, int height, const std::vector<std::string>& text);
-        void testAddClassFunction(DataSet& dataset);
-        void testRemoveClassFunction(DataSet& dataset);
-        void testSwitchClassFunction(DataSet& dataset);
-        void testAddUcFunction(DataSet& dataset);
-        void testRemoveUcFunction(DataSet& dataset);
-        void testSwitchUcFunction(DataSet& dataset);
+        void addClassFunction(DataSet& dataset);
+        void removeClassFunction(DataSet& dataset);
+        void switchClassFunction(DataSet& dataset);
+        void addUcFunction(DataSet& dataset);
+        void removeUcFunction(DataSet& dataset);
+        void switchUcFunction(DataSet& dataset);
 };
 
 #endif 
