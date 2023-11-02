@@ -262,7 +262,7 @@ void AllMenus::menu_uc(){
             switch(input)
             {
                 case 0:
-                    cout << dataSet.getMostStudentsUC();
+                    cout << dataSet.getMostStudentsUC() << endl;
                     break;
                 case 1:
                     menu_principal();
