@@ -1,5 +1,6 @@
 #include "CollegeClass.h"
 #include <list>
+#include <queue>
 #include "Student.h"
 #include "Request.h"
 #include "Dataset.h"
@@ -138,4 +139,55 @@ bool Request::removeUc(DataSet& dataset,CollegeClass ucToRemove){
 
 bool Request::switchUc(DataSet& dataset,CollegeClass UcToRemove,CollegeClass UcToAdd) {
     return removeUc(dataset,UcToRemove) && addUc(dataset,UcToAdd);
+}
+
+void Request::addRequestToQueue(Request request){
+    this->requests.push(request);
+}
+
+void Request::removeRequestFromQueue(){
+    Request request = this->requests.front();
+    if(request.get_type() == CLASS){
+        if(request.get_option() == ADD){
+            //È só fazer remove
+        }
+        if(request.get_option() == REMOVE){
+            //È só fazer add
+        }
+        if(request.get_option() == SWITCH){
+            //È só fazer add e remove
+        }
+    }
+    else if(request.get_type() == UC){
+        if(request.get_option() == ADD){
+            //È só fazer remove
+        }
+        if(request.get_option() == REMOVE){
+            //È só fazer add
+        }
+        if(request.get_option() == SWITCH){
+            //È só fazer add e remove
+        }
+    }
+    this->requests.pop();
+}
+
+OPTION Request::get_otption(){
+    return this->option;
+}
+
+TYPE Request::get_type(){
+    return this->type;
+}
+
+Student Request::get_student(){
+    return this->student;
+}
+
+CollegeClass Request::get_collegeClass(){
+    return this->collegeClass;
+}
+
+CollegeClass Request::get_newCollegeClass(){
+    return this->newCollegeClass;
 }

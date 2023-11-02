@@ -1,6 +1,7 @@
 #include "CollegeClass.h"
 #include "Dataset.h"
 #include <list>
+#include <queue>
 #include "Student.h"
 
 enum TYPE {
@@ -23,6 +24,7 @@ class Request {
         TYPE type;
         OPTION option;
         static list<Request> globalRequests;
+        queue<Request> requests;
     public:
         Request(CollegeClass collegeClass,Student& student, TYPE type, OPTION option, DataSet& dataset) : 
         collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH
@@ -42,6 +44,12 @@ class Request {
         bool removeUc(DataSet& dataset,CollegeClass UcToRemove);
         bool switchUc(DataSet& dataset,CollegeClass UcToRemove,CollegeClass UcToAdd);
 
+        void addRequestToQueue(Request request);
+        void removeRequestFromQueue();
 
-
+        OPTION get_otption();
+        TYPE get_type();
+        Student get_student();
+        CollegeClass get_collegeClass();
+        CollegeClass get_newCollegeClass();
 };
