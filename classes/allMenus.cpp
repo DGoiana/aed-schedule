@@ -12,6 +12,7 @@
 #include <limits>
 #include <utility>
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -75,7 +76,7 @@ void AllMenus::menu_principal(){
         if (cin >> input) {
             break;
         } else {
-            cout << "Invalid input" << endl;
+            cout << "Invalid input" << "\n";
             cin.clear();
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n'); 
         }
@@ -118,8 +119,10 @@ void AllMenus::menu_schedule() {
     int height = 6;
     draw_rectangle(width, height, menuOptions);
 
-    string studentCode; 
+    string studentCode;
     string classCode;
+
+    vector<string> weekDays = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday"};
 
     while (true) {
         cout << "Choose an option: ";
@@ -128,15 +131,39 @@ void AllMenus::menu_schedule() {
                 case 0:
                     cout << "studentCode: ";
                     cin >> studentCode;
-                    for (Lesson l : dataset.getScheduleByStudent(studentCode).get_scheduleLessons()) {
-                        cout << l.get_LessonClass().get_classCode() << "," << l.get_LessonClass().get_ucCode() << "," << l.get_LessonStartHour() << "," << l.get_LessonDuration() << "," << l.get_LessonType() << endl;
+                    for (string s : weekDays) {
+                        cout << s << ":\n";
+                        for (Lesson l : dataset.getScheduleByStudent(studentCode).get_scheduleLessons()) {
+                            if (l.get_LessonWeekday() == s) {
+                                double parte_inteira_begin = floor(l.get_LessonStartHour());
+                                double parte_decimal_begin = modf(l.get_LessonStartHour(),&parte_inteira_begin);
+                                double end_hour = l.get_LessonStartHour() + l.get_LessonDuration();
+                                double parte_inteira_end = floor(end_hour);
+                                double parte_decimal_end = modf(end_hour,&parte_inteira_end);
+                                double parte_inteira_duration = floor(l.get_LessonDuration());
+                                double parte_decimal_duration = modf(l.get_LessonDuration(),&parte_inteira_duration);
+                                cout << l.get_LessonClass().get_classCode() << " " << l.get_LessonClass().get_ucCode() << " begin:" << parte_inteira_begin << "h" <<  parte_decimal_begin * 60 << " end:" << parte_inteira_end << "h" <<  parte_decimal_end * 60 << " duration:" << parte_inteira_duration << "h" << parte_decimal_duration * 60 << " " << l.get_LessonType() << "\n";
+                            }
+                        }
                     }
                     break;
                 case 1:
                     cout << "classCode: ";
                     cin >> classCode;
-                    for (Lesson l : dataset.getScheduleByClass(classCode).get_scheduleLessons()) {
-                        cout << l.get_LessonClass().get_classCode() << "," << l.get_LessonClass().get_ucCode() << "," << l.get_LessonStartHour() << "," << l.get_LessonDuration() << "," << l.get_LessonType() << endl;
+                    for (string s : weekDays) {
+                        cout << s << ":\n";
+                        for (Lesson l : dataset.getScheduleByClass(classCode).get_scheduleLessons()) {
+                            if (l.get_LessonWeekday() == s) {
+                                double parte_inteira_begin = floor(l.get_LessonStartHour());
+                                double parte_decimal_begin = modf(l.get_LessonStartHour(),&parte_inteira_begin);
+                                double end_hour = l.get_LessonStartHour() + l.get_LessonDuration();
+                                double parte_inteira_end = floor(end_hour);
+                                double parte_decimal_end = modf(end_hour,&parte_inteira_end);
+                                double parte_inteira_duration = floor(l.get_LessonDuration());
+                                double parte_decimal_duration = modf(l.get_LessonDuration(),&parte_inteira_duration);
+                                cout << l.get_LessonClass().get_classCode() << " " << l.get_LessonClass().get_ucCode() << " begin:" << parte_inteira_begin << "h" <<  parte_decimal_begin * 60 << " end:" << parte_inteira_end << "h" <<  parte_decimal_end * 60 << " duration:" << parte_inteira_duration << "h" << parte_decimal_duration * 60 << " " << l.get_LessonType() << "\n";
+                            }
+                        }
                     }
                     break;
                 case 2:
@@ -148,7 +175,7 @@ void AllMenus::menu_schedule() {
             }
             break;
         } else {
-            cout << "Invalid input" << endl;
+            cout << "Invalid input" << "\n";
             cin.clear();
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
@@ -190,7 +217,7 @@ void AllMenus::menu_students(){
                     dataset.sortStudentsByNameOrYear(studentsToBeOrdered, sortOptions[1], sortOptions[0]);
                     
                     for(Student s : studentsToBeOrdered){
-                        cout << s.get_studentCode() << "," << s.get_studentName() << endl;
+                        cout << s.get_studentCode() << "," << s.get_studentName() << "\n";
                     }
                     break;
                 case 1:
@@ -202,7 +229,7 @@ void AllMenus::menu_students(){
                     dataset.sortStudentsByNameOrYear(studentsToBeOrdered, sortOptions[1], sortOptions[0]);
                     
                     for(Student s : studentsToBeOrdered){
-                        cout << s.get_studentCode() << "," << s.get_studentName() << endl;
+                        cout << s.get_studentCode() << "," << s.get_studentName() << "\n";
                     }
                     break;
                 case 2:
@@ -214,14 +241,14 @@ void AllMenus::menu_students(){
                     dataset.sortStudentsByNameOrYear(studentsToBeOrdered, sortOptions[1], sortOptions[0]);
                     
                     for(Student s : studentsToBeOrdered){
-                        cout << s.get_studentCode() << "," << s.get_studentName() << endl;
+                        cout << s.get_studentCode() << "," << s.get_studentName() << "\n";
                     }
                     break;
                 case 3:
                     cout << "n: ";
                     cin >> n;
 
-                    cout << dataset.numStudentsRegisteredInNUcs(n) << endl;
+                    cout << dataset.numStudentsRegisteredInNUcs(n) << "\n";
                     break;
                 case 4:
                     menu_principal();
@@ -232,7 +259,7 @@ void AllMenus::menu_students(){
             }
             break;
         } else {
-            cout << "Invalid input" << endl;
+            cout << "Invalid input" << "\n";
             cin.clear();
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
@@ -257,11 +284,7 @@ void AllMenus::menu_uc(){
             switch(input)
             {
                 case 0:
-<<<<<<< HEAD
-                    cout << dataSet.getMostStudentsUC() << endl;
-=======
-                    cout << dataset.getMostStudentsUC();
->>>>>>> 225c1cf2767983f07789e6b40181771382f7f868
+                    cout << dataset.getMostStudentsUC() << "\n";
                     break;
                 case 1:
                     menu_principal();
@@ -272,7 +295,7 @@ void AllMenus::menu_uc(){
             }
             break;
         } else {
-            cout << "Invalid input" << endl;
+            cout << "Invalid input" << "\n";
             cin.clear();
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
@@ -376,7 +399,7 @@ void AllMenus::menu_occupations(){
             }
             break;
         } else {
-            cout << "Invalid input" << endl;
+            cout << "Invalid input" << "\n";
             cin.clear();
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
@@ -432,7 +455,7 @@ void AllMenus::menu_requests(){
             }
             break;
         } else {
-            cout << "Invalid input" << endl;
+            cout << "Invalid input" << "\n";
             cin.clear();
             cin.ignore(numeric_limits<std::streamsize>::max(), '\n');
         }
@@ -472,7 +495,7 @@ void AllMenus::draw_rectangle(int width, int height, const std::vector<std::stri
                 }
             }
         }
-        cout << endl;
+        cout << "\n";
     }
 }
 
@@ -511,7 +534,7 @@ void AllMenus::testRemoveClassFunction(DataSet& dataset) {
         parser.printLessons(dataset.getStudentByNumber(studentCode).get_studentSchedule().get_scheduleLessons());
     }
     else{
-        cout << "NOTHING REMOVED. IT REMAINS THE SAME" << endl;
+        cout << "NOTHING REMOVED. IT REMAINS THE SAME" << "\n";
     }  
 }
 
@@ -577,7 +600,7 @@ void AllMenus::testRemoveUcFunction(DataSet& dataset) {
         parser.printLessons(dataset.getStudentByNumber(studentCode).get_studentSchedule().get_scheduleLessons());
     }
     else{
-        cout << "NOTHING REMOVED. IT REMAINS THE SAME" << endl;
+        cout << "NOTHING REMOVED. IT REMAINS THE SAME" << "\n";
     }  
 }
 
@@ -598,13 +621,13 @@ void AllMenus::testSwitchUcFunction(DataSet& dataset) {
     Student student = dataset.getStudentByNumber(studentCode);
     Request request = Request(classUcAdd,classUcRemove,student,UC,SWITCH,dataset);
     parser.printLessons(dataset.getStudentByNumber(studentCode).get_studentSchedule().get_scheduleLessons());
-    cout << "After switch request:" << endl;
+    cout << "After switch request:" << "\n";
     if(request.handleRequest() == true){
         parser.printLessons(dataset.getStudentByNumber(studentCode).get_studentSchedule().get_scheduleLessons());
-        cout << endl;
+        cout << "\n";
     }
     else{
-        cout << "IT WAS IMPOSSIBLE TO SWAP THE UC. REQUEST REJECTED." << endl;
+        cout << "IT WAS IMPOSSIBLE TO SWAP THE UC. REQUEST REJECTED." << "\n";
     }
     return;
 }  
