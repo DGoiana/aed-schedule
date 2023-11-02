@@ -9,8 +9,10 @@
 #include <vector>
 
 class AllMenus{
+    private:
+        DataSet dataset;
     public:
-        AllMenus();
+        AllMenus(DataSet &dataset);
         vector<string> showSortOptions(string id);
         void menu_principal();
         void menu_schedule();
