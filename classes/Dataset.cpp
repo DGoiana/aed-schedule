@@ -34,7 +34,7 @@ Schedule DataSet::getScheduleByClass(string classCode){
     return result;
 }
 
-set<Student> DataSet::getStudentsByClassOrUc(string code, string id){
+vector<Student> DataSet::getStudentsByClassOrUc(string code, string id){
     set<Student> students;
     for(Student s : this->students){
         for(Lesson l : s.get_studentSchedule().get_scheduleLessons()){
@@ -42,7 +42,8 @@ set<Student> DataSet::getStudentsByClassOrUc(string code, string id){
             if(l.get_LessonClass().get_ucCode() == code && id == "uc") students.insert(s);
         }
     }
-    return students;
+    vector<Student> result(students.begin(), students.end());
+    return result;
 }
 
 int DataSet::getNumStudentsInClassAndUc(CollegeClass ucClass)
@@ -68,12 +69,13 @@ int DataSet::maxStudentUcInClass(string classCode)
     return max;
 }
 
-set<Student> DataSet::getStudentsByYear(string year){
+vector<Student> DataSet::getStudentsByYear(string year){
     set<Student> students;
     for(Student s : this->students){
         if(s.get_studentCode().substr(0,4) == year) students.insert(s);
     }
-    return students;
+    vector<Student> result(students.begin(), students.end());
+    return result;
 }
 
 int DataSet::numStudentsRegisteredInNUcs(int num){
@@ -94,9 +96,19 @@ int DataSet::numStudentsRegisteredInNUcs(int num){
 int DataSet::consultClassorUcOccupation(string code, string id){
     int num = 0;
     for(Student s : this->students){
+        string codeToCheck = "";
         for(Lesson l : s.get_studentSchedule().get_scheduleLessons()){
-            if(l.get_LessonClass().get_classCode() == code && id == "class") num++;
-            if(l.get_LessonClass().get_ucCode() == code && id == "uc") num++;
+            if(id == "class"){
+                if(l.get_LessonClass().get_classCode() == code && l.get_LessonClass().get_classCode() != codeToCheck){
+                    num++;
+                    codeToCheck = l.get_LessonClass().get_classCode();
+                }
+            } else{
+                if(l.get_LessonClass().get_ucCode() == code && l.get_LessonClass().get_ucCode() != codeToCheck){
+                    num++;
+                    codeToCheck = l.get_LessonClass().get_ucCode();
+                }
+            }
         }
     }
     return num;
@@ -110,22 +122,23 @@ int DataSet::consultYearOccupation(string year){
     return num;
 }
 
-void DataSet::sortStudentsByName(vector<Student> &students, string order){
-    if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
-        return s1.get_studentName() < s2.get_studentName();
-    });
-    else sort(students.begin(), students.end(), [](Student s1, Student s2){
-        return s1.get_studentName() > s2.get_studentName();
-    });
-}
-
-void DataSet::sortStudentsByYear(vector<Student> &students, string order){
-    if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
-        return s1.get_studentCode() < s2.get_studentCode();
-    });
-    else sort(students.begin(), students.end(), [](Student s1, Student s2){
-        return s1.get_studentCode() > s2.get_studentCode();
-    });
+void DataSet::sortStudentsByNameOrYear(vector<Student> &students, string order, string input){
+    if(input == "name"){
+        if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
+            return s1.get_studentName() < s2.get_studentName();
+        });
+        else sort(students.begin(), students.end(), [](Student s1, Student s2){
+            return s1.get_studentName() > s2.get_studentName();
+        });
+    }
+    else{
+        if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
+            return s1.get_studentCode() < s2.get_studentCode();
+        });
+        else sort(students.begin(), students.end(), [](Student s1, Student s2){
+            return s1.get_studentCode() > s2.get_studentCode();
+        });
+    }
 }
 
 void DataSet::sortClassesByOccupation(vector<string> &codes, string order){
@@ -189,4 +202,12 @@ list<Student> DataSet::getStudentByName(string studentName)
             sameNameStudents.push_back(student);
     }
     return sameNameStudents;
+}
+
+vector<string> DataSet::getClasses(){
+    return this->classes;
+}
+
+vector<string> DataSet::getUcs(){
+    return this->ucs;
 }

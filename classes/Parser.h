@@ -17,8 +17,8 @@ class Parser {
 public:
     static map<CollegeClass, list<Lesson>> mapLessons();
     static map<string,list<string>> getUcsByClasses();
-    static set<string> parseClassCodes();
-    static set<string> parseUcCodes();
+    static vector<string> parseClassCodes();
+    static vector<string> parseUcCodes();
     static vector<string> split(std::string line,const std::string& delimiter);
     static list<vector<string>> readFile(const std::string &path);
     static list<Lesson> parseClassesFile();

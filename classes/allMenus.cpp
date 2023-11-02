@@ -15,6 +15,41 @@
 
 using namespace std;
 
+vector<string> occupationsOptions = {
+    "0-Consult full list",
+    "1-Consult specific one",
+};
+
+vector<string> AllMenus::showSortOptions(string id){
+    int result;
+    vector<string> options;
+    vector<string> sortOptions = {
+        "0-Sort by name",
+        "1-Sort by year",
+    };
+    vector<string> sortOrder = {
+        "0-Sort ascending",
+        "1-Sort descending",
+    };
+    if(id == "both" || id == "first") {
+        draw_rectangle(20, 5, sortOptions);
+        cout << "Choose a sort option: ";
+        cin >> result;
+
+        if(result == 0) options.push_back("name");
+        else options.push_back("year");
+    }
+    if(id == "both" || id == "second") {
+        draw_rectangle(20, 5, sortOrder);
+        cout << "Choose a sort order: ";
+        cin >> result;
+
+        if(result == 0) options.push_back("ascending");
+        else options.push_back("descending");
+    } 
+    return options;
+}
+
 AllMenus::AllMenus() {
     menu_principal();
 }
@@ -137,10 +172,10 @@ void AllMenus::menu_students(){
     int height = 8;
     draw_rectangle(width, height, menuOptions);
 
-    string classCode, ucCode, id;
-    string year;
-    int n;
-    int sort;
+    string classCode, ucCode, id, year;
+    int n, sort;
+    vector<string> sortOptions;
+    vector<Student> studentsToBeOrdered;
 
     DataSet dataSet;
     
@@ -152,64 +187,44 @@ void AllMenus::menu_students(){
                 case 0:
                     cout << "classCode: ";
                     cin >> classCode;
-                    id = "class";
 
-                    for(Student s : dataSet.getStudentsByClassOrUc(classCode,id)){
+                    sortOptions = showSortOptions("both");
+                    studentsToBeOrdered = dataSet.getStudentsByClassOrUc(classCode, "class");
+                    dataSet.sortStudentsByNameOrYear(studentsToBeOrdered, sortOptions[1], sortOptions[0]);
+                    
+                    for(Student s : studentsToBeOrdered){
                         cout << s.get_studentCode() << "," << s.get_studentName() << endl;
                     }
-
-                    /* cout << "0-ascending\n1-descending";
-                    cout << "sort: ";
-                    cin >> sort;
-                    if(sort == 0){
-
-                    }
-                    else if(sort == 1){
-
-                    } */
                     break;
                 case 1:
                     cout << "ucCode: ";
                     cin >> ucCode;
-                    id = "uc";
 
-                    for(Student s : dataSet.getStudentsByClassOrUc(ucCode,id)){
+                    sortOptions = showSortOptions("both");
+                    studentsToBeOrdered = dataSet.getStudentsByClassOrUc(ucCode, "uc");
+                    dataSet.sortStudentsByNameOrYear(studentsToBeOrdered, sortOptions[1], sortOptions[0]);
+                    
+                    for(Student s : studentsToBeOrdered){
                         cout << s.get_studentCode() << "," << s.get_studentName() << endl;
                     }
-
-                    /* cout << "0-ascending\n1-descending";
-                    cout << "sort: ";
-                    cin >> sort;
-                    if(sort == 0){
-
-                    }
-                    else if(sort == 1){
-
-                    } */
                     break;
                 case 2:
                     cout << "year: ";
                     cin >> year;
 
-                    for(Student s : dataSet.getStudentsByYear(year)){
+                    sortOptions = showSortOptions("");
+                    studentsToBeOrdered = dataSet.getStudentsByYear(year);
+                    dataSet.sortStudentsByNameOrYear(studentsToBeOrdered, sortOptions[1], sortOptions[0]);
+                    
+                    for(Student s : studentsToBeOrdered){
                         cout << s.get_studentCode() << "," << s.get_studentName() << endl;
                     }
-
-                    /* cout << "0-ascending\n1-descending";
-                    cout << "sort: ";
-                    cin >> sort;
-                    if(sort == 0){
-
-                    }
-                    else if(sort == 1){
-
-                    } */
                     break;
                 case 3:
                     cout << "n: ";
                     cin >> n;
 
-                    cout << dataSet.numStudentsRegisteredInUcs(n) << endl;
+                    cout << dataSet.numStudentsRegisteredInNUcs(n) << endl;
                     break;
                 case 4:
                     menu_principal();
@@ -247,7 +262,7 @@ void AllMenus::menu_uc(){
             switch(input)
             {
                 case 0:
-                    cout << dataSet.getMostStudentsUC().first << " -> " << dataSet.getMostStudentsUC().second << endl;
+                    cout << dataSet.getMostStudentsUC();
                     break;
                 case 1:
                     menu_principal();
@@ -269,9 +284,9 @@ void AllMenus::menu_uc(){
 void AllMenus::menu_occupations(){
     int input;
     vector<string> menuOptions = {
-        "0-Consult class occupation",
-        "1-Consult year occupation",
-        "2-Consult UC occupation",
+        "0-Consult classes occupation",
+        "1-Consult years occupation",
+        "2-Consult UCs occupation",
         "3-Go back"
     };
 
@@ -279,9 +294,10 @@ void AllMenus::menu_occupations(){
     int height = 7;
     draw_rectangle(width, height, menuOptions);
 
-    string classCode, ucCode, year, id;
+    string code, year, id;
+    vector<string> sortOptions, ToBeOrdered;
     
-    DataSet dataSet;
+    DataSet dataSet = DataSet();
 
     while (true) {
         cout << "Choose an option: ";
@@ -289,24 +305,69 @@ void AllMenus::menu_occupations(){
             switch(input)
             {
                 case 0:
-                    cout << "classCode: ";
-                    cin >> classCode;
-                    id = "class";
-
-                    cout << dataSet.consultClassorUcOccupation(classCode,id) << endl;
+                    draw_rectangle(20, 5, occupationsOptions);
+                    cout << "Choose an option; ";
+                    cin >> input;
+                    switch (input)
+                    {
+                    case 0:
+                        sortOptions = showSortOptions("second");
+                        ToBeOrdered = dataSet.getClasses();
+                        dataSet.sortClassesByOccupation(ToBeOrdered, sortOptions[1]);
+                        for(string c: ToBeOrdered){
+                            cout << c << ": " << dataSet.consultClassorUcOccupation(c, "class") << '\n';
+                        }
+                        break;
+                    case 1:
+                        cout << "Class: ";
+                        cin >> code;
+                        cout << code << ':' << dataSet.consultClassorUcOccupation(code, "class") << '\n';
+                        break;
+                    default:
+                        break;
+                    }
                     break;
                 case 1:
-                    cout << "year: ";
-                    cin >> year;
-
-                    cout << dataSet.consultYearOccupation(year) << endl;
+                    draw_rectangle(20, 5, occupationsOptions);
+                    cout << "Choose an option; ";
+                    cin >> input;
+                    switch (input)
+                    {
+                    case 0:
+                        cout << "2020: " << dataSet.consultYearOccupation("2020") << '\n';
+                        cout << "2019: " << dataSet.consultYearOccupation("2019") << '\n';
+                        break;
+                    case 1:
+                        cout << "Year: ";
+                        cin >> year;
+                        cout << year << ": " << dataSet.consultYearOccupation(year) << '\n';
+                        break;
+                    default:
+                        break;
+                    }
                     break;
                 case 2:
-                    cout << "ucCode: ";
-                    cin >> ucCode;
-                    id = "uc";
-
-                    cout << dataSet.consultClassorUcOccupation(ucCode,id) << endl;
+                    draw_rectangle(20, 5, occupationsOptions);
+                    cout << "Choose an option; ";
+                    cin >> input;
+                    switch (input)
+                    {
+                    case 0:
+                        sortOptions = showSortOptions("second");
+                        ToBeOrdered = dataSet.getUcs();
+                        dataSet.sortUcsByOccupation(ToBeOrdered, sortOptions[1]);
+                        for(string c: ToBeOrdered){
+                            cout << c << ": " << dataSet.consultClassorUcOccupation(c, "uc") << '\n';
+                        }
+                        break;
+                    case 1:
+                        cout << "Uc: ";
+                        cin >> code;
+                        cout << code << ':' << dataSet.consultClassorUcOccupation(code, "uc") << '\n';
+                        break;
+                    default:
+                        break;
+                    }
                     break;
                 case 3:
                     menu_principal();
