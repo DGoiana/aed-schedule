@@ -20,6 +20,7 @@ class AllMenus{
         void menu_uc();
         void menu_occupations();
         void menu_requests();
+        void menu_save_state();
         void draw_rectangle(int width, int height, const std::vector<std::string>& text);
         void addClassFunction(DataSet& dataset);
         void removeClassFunction(DataSet& dataset);
