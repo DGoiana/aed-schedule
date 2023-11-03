@@ -4,13 +4,16 @@
 #include "Lesson.h"
 #include "Student.h"
 #include "Request.h"
-#include "Parser.h"
 #include "CollegeClass.h"
 #include <vector>
-#include <list>
 #include <string>
+<<<<<<< HEAD
+=======
+#include <limits>
+>>>>>>> ef40bdc (Implement option to see last request)
 #include <iostream>
 #include <cmath>
+#include <map>
 
 using namespace std;
 
@@ -386,10 +389,14 @@ void AllMenus::menu_occupations(){
 }
 
 void AllMenus::seeGlobalRequestsTop() {
+    map<OPTION,string> optionToString = {{ADD,"add"},{REMOVE,"remove"},{SWITCH,"switch"}};
+    map<TYPE,string> typeToString = {{CLASS,"class"},{UC,"uc"}};
     if(this->globalRequests.empty()) cout << "globalRequests empty." << '\n';
     else{
         Request request = globalRequests.top();
-        cout << request.getStudent().get_studentCode() << " " << request.get_option() << " " << request.get_type() << '\n';
+        cout << request.getStudent().get_studentCode()
+        << " " << optionToString[request.get_option()]
+        << " " << typeToString[request.get_type()] << '\n';
     }
 }
 
