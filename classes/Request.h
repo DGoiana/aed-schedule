@@ -1,3 +1,6 @@
+#ifndef AED_SCHEDULE_REQUEST_H
+#define AED_SCHEDULE_REQUEST_H
+
 #include "CollegeClass.h"
 #include "Dataset.h"
 #include <list>
@@ -55,3 +58,5 @@ class Request {
         CollegeClass get_collegeClass();
         CollegeClass get_newCollegeClass();
 };
+
+#endif
