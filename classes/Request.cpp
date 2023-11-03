@@ -1,10 +1,10 @@
 #include "CollegeClass.h"
 #include <list>
+#include <queue>
 #include "Student.h"
 #include "Request.h"
 #include "Dataset.h"
 #include "Parser.h"
-#include <iostream>
 
 #define CLASS_CAP 25
 
@@ -41,7 +41,6 @@ bool Request::isConflictingSchedule(Schedule studentSchedule, list<Lesson> lesso
             bool hasConflictTime =  (lessonToCompareStartTime > studentStartTime && lessonToCompareStartTime < studentFinishTime) 
                                 || (lessonToCompareFinishTime > studentStartTime && lessonToCompareFinishTime < studentFinishTime)
                                 || (lessonToCompareStartTime < studentStartTime && lessonToCompareFinishTime > studentFinishTime);
-
 
             if (lessonToCompare.get_ucCode() == studentLesson.get_ucCode())
                 return true;
@@ -90,9 +89,6 @@ bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd) {
     && numCurrentStudents < CLASS_CAP
     && maintainsClassBalance(numCurrentStudents)) {
         dataset.addStudentClass(collegeClassToAdd, this->student);
-        for(CollegeClass cc : dataset.getStudentByNumber(this->student.get_studentCode()).get_studentClasses()) {
-            cout << cc.get_classCode() << " " << cc.get_ucCode() << endl;
-        }
         return true;
     }
     return false;
@@ -105,10 +101,59 @@ bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove){
         toRemove.erase(collegeClassToRemove);
         dataset.setStudentClasses(toRemove, this->student);
         return true;
-    }
-
-    return false;
+      }
+     return false;
 }
+
+void Request::addRequestToQueue(Request request){
+    this->requests.push(request);
+}
+
+void Request::removeRequestFromQueue(){
+    Request request = this->requests.front();
+    if(request.get_type() == CLASS){
+        if(request.get_option() == ADD){
+            //È só fazer remove
+        }
+        if(request.get_option() == REMOVE){
+            //È só fazer add
+        }
+        if(request.get_option() == SWITCH){
+            //È só fazer add e remove
+        }
+    }
+    else if(request.get_type() == UC){
+        if(request.get_option() == ADD){
+            //È só fazer remove
+        }
+        if(request.get_option() == REMOVE){
+            //È só fazer add
+        }
+        if(request.get_option() == SWITCH){
+            //È só fazer add e remove
+        }
+    }
+    this->requests.pop();
+}
+
+OPTION Request::get_otption(){
+    return this->option;
+}
+
+TYPE Request::get_type(){
+    return this->type;
+}
+
+Student Request::get_student(){
+    return this->student;
+}
+
+CollegeClass Request::get_collegeClass(){
+    return this->collegeClass;
+}
+
+CollegeClass Request::get_newCollegeClass(){
+    return this->newCollegeClass;
 
 bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, CollegeClass collegeClassToAdd) {
     if(removeUc(dataset, collegeClassToRemove)) {
@@ -117,7 +162,7 @@ bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, Coll
             return false;
         }
     }
-    return true;
+    return false;
 }
 
 bool Request::switchClass(DataSet& dataset, string classToRemove, string classToAdd){
