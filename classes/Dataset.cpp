@@ -6,6 +6,7 @@
 #include <iostream>
 #include "Parser.h"
 #include <algorithm>
+#include <fstream>
 
 using namespace std;
 
@@ -188,4 +189,14 @@ list<Student> DataSet::getStudentByName(string studentName)
             sameNameStudents.push_back(student);
     }
     return sameNameStudents;
+}
+
+void DataSet::dumpCurrentState() {
+    ofstream output("../schedule/students_classes.csv");
+    output << "StudentCode,StudentName,UcCode,ClassCode" << '\n';
+    for(Student student : this->students) {
+        for(CollegeClass cc : student.get_studentClasses()) {
+            output << student.get_studentCode() <<","<< student.get_studentName() << "," << cc.get_ucCode() << "," << cc.get_classCode() << "\r\n";
+        }
+    }
 }
