@@ -8,10 +8,8 @@
 
 class DataSet{
     private:
-        set<Student> students;
-        map<CollegeClass, list<Lesson>> lessons;
-        vector<string> classes;
-        vector<string> ucs;
+        vector<Student> students;
+        list<CollegeClass> collegeClasses;
     public:
         DataSet();
 
@@ -21,12 +19,12 @@ class DataSet{
         vector<Student> getStudentsByClassOrUc(string code, string id);
         vector<Student> getStudentsByYear(string year);
   
-        int getNumStudentsInClassAndUc(CollegeClass ucClass);;
-        int maxStudentUcInClass(string classCode);
+        int getNumStudentsInClassAndUc(CollegeClass ucClass);
 
         int numStudentsRegisteredInNUcs(int num);
 
-        void setStudentSchedule(list<Lesson> lessonToAdd,Student student);
+        void setStudentClasses(set<CollegeClass> newClasses, Student student);
+        void addStudentClass(CollegeClass c, Student student);
 
         int consultClassorUcOccupation(string code, string id);
         int consultYearOccupation(std::string year);

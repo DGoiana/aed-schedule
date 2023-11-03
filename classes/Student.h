@@ -2,25 +2,32 @@
 #define AED_SCHEDULE_STUDENT_H
 
 #include <string>
-#include <list>
-#include "Schedule.h"
+#include <set>
+#include "CollegeClass.h"
 
 using namespace std;
+class CollegeClass;
 
 class Student {
     private:
         string studentCode;
         string studentName;
-        Schedule studentSchedule;
+        set<CollegeClass> studentClasses;
     public:
         Student();
-        Student(string studentCode, string studentName, Schedule studentSchedule);
+        Student(string studentCode, string studentName, set<CollegeClass> studentClasses);
+
         string get_studentCode() const;
-        string get_studentName() const;
-        Schedule get_studentSchedule() const;
         void set_studentCode(string new_studentCode);
+
+        string get_studentName() const;
         void set_studentName(const string& new_studentName);
-        void set_studentSchedule(const Schedule& new_studentSchedule);
+
+        set<CollegeClass> get_studentClasses() const;
+        void set_studentClasses(const set<CollegeClass>& new_studentClasses);
+        
+        void add_studentClass(CollegeClass& c);
+        
         bool operator<(Student student2) const;
         bool operator==(Student student2) const;
 };

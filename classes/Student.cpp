@@ -4,13 +4,13 @@
 Student::Student(){
     this->studentCode = "";
     this->studentName = "";
-    this->studentSchedule = Schedule();
+    this->studentClasses = {};
 }
 
-Student::Student(string studentCode, string studentName, Schedule studentSchedule){
+Student::Student(string studentCode, string studentName, set<CollegeClass> studentClasses){
     this->studentCode = studentCode;
     this->studentName = studentName;
-    this->studentSchedule = studentSchedule;
+    this->studentClasses = studentClasses;
 }
 
 string Student::get_studentCode() const{
@@ -21,8 +21,8 @@ string Student::get_studentName() const{
     return this->studentName;
 }
 
-Schedule Student::get_studentSchedule() const{
-    return this->studentSchedule;
+set<CollegeClass> Student::get_studentClasses() const{
+    return this->studentClasses;
 }
 
 void Student::set_studentCode(string new_studentCode){
@@ -33,8 +33,12 @@ void Student::set_studentName(const string& new_studentName){
     this->studentName = new_studentName;
 }
 
-void Student::set_studentSchedule(const Schedule& new_studentSchedule){
-    this->studentSchedule = new_studentSchedule;
+void Student::set_studentClasses(const set<CollegeClass>& new_studentClasses){
+    this->studentClasses = new_studentClasses;
+}
+
+void Student::add_studentClass(CollegeClass& c){
+    this->studentClasses.insert(c);
 }
 
 bool Student::operator<(Student student2) const{

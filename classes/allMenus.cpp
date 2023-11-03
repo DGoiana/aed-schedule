@@ -47,7 +47,7 @@ vector<string> AllMenus::showSortOptions(string id){
 
         if(result == 0) options.push_back("ascending");
         else options.push_back("descending");
-    } 
+    }
     return options;
 }
 
@@ -89,6 +89,7 @@ void AllMenus::menu_principal(){
         break;
     case 1:
         menu_uc();
+        break;
     case 2:
         menu_students();
         break;
@@ -233,10 +234,10 @@ void AllMenus::menu_students(){
                     }
                     break;
                 case 2:
-                    cout << "year: ";
+                    cout << "Year: ";
                     cin >> year;
 
-                    sortOptions = showSortOptions("");
+                    sortOptions = showSortOptions("both");
                     studentsToBeOrdered = dataset.getStudentsByYear(year);
                     dataset.sortStudentsByNameOrYear(studentsToBeOrdered, sortOptions[1], sortOptions[0]);
                     
@@ -333,7 +334,7 @@ void AllMenus::menu_occupations(){
                     case 0:
                         sortOptions = showSortOptions("second");
                         ToBeOrdered = dataset.getClasses();
-                        dataset.sortClassesByOccupation(ToBeOrdered, sortOptions[1]);
+                        dataset.sortClassesByOccupation(ToBeOrdered, sortOptions[0]);
                         for(string c: ToBeOrdered){
                             cout << c << ": " << dataset.consultClassorUcOccupation(c, "class") << '\n';
                         }
@@ -375,7 +376,7 @@ void AllMenus::menu_occupations(){
                     case 0:
                         sortOptions = showSortOptions("second");
                         ToBeOrdered = dataset.getUcs();
-                        dataset.sortUcsByOccupation(ToBeOrdered, sortOptions[1]);
+                        dataset.sortUcsByOccupation(ToBeOrdered, sortOptions[0]);
                         for(string c: ToBeOrdered){
                             cout << c << ": " << dataset.consultClassorUcOccupation(c, "uc") << '\n';
                         }
@@ -423,28 +424,54 @@ void AllMenus::menu_requests(){
     int height = 10;
     draw_rectangle(width, height, menuOptions);
 
+    Parser parser;
+
     while (true) {
         cout << "Choose an option: ";
         if (cin >> input) {
             switch(input)
             {
                 case 0:
+                    cout << "before: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
                     addClassFunction(dataset);
+                    cout << "after: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
                     break;
                 case 1:
+                    cout << "before: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
                     addUcFunction(dataset);
+                    cout << "after: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
                     break;
                 case 2:
+                    cout << "before: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
                     removeClassFunction(dataset);
+                    cout << "after: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
                     break;
                 case 3:
+                cout << "before: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
                     removeUcFunction(dataset);
+                    cout << "after: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
                     break;
                 case 4:
+                cout << "before: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
                     switchClassFunction(dataset);
+                    cout << "after: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
                     break;
                 case 5:
+                    cout << "before: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
                     switchUcFunction(dataset);
+                    cout << "after: \n";
+                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
                     break;
                 case 6:
                     menu_principal();
@@ -508,7 +535,7 @@ void AllMenus::addClassFunction(DataSet &dataset) {
     cin >> studentCode;
 
     Student student = dataset.getStudentByNumber(studentCode);
-    Request addRequest = Request(CollegeClass(classToAdd,"*"),student,CLASS,REMOVE,dataset);
+    Request addRequest = Request(CollegeClass(classToAdd, "*", {}, Schedule()), student, CLASS, REMOVE, dataset);
     if(!addRequest.addClass(dataset,classToAdd)) cout << "add class failed" << '\n';
 }
 
@@ -521,10 +548,8 @@ void AllMenus::removeClassFunction(DataSet &dataset) {
     cin >> studentCode;
 
     Student student = dataset.getStudentByNumber(studentCode);
-
-    Request addRequest = Request(CollegeClass(classToRemove,"*"),student,CLASS,ADD,dataset);
+    Request addRequest = Request(CollegeClass(classToRemove, "*", {}, Schedule()),student,CLASS,REMOVE,dataset);
     if(!addRequest.removeClass(dataset,classToRemove)) cout << "remove class failed" << '\n';
-
 }
 
 void AllMenus::switchClassFunction(DataSet &dataset) {
@@ -538,18 +563,11 @@ void AllMenus::switchClassFunction(DataSet &dataset) {
     cout << "Student code: ";
     cin >> studentCode;
 
-    CollegeClass collegeClassToRemove = CollegeClass(classToRemove,"*");
-    CollegeClass collegeClassToAdd = CollegeClass(classToAdd,"*");
+    CollegeClass collegeClassToRemove = CollegeClass(classToRemove,"*", {}, Schedule());
+    CollegeClass collegeClassToAdd = CollegeClass(classToAdd,"*", {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
-    Request request = Request(collegeClassToRemove,collegeClassToAdd,student,CLASS,SWITCH,dataset);
-    list<Lesson> oldLessons = request.getStudent().get_studentSchedule().get_scheduleLessons();
-    if(request.removeClass(dataset,classToRemove)){
-        request.setStudent(dataset.getStudentByNumber(studentCode));
-        if(!request.addClass(dataset,classToAdd)){
-            dataset.setStudentSchedule(oldLessons,student);
-            cout << "switch class failed" << '\n';
-        }
-    }
+    Request request = Request(collegeClassToRemove,collegeClassToAdd, student, CLASS, SWITCH, dataset);
+    if(!request.switchClass(dataset, classToRemove, classToAdd)) cout << "switch class failed" << '\n';
 }
 
 void AllMenus::addUcFunction(DataSet& dataset) {
@@ -562,10 +580,10 @@ void AllMenus::addUcFunction(DataSet& dataset) {
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
-    CollegeClass collegeClass = CollegeClass(classToAdd,ucToAdd);
+    CollegeClass collegeClass = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
     Request request = Request(collegeClass,student,UC,ADD,dataset);
-    if(!request.addUc(dataset,collegeClass)) cout << "add uc failed";
+    if(!request.addUc(dataset,collegeClass)) cout << "add uc failed" << '\n';
 }
 
 void AllMenus::removeUcFunction(DataSet& dataset) {
@@ -579,12 +597,10 @@ void AllMenus::removeUcFunction(DataSet& dataset) {
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
-    CollegeClass collegeClass = CollegeClass(classToRemove,ucToRemove);
+    CollegeClass collegeClass = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
     Request request = Request(collegeClass,student,UC,REMOVE,dataset);
-
-    if(request.removeUc(dataset,collegeClass)) cout << "uc remove failed";
-
+    if(!request.removeUc(dataset,collegeClass)) cout << "uc remove failed";
 }
 
 void AllMenus::switchUcFunction(DataSet& dataset) {
@@ -606,12 +622,12 @@ void AllMenus::switchUcFunction(DataSet& dataset) {
     cout << "Student code: ";
     cin >> studentCode;
     
-    CollegeClass collegeClassToRemove = CollegeClass(classToRemove,ucToRemove);
-    CollegeClass collegeClassToAdd = CollegeClass(classToAdd,ucToAdd);
+    CollegeClass collegeClassToRemove = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
+    CollegeClass collegeClassToAdd = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
-
     Request request = Request(collegeClassToRemove,collegeClassToAdd,student,UC,SWITCH,dataset);
-    if(request.switchUc(dataset,collegeClassToRemove,collegeClassToAdd))
+    if(!request.switchUc(dataset,collegeClassToRemove,collegeClassToAdd))
         cout << "switch uc failed"; return;
+  }
 }
 

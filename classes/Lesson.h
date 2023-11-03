@@ -3,7 +3,6 @@
 
 #include <string>
 #include <list>
-#include "CollegeClass.h"
 
 using namespace std;
 
@@ -13,10 +12,10 @@ class Lesson{
         double lessonStartHour;
         double lessonDuration;
         string lessonType;
-        CollegeClass lessonClass;
+        pair<string, string> lessonCodes;
     public:
         Lesson();
-        Lesson(CollegeClass lessonClass,
+        Lesson(pair<string, string> lessonCodes,
                string lessonWeekday,
                double lessonStartHour,
                double lessonDuration,
@@ -34,8 +33,9 @@ class Lesson{
         string get_LessonType() const;
         void set_LessonType(const string& new_lessonType);
 
-        CollegeClass get_LessonClass() const;
-        void set_LessonClass(const CollegeClass& new_lessonClass);
+        string get_classCode() const;
+        string get_ucCode() const;
+        void set_LessonCodes(const pair<string, string> &new_classCodes);
 
         void printLesson();
         bool operator==(Lesson lesson2) const;

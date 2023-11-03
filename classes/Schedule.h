@@ -16,6 +16,7 @@ class Schedule {
         list<Lesson> get_scheduleLessons() const;
         void set_scheduleLessons(list<Lesson> new_scheduleLessons);
         void addLessonsFromList(list<Lesson> lessons);
+        void addLesson(Lesson lesson);
 };
 
 #endif

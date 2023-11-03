@@ -19,3 +19,7 @@ void Schedule::set_scheduleLessons(list<Lesson> new_scheduleLessons){
 void Schedule::addLessonsFromList(list<Lesson> lessons){
     for(Lesson l : lessons) this->scheduleLessons.push_back(l);
 }
+
+void Schedule::addLesson(Lesson lesson){
+    this->scheduleLessons.push_back(lesson);
+}

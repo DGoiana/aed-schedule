@@ -28,6 +28,7 @@ class Request {
     public:
         Request(CollegeClass collegeClass,Student& student, TYPE type, OPTION option, DataSet& dataset) : 
         collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH
+
         Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option,DataSet dataset) : 
         collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option),dataset(dataset) {};
 
@@ -39,6 +40,7 @@ class Request {
         bool addClass(DataSet& dataset,string classToAdd);
         bool maintainsClassBalance(int sizeStudentCompare);
         bool removeClass(DataSet& dataset,string classToRemove);
+        bool switchClass(DataSet& dataset, string classToRemove, string classToAdd);
 
 
         bool addUc(DataSet& dataset,CollegeClass ucToAdd);
