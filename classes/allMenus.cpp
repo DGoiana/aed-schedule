@@ -4,15 +4,13 @@
 #include "Lesson.h"
 #include "Student.h"
 #include "Request.h"
-#include "Parser.h"
 #include "CollegeClass.h"
 #include <vector>
-#include <list>
 #include <string>
 #include <limits>
-#include <utility>
 #include <iostream>
 #include <cmath>
+#include <map>
 
 using namespace std;
 
@@ -410,10 +408,14 @@ void AllMenus::menu_occupations(){
 }
 
 void AllMenus::seeGlobalRequestsTop() {
+    map<OPTION,string> optionToString = {{ADD,"add"},{REMOVE,"remove"},{SWITCH,"switch"}};
+    map<TYPE,string> typeToString = {{CLASS,"class"},{UC,"uc"}};
     if(this->globalRequests.empty()) cout << "globalRequests empty." << '\n';
     else{
         Request request = globalRequests.top();
-        cout << request.getStudent().get_studentCode() << " " << request.get_option() << " " << request.get_type() << '\n';
+        cout << request.getStudent().get_studentCode()
+        << " " << optionToString[request.get_option()]
+        << " " << typeToString[request.get_type()] << '\n';
     }
 }
 
@@ -426,15 +428,14 @@ void AllMenus::menu_requests(){
         "3-Remove Uc request",
         "4-Change class request",
         "5-Change Uc request",
-        "6-Undo Last Request",
-        "7-Go back"
+        "6-See Last Request",
+        "7-Undo Last Request",
+        "8-Go back"
     };
 
     int width = 29;
     int height = 10;
     draw_rectangle(width, height, menuOptions);
-
-    Parser parser;
 
     while (true) {
         cout << "Choose an option: ";
@@ -442,57 +443,30 @@ void AllMenus::menu_requests(){
             switch(input)
             {
                 case 0:
-                    cout << "before: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
                     addClassFunction(dataset);
-                    cout << "after: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
-                    seeGlobalRequestsTop();
                     break;
                 case 1:
-                    cout << "before: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
                     addUcFunction(dataset);
-                    cout << "after: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202025232").get_scheduleLessons());
-                    seeGlobalRequestsTop();
                     break;
                 case 2:
-                    cout << "before: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
                     removeClassFunction(dataset);
-                    cout << "after: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
-                    seeGlobalRequestsTop();
                     break;
                 case 3:
-                cout << "before: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
                     removeUcFunction(dataset);
-                    cout << "after: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202071557").get_scheduleLessons());
-                    seeGlobalRequestsTop();
                     break;
                 case 4:
-                cout << "before: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
                     switchClassFunction(dataset);
-                    cout << "after: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
-                    seeGlobalRequestsTop();
                     break;
                 case 5:
-                    cout << "before: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
                     switchUcFunction(dataset);
-                    cout << "after: \n";
-                    parser.printLessons(dataset.getScheduleByStudent("202028717").get_scheduleLessons());
-                    seeGlobalRequestsTop();
                     break;
                 case 6:
-                    undoRequest(dataset);
+                    seeGlobalRequestsTop();
                     break;
                 case 7:
+                    undoRequest(dataset);
+                    break;
+                case 8:
                     menu_principal();
                     break;
                 default:
