@@ -15,16 +15,15 @@ using namespace std;
 
 class Parser {
 public:
-    static map<CollegeClass, list<Lesson>> mapLessons();
+    static list<CollegeClass> parseCollegeClasses();
     static map<string,list<string>> getUcsByClasses();
-    static vector<string> parseClassCodes();
-    static vector<string> parseUcCodes();
+    static map<CollegeClass, set<Student>> studentsFromCollegeClass();
     static vector<string> split(std::string line,const std::string& delimiter);
     static list<vector<string>> readFile(const std::string &path);
     static list<Lesson> parseClassesFile();
-    static set<Student> parseStudents();
+    static map<CollegeClass, list<Lesson>> mapLessons();
+    static vector<Student> parseStudents();
     static list<Lesson> findLesson(list<Lesson> globalLessons, Lesson lessonToFind);
-    static map<Student, list<CollegeClass>> mapCollegeClasses();
     void printLessons(list<Lesson> lessons);
 };
 #endif //AED_SCHEDULE_PARSER_H

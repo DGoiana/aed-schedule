@@ -6,15 +6,15 @@ Lesson::Lesson(){
     this->lessonStartHour = 0.0;
     this->lessonDuration = 0.0;
     this->lessonType = "";
-    this->lessonClass = CollegeClass(); 
+    this->lessonCodes = {}; 
 }
 
-Lesson::Lesson(CollegeClass lessonClass,string lessonWeekday,double lessonStartHour,double lessonDuration,string lessonType){
+Lesson::Lesson(pair<string, string> lessonCodes,string lessonWeekday,double lessonStartHour,double lessonDuration,string lessonType){
     this->lessonWeekday = lessonWeekday;
     this->lessonStartHour = lessonStartHour;
     this->lessonDuration = lessonDuration;
     this->lessonType = lessonType;
-    this->lessonClass = lessonClass;  
+    this->lessonCodes = lessonCodes;  
 }
 
 string Lesson::get_LessonWeekday() const {
@@ -49,17 +49,21 @@ void Lesson::set_LessonType(const string& new_lessonType) {
     this->lessonType = new_lessonType;
 }
 
-CollegeClass Lesson::get_LessonClass() const {
-    return this->lessonClass;
+string Lesson::get_classCode() const {
+    return this->lessonCodes.first;
 }
 
-void Lesson::set_LessonClass(const CollegeClass& new_lessonClass) {
-    this->lessonClass = new_lessonClass;
+string Lesson::get_ucCode() const {
+    return this->lessonCodes.second;
+}
+
+void Lesson::set_LessonCodes(const pair<string, string>& new_lessonCodes) {
+    this->lessonCodes = new_lessonCodes;
 }
 
 void Lesson::printLesson() {
-    cout << this->lessonClass.get_classCode() << ", ";
-    cout << this->lessonClass.get_ucCode() << ", ";
+    cout << this->lessonCodes.first << ", ";
+    cout << this->lessonCodes.second << ", ";
     cout << this->lessonWeekday << ", ";
     cout << this->lessonStartHour << ", ";
     cout << this->lessonDuration << ", ";
@@ -67,6 +71,7 @@ void Lesson::printLesson() {
 }
 
 bool Lesson::operator==(Lesson lesson2) const {
-    return this->get_LessonClass() == lesson2.get_LessonClass() 
-    && this->get_LessonType() == lesson2.get_LessonType();
+    return this->lessonCodes.first == lesson2.lessonCodes.first 
+    && this->lessonCodes.second == lesson2.lessonCodes.second
+    && this->lessonType == lesson2.get_LessonType();
 }
