@@ -2,6 +2,7 @@
 #include <list>
 #include <queue>
 #include "Student.h"
+#include <iostream>
 #include "Request.h"
 #include "Dataset.h"
 #include "Parser.h"
@@ -105,38 +106,38 @@ bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove){
      return false;
 }
 
-void Request::addRequestToQueue(Request request){
-    this->requests.push(request);
-}
+// void Request::addRequestToQueue(Request request){
+//     this->requests.push(request);
+// }
 
-void Request::removeRequestFromQueue(){
-    Request request = this->requests.front();
-    if(request.get_type() == CLASS){
-        if(request.get_option() == ADD){
-            //È só fazer remove
-        }
-        if(request.get_option() == REMOVE){
-            //È só fazer add
-        }
-        if(request.get_option() == SWITCH){
-            //È só fazer add e remove
-        }
-    }
-    else if(request.get_type() == UC){
-        if(request.get_option() == ADD){
-            //È só fazer remove
-        }
-        if(request.get_option() == REMOVE){
-            //È só fazer add
-        }
-        if(request.get_option() == SWITCH){
-            //È só fazer add e remove
-        }
-    }
-    this->requests.pop();
-}
+// void Request::removeRequestFromQueue(){
+//     Request request = this->requests.front();
+//     if(request.get_type() == CLASS){
+//         if(request.get_option() == ADD){
+//             //È só fazer remove
+//         }
+//         if(request.get_option() == REMOVE){
+//             //È só fazer add
+//         }
+//         if(request.get_option() == SWITCH){
+//             //È só fazer add e remove
+//         }
+//     }
+//     else if(request.get_type() == UC){
+//         if(request.get_option() == ADD){
+//             //È só fazer remove
+//         }
+//         if(request.get_option() == REMOVE){
+//             //È só fazer add
+//         }
+//         if(request.get_option() == SWITCH){
+//             //È só fazer add e remove
+//         }
+//     }
+//     this->requests.pop();
+// }
 
-OPTION Request::get_otption(){
+OPTION Request::get_option(){
     return this->option;
 }
 
@@ -154,6 +155,7 @@ CollegeClass Request::get_collegeClass(){
 
 CollegeClass Request::get_newCollegeClass(){
     return this->newCollegeClass;
+}
 
 bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, CollegeClass collegeClassToAdd) {
     if(removeUc(dataset, collegeClassToRemove)) {

@@ -143,7 +143,7 @@ void AllMenus::menu_schedule() {
                                 double parte_decimal_end = modf(end_hour,&parte_inteira_end);
                                 double parte_inteira_duration = floor(l.get_LessonDuration());
                                 double parte_decimal_duration = modf(l.get_LessonDuration(),&parte_inteira_duration);
-                                cout << l.get_LessonClass().get_classCode() << " " << l.get_LessonClass().get_ucCode() << " begin:" << parte_inteira_begin << "h" <<  parte_decimal_begin * 60 << " end:" << parte_inteira_end << "h" <<  parte_decimal_end * 60 << " duration:" << parte_inteira_duration << "h" << parte_decimal_duration * 60 << " " << l.get_LessonType() << "\n";
+                                cout << l.get_classCode() << " " << l.get_ucCode() << " begin:" << parte_inteira_begin << "h" <<  parte_decimal_begin * 60 << " end:" << parte_inteira_end << "h" <<  parte_decimal_end * 60 << " duration:" << parte_inteira_duration << "h" << parte_decimal_duration * 60 << " " << l.get_LessonType() << "\n";
                             }
                         }
                     }
@@ -162,7 +162,7 @@ void AllMenus::menu_schedule() {
                                 double parte_decimal_end = modf(end_hour,&parte_inteira_end);
                                 double parte_inteira_duration = floor(l.get_LessonDuration());
                                 double parte_decimal_duration = modf(l.get_LessonDuration(),&parte_inteira_duration);
-                                cout << l.get_LessonClass().get_classCode() << " " << l.get_LessonClass().get_ucCode() << " begin:" << parte_inteira_begin << "h" <<  parte_decimal_begin * 60 << " end:" << parte_inteira_end << "h" <<  parte_decimal_end * 60 << " duration:" << parte_inteira_duration << "h" << parte_decimal_duration * 60 << " " << l.get_LessonType() << "\n";
+                                cout << l.get_classCode() << " " << l.get_ucCode() << " begin:" << parte_inteira_begin << "h" <<  parte_decimal_begin * 60 << " end:" << parte_inteira_end << "h" <<  parte_decimal_end * 60 << " duration:" << parte_inteira_duration << "h" << parte_decimal_duration * 60 << " " << l.get_LessonType() << "\n";
                             }
                         }
                     }
@@ -628,6 +628,6 @@ void AllMenus::switchUcFunction(DataSet& dataset) {
     Request request = Request(collegeClassToRemove,collegeClassToAdd,student,UC,SWITCH,dataset);
     if(!request.switchUc(dataset,collegeClassToRemove,collegeClassToAdd))
         cout << "switch uc failed"; return;
-  }
 }
+
 
