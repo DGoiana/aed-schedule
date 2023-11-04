@@ -195,6 +195,7 @@ void AllMenus::menu_schedule() {
 
 void AllMenus::showPages(vector<Student> students) {
     int page = 0;
+    int numPages = students.size()%20 == 0 ? students.size()/20 : students.size()/20 + 1;
     string decision;
     do {
         cout << "===============================\n";
@@ -206,7 +207,7 @@ void AllMenus::showPages(vector<Student> students) {
             cout <<"  "<< currentStudent.get_studentCode() << "  || " << currentStudent.get_studentName() << '\n';
         }
         cout << "===============================\n";
-        cout << "Page: "<<page+1 << " of " << students.size()/20 + 1 <<'\n';
+        cout << "Page: "<<page+1 << " of " << numPages <<'\n';
         cout << "Options: "<<'\n';
         do {
             cout << "0 - Go to next Page" <<'\n';
@@ -216,7 +217,7 @@ void AllMenus::showPages(vector<Student> students) {
         } while(decision != "0" && decision != "1" && decision != "2");
         if(decision == "0") page++;
         if(decision == "1") page--;
-    } while(decision != "2" && 20*(page) <= students.size());
+    } while(decision != "2" && page+1 <= numPages);
 }
 
 void AllMenus::menu_students(){
