@@ -41,6 +41,8 @@ class DataSet{
         void sortUcsByOccupation(vector<string> &codes, string order);
         void sortYearsByOccupation(vector<string> &years, string order);
 
+        void dumpCurrentState();
+
         string getMostStudentsUC();
 };
 #endif

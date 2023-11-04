@@ -97,8 +97,8 @@ void AllMenus::menu_principal(){
                 menu_requests();
                 break;
             case 5:
+                menu_save_state();
                 exit(0);
-                break;
         }
     } while(input !="5");
 }
@@ -130,6 +130,18 @@ void AllMenus::showSchedule(list<Lesson> lessons) {
         cout << "====================================================\n";
         cout << '\n';
     }
+}
+
+void AllMenus::menu_save_state() {
+    string save;
+    cout << "Save the current changes? (S/N): ";
+    cin >> save;
+    while (save != "S" && save != "N") {
+        cout << "invalid input" << '\n';
+        cout << "Save the current changes? (S/N): ";
+        cin >> save;
+    }
+    if(save == "S") this->dataset.dumpCurrentState();
 }
 
 void AllMenus::menu_schedule() {
@@ -495,7 +507,6 @@ void AllMenus::addUcFunction(DataSet& dataset) {
 }
 
 void AllMenus::removeUcFunction(DataSet& dataset) {
-    Parser parser;
     string ucToRemove;
     cout << "Uc to Remove: "; 
     cin >> ucToRemove;
