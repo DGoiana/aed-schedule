@@ -626,6 +626,7 @@ void AllMenus::switchUcFunction(DataSet& dataset) {
         cout << "switch uc SUCCESS" << '\n';
         this->globalRequests.push(switchUcRequest);
     }else cout << "switch uc FAILED\n"; return;
+
 }
 
 
