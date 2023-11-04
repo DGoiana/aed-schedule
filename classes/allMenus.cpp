@@ -507,7 +507,6 @@ void AllMenus::addUcFunction(DataSet& dataset) {
 }
 
 void AllMenus::removeUcFunction(DataSet& dataset) {
-    Parser parser;
     string ucToRemove;
     cout << "Uc to Remove: "; 
     cin >> ucToRemove;
