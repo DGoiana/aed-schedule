@@ -2,7 +2,6 @@
 #include <list>
 #include <string>
 #include "Student.h"
-#include "Lesson.h"
 #include <iostream>
 #include "Parser.h"
 #include <algorithm>
@@ -12,17 +11,27 @@ using namespace std;
 
 DataSet::DataSet(){
     this->students = Parser::parseStudents();
+    sort(this->students.begin(),this->students.end()); // for binary search purposes
     this->collegeClasses = Parser::parseCollegeClasses();
+}
+
+Student DataSet::binarySearchStudentbyNumber(string classCode) {
+    int h = students.size() - 1;
+    int l = 0;
+    while(l <= h) {
+        int m = l + (h-l) / 2;
+        if(this->students[m].get_studentCode() == classCode) return this->students[m];
+        if(this->students[m].get_studentCode() < classCode) l = m + 1;
+        else h = m - 1;
+    }
+    return Student();
 }
 
 Schedule DataSet::getScheduleByStudent(string studentCode){
     Schedule schedule;
-    for(Student s : students){
-        if(s.get_studentCode() == studentCode){
-            for(CollegeClass c : s.get_studentClasses()){
-                schedule.addLessonsFromList(c.get_collegeClassSchedule().get_scheduleLessons());
-            }
-        };
+    Student foundStudent = binarySearchStudentbyNumber(studentCode);
+    for(CollegeClass c : foundStudent.get_studentClasses()) {
+        schedule.addLessonsFromList(c.get_collegeClassSchedule().get_scheduleLessons());
     }
     return schedule;
 }
@@ -183,10 +192,9 @@ void DataSet::addStudentClass(CollegeClass c, Student student){
    it->add_studentClass(c);
 }
 
-//CHECK
 Student DataSet::getStudentByNumber(string studentCode)
 {
-    return *find(students.begin(), students.end(), Student(studentCode, "", {}));
+    return binarySearchStudentbyNumber(studentCode);
 }
 
 list<Student> DataSet::getStudentByName(string studentName)
