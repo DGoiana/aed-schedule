@@ -1,8 +1,6 @@
 #include "CollegeClass.h"
 #include <list>
-#include <queue>
 #include "Student.h"
-#include <iostream>
 #include "Request.h"
 #include "Dataset.h"
 #include "Parser.h"
@@ -82,9 +80,6 @@ bool Request::removeClass(DataSet &dataset, string classToRemove) {
 }
 
 bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd) {
-    for(CollegeClass cc :dataset.getStudentByNumber(this->student.get_studentCode()).get_studentClasses()) {
-        cout << cc.get_classCode() << " " << cc.get_ucCode() << endl;
-    }
     int numCurrentStudents = dataset.getNumStudentsInClassAndUc(collegeClassToAdd);
     if(!isConflictingSchedule(dataset.getScheduleByStudent(this->student.get_studentCode()), collegeClassToAdd.get_collegeClassSchedule().get_scheduleLessons()) 
     && numCurrentStudents < CLASS_CAP
@@ -105,37 +100,6 @@ bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove){
       }
      return false;
 }
-
-// void Request::addRequestToQueue(Request request){
-//     this->requests.push(request);
-// }
-
-// void Request::removeRequestFromQueue(){
-//     Request request = this->requests.front();
-//     if(request.get_type() == CLASS){
-//         if(request.get_option() == ADD){
-//             //È só fazer remove
-//         }
-//         if(request.get_option() == REMOVE){
-//             //È só fazer add
-//         }
-//         if(request.get_option() == SWITCH){
-//             //È só fazer add e remove
-//         }
-//     }
-//     else if(request.get_type() == UC){
-//         if(request.get_option() == ADD){
-//             //È só fazer remove
-//         }
-//         if(request.get_option() == REMOVE){
-//             //È só fazer add
-//         }
-//         if(request.get_option() == SWITCH){
-//             //È só fazer add e remove
-//         }
-//     }
-//     this->requests.pop();
-// }
 
 OPTION Request::get_option(){
     return this->option;
