@@ -13,7 +13,7 @@ class AllMenus{
         DataSet dataset;
     public:
         AllMenus(DataSet &dataset);
-        vector<string> showSortOptions(string id);
+        void sortStudentVector(vector<Student>& students);
         void menu_principal();
         void menu_schedule();
         void menu_students();
@@ -27,6 +27,11 @@ class AllMenus{
         void addUcFunction(DataSet& dataset);
         void removeUcFunction(DataSet& dataset);
         void switchUcFunction(DataSet& dataset);
+
+        void showSchedule(list<Lesson> lessons);
+        void showPages(vector<Student> students);
+        string sortOption();
+        string toTime(float number);
 };
 
 #endif 
