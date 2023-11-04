@@ -15,7 +15,9 @@ class DataSet{
 
         Schedule getScheduleByStudent(string studentCode);
         Schedule getScheduleByClass(string classCode);
-        
+
+        Student binarySearchStudentbyNumber(string classCode);
+
         vector<Student> getStudentsByClassOrUc(string code, string id);
         vector<Student> getStudentsByYear(string year);
   
