@@ -101,7 +101,6 @@ bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove){
      return false;
 }
 
-
 OPTION Request::get_option(){
     return this->option;
 }
