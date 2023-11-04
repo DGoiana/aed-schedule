@@ -36,6 +36,7 @@ class DataSet{
 
         vector<string> getClasses();
         vector<string> getUcs();
+        vector<string> getStudents();
 
         void sortClassesByOccupation(vector<string> &codes, string order);
         void sortUcsByOccupation(vector<string> &codes, string order);
