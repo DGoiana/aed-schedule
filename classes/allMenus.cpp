@@ -401,7 +401,7 @@ void AllMenus::menu_occupations(){
                         cout << "Class: ";
                         cin >> classCode;
                     }
-                    cout << code << ':' << dataset.consultClassorUcOccupation(code, "class") << '\n';
+                    cout << classCode << ':' << dataset.consultClassorUcOccupation(classCode, "class") << '\n';
                 }
                 break;
             case 1:
@@ -434,7 +434,7 @@ void AllMenus::menu_occupations(){
                         cout << "Uc: ";
                         cin >> ucCode;
                     }
-                    cout << code << ':' << dataset.consultClassorUcOccupation(code, "uc") << '\n';
+                    cout << ucCode << ':' << dataset.consultClassorUcOccupation(ucCode, "uc") << '\n';
                 }
                 break;
         }
