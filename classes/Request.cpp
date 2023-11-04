@@ -55,7 +55,7 @@ bool Request::isConflictingSchedule(Schedule studentSchedule, vector<Lesson> les
 bool Request::addClass(DataSet &dataset, string classToAdd, list<vector<string>> classesPerUc) {
     bool failed = false;
     list<string> classUcs = dataset.getUcsByClasses(classesPerUc)[classToAdd]; // get all ucs from class
-    set<CollegeClass> oldClasses = this->student.get_studentClasses();
+    vector<CollegeClass> oldClasses = this->student.get_studentClasses();
     for(string uc : classUcs) {
         CollegeClass currentCC = dataset.buildObject(classToAdd, uc);
         Request request = Request(currentCC, this->student, UC, ADD, dataset);
@@ -70,7 +70,7 @@ bool Request::addClass(DataSet &dataset, string classToAdd, list<vector<string>>
 bool Request::removeClass(DataSet &dataset, string classToRemove, list<vector<string>> classesPerUc) {
     bool failed = false;
     list<string> classUcs = dataset.getUcsByClasses(classesPerUc)[classToRemove]; // 
-    set<CollegeClass> oldClasses = this->student.get_studentClasses();
+    vector<CollegeClass> oldClasses = this->student.get_studentClasses();
     for(string uc : classUcs) {
         CollegeClass currentCC = CollegeClass(classToRemove, uc, {}, Schedule());
         Request request = Request(currentCC, this->student, UC, REMOVE, dataset);
@@ -96,8 +96,8 @@ bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd, list<vector
 bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove, list<vector<string>> classesPerUc){
     int numCurrentStudents = getNumStudentsInClassAndUc(collegeClassToRemove, dataset);
     if(maintainsClassBalance(dataset, numCurrentStudents, classesPerUc)) {
-        set<CollegeClass> toRemove = getStudentByNumber(this->student.get_studentCode(), dataset).get_studentClasses();
-        toRemove.erase(collegeClassToRemove);
+        vector<CollegeClass> toRemove = getStudentByNumber(this->student.get_studentCode(), dataset).get_studentClasses();
+        toRemove.erase(find(toRemove.begin(), toRemove.end(), collegeClassToRemove));
         setStudentClasses(toRemove, this->student, dataset);
         return true;
       }

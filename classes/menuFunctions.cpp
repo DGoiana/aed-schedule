@@ -148,7 +148,7 @@ string getMostStudentsUC(DataSet &dataset){
     return result;
 }
 
-void setStudentClasses(set<CollegeClass> newClasses, Student student, DataSet &dataset) {
+void setStudentClasses(vector<CollegeClass> newClasses, Student student, DataSet &dataset) {
     auto it = find(dataset.get_students().begin(), dataset.get_students().end(), student);
     it->set_studentClasses(newClasses);
 }

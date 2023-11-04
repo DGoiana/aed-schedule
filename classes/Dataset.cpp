@@ -20,16 +20,16 @@ string trimClassCode(string classCode) {
 DataSet::DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> allClasses, list<vector<string>> studentsClasses){
     this->mappedLessons = mapLessons(classesPerUc, allClasses);
     this->mappedStudentsFromClass = mapStudents(studentsClasses);
-    
+
     this->students = populateStudents(studentsClasses);
     this->collegeClasses = populateCollegeClasses(classesPerUc);
 }
 
 vector<Student> DataSet::populateStudents(list<vector<string>> studentsClasses){
     vector<Student> students;
-    map<pair<string, string>, set<CollegeClass>> mappedStudents;
+    map<pair<string, string>, vector<CollegeClass>> mappedStudents;
     for(vector<string> student: studentsClasses){
-        mappedStudents[{student[0], student[1]}].insert(buildObject(trimClassCode(student[3]), student[2]));
+        mappedStudents[{student[0], student[1]}].push_back(buildObject(trimClassCode(student[3]), student[2]));
     }
 
     for(auto p : mappedStudents){
@@ -48,7 +48,7 @@ list<CollegeClass> DataSet::populateCollegeClasses(list<vector<string>> classesP
 
 CollegeClass DataSet::buildObject(string classCode, string ucCode) {
     Schedule schedule = Schedule(mappedLessons[CollegeClass(classCode, ucCode, {}, Schedule())]);
-    set<Student> students = mappedStudentsFromClass[CollegeClass(classCode, ucCode, {}, Schedule())];
+    vector<Student> students = mappedStudentsFromClass[CollegeClass(classCode, ucCode, {}, Schedule())];
     return CollegeClass(classCode, ucCode, students, schedule);
 }
 
@@ -60,10 +60,10 @@ map<CollegeClass, vector<Lesson>> DataSet::mapLessons(list<vector<string>> class
     return mappedLessons;
 }
 
-map<CollegeClass, set<Student>> DataSet::mapStudents(list<vector<string>> studentsClasses){
-    map<CollegeClass, set<Student>> mappedCollegeClass;
+map<CollegeClass, vector<Student>> DataSet::mapStudents(list<vector<string>> studentsClasses){
+    map<CollegeClass, vector<Student>> mappedCollegeClass;
     for(vector<string> student: studentsClasses){
-        mappedCollegeClass[CollegeClass(trimClassCode(student[3]), student[2], {}, Schedule())].insert(Student(student[0], student[1], {}));
+        mappedCollegeClass[CollegeClass(trimClassCode(student[3]), student[2], {}, Schedule())].push_back(Student(student[0], student[1], {}));
     }
     return mappedCollegeClass;
 }

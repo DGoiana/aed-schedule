@@ -12,11 +12,11 @@ class CollegeClass {
     private:
         string classCode;
         string ucCode;
-        set<Student> registeredStudents;
+        vector<Student> registeredStudents;
         Schedule collegeClassSchedule;
     public:
         CollegeClass();
-        CollegeClass(string classCode, string ucCode, set<Student> registeredStudents, Schedule collegeClassSchedule);
+        CollegeClass(string classCode, string ucCode, vector<Student> registeredStudents, Schedule collegeClassSchedule);
 
         string get_classCode() const;
         void set_classCode(const string& new_classCode);
@@ -24,8 +24,8 @@ class CollegeClass {
         string get_ucCode() const;
         void set_ucCode(const string& new_ucCode);
 
-        set<Student> get_registeredStudents() const;
-        void set_registeredStudents(const set<Student>& new_registeredStudents);
+        vector<Student> get_registeredStudents() const;
+        void set_registeredStudents(const vector<Student>& new_registeredStudents);
 
         Schedule get_collegeClassSchedule() const;
         void set_collegeClassSchedule(const Schedule& new_collegeClassSchedule);

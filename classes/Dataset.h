@@ -11,7 +11,7 @@ class DataSet{
         vector<Student> students;
         list<CollegeClass> collegeClasses;
         map<CollegeClass, vector<Lesson>> mappedLessons;
-        map<CollegeClass, set<Student>> mappedStudentsFromClass;
+        map<CollegeClass, vector<Student>> mappedStudentsFromClass;
     public:
         DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> classes, list<vector<string>> studentsClasses);
 
@@ -24,7 +24,7 @@ class DataSet{
         CollegeClass buildObject(string classCode, string ucCode);
 
         map<CollegeClass, vector<Lesson>> mapLessons(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> allClasses);
-        map<CollegeClass, set<Student>> mapStudents(list<vector<string>> studentsClasses);
+        map<CollegeClass, vector<Student>> mapStudents(list<vector<string>> studentsClasses);
 
         vector<Lesson> findLesson(std::unordered_multimap<pair<string, string>, Lesson, pair_hash> globalLessons, Lesson lessonToFind);
 

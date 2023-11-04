@@ -24,10 +24,10 @@ class Student {
     private:
         string studentCode;
         string studentName;
-        set<CollegeClass> studentClasses;
+        vector<CollegeClass> studentClasses;
     public:
         Student();
-        Student(string studentCode, string studentName, set<CollegeClass> studentClasses);
+        Student(string studentCode, string studentName, vector<CollegeClass> studentClasses);
 
         string get_studentCode() const;
         void set_studentCode(string new_studentCode);
@@ -35,10 +35,10 @@ class Student {
         string get_studentName() const;
         void set_studentName(const string& new_studentName);
 
-        set<CollegeClass> get_studentClasses() const;
-        void set_studentClasses(const set<CollegeClass>& new_studentClasses);
+        vector<CollegeClass> get_studentClasses() const;
+        void set_studentClasses(const vector<CollegeClass>& new_studentClasses);
         
-        void add_studentClass(CollegeClass& c);
+        void add_studentClass(CollegeClass &c);
         
         bool operator<(Student student2) const;
         bool operator==(Student student2) const;

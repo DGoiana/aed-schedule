@@ -443,10 +443,8 @@ void AllMenus::addClassFunction(list<vector<string>> classesPerUc) {
     cin >> studentCode;
 
     Student student = getStudentByNumber(studentCode, this->dataset);
-    cout << student.get_studentName() << '\n';
-    for(CollegeClass c : student.get_studentClasses()) cout << c.get_classCode() << '\n';
     Request addRequest = Request(CollegeClass(classToAdd, "*", {}, Schedule()), student, CLASS, ADD, this->dataset);
-    //if(!addRequest.addClass(this->dataset, classToAdd, classesPerUc)) cout << "add class failed" << '\n';
+    if(!addRequest.addClass(this->dataset, classToAdd, classesPerUc)) cout << "add class failed" << '\n';
 }
 
 void AllMenus::removeClassFunction(list<vector<string>> classesPerUc) {

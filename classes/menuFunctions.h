@@ -2,7 +2,7 @@
 #define AED_SCHEDULE_MENUFUNCTIONS_H
 
 #include "Schedule.h"
-#include "DataSet.h"
+#include "Dataset.h"
 
 
 Schedule getScheduleByStudent(string studentCode, DataSet &dataset);
@@ -35,7 +35,7 @@ void sortYearsByOccupation(vector<string> &years, string order, DataSet &dataset
 
 string getMostStudentsUC(DataSet &dataset);
 
-void setStudentClasses(set<CollegeClass> newClasses, Student student, DataSet &dataset);
+void setStudentClasses(vector<CollegeClass> newClasses, Student student, DataSet &dataset);
 
 void addStudentClass(CollegeClass c, Student student, DataSet &dataset);
 
