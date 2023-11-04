@@ -39,6 +39,11 @@ class AllMenus{
         void showPages(vector<Student> students);
         string sortOption();
         string toTime(float number);
+
+        bool check_classCode(string classCode);
+        bool check_ucCode(string ucCode);
+        bool check_studentCode(string studentCode);
+        bool check_year(string year);
 };
 
 #endif 

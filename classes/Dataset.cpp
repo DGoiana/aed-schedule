@@ -72,6 +72,14 @@ vector<string> DataSet::getUcs(){
     return ucs;
 }
 
+vector<string> DataSet::getStudents(){
+    vector<string> students_codes;
+    for(Student s : this->students){
+        students_codes.push_back(s.get_studentCode());
+    }
+    return students_codes;
+}
+
 int DataSet::getNumStudentsInClassAndUc(CollegeClass ucClass)
 {
     for(CollegeClass c : collegeClasses){

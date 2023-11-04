@@ -162,11 +162,21 @@ void AllMenus::menu_schedule() {
             case 0:
                 cout << "studentCode: ";
                 cin >> studentCode;
+                while(!check_studentCode(studentCode)){
+                    cout << "INVALID INPUT" << '\n';
+                    cout << "studentCode: ";
+                    cin >> studentCode;
+                }
                 showSchedule(dataset.getScheduleByStudent(studentCode).get_scheduleLessons());
                 break;
             case 1:
                 cout << "classCode: ";
                 cin >> classCode;
+                while(!check_classCode(classCode)){
+                    cout << "INVALID INPUT" << '\n';
+                    cout << "classCode: ";
+                    cin >> classCode;
+                }
                 showSchedule(dataset.getScheduleByClass(classCode).get_scheduleLessons());
                 break;
             case 2: break;
@@ -232,6 +242,11 @@ void AllMenus::menu_students(){
             case 0:
                 cout << "classCode: ";
                 cin >> classCode;
+                while(!check_classCode(classCode)){
+                    cout << "INVALID INPUT" << '\n';
+                    cout << "classCode: ";
+                    cin >> classCode;
+                }
 
                 studentsToBeOrdered = dataset.getStudentsByClassOrUc(classCode, "class");
                 sortStudentVector(studentsToBeOrdered);
@@ -240,6 +255,11 @@ void AllMenus::menu_students(){
             case 1:
                 cout << "ucCode: ";
                 cin >> ucCode;
+                while(!check_ucCode(ucCode)){
+                    cout << "INVALID INPUT" << '\n';
+                    cout << "ucCode: ";
+                    cin >> ucCode;
+                }
 
                 studentsToBeOrdered = dataset.getStudentsByClassOrUc(ucCode, "uc");
                 sortStudentVector(studentsToBeOrdered);
@@ -248,6 +268,11 @@ void AllMenus::menu_students(){
             case 2:
                 cout << "Year: ";
                 cin >> year;
+                while(!check_year(year)){
+                        cout << "INVALID INPUT" << '\n';
+                        cout << "Year: ";
+                        cin >> year;
+                }
 
                 studentsToBeOrdered = dataset.getStudentsByYear(year);
                 sortStudentVector(studentsToBeOrdered);
@@ -256,6 +281,11 @@ void AllMenus::menu_students(){
             case 3:
                 cout << "Number of Ucs: ";
                 cin >> n;
+                while(n > 7){
+                    cout << "INVALID INPUT" << '\n';
+                    cout << "Number of Ucs: ";
+                    cin >> n;
+                }
 
                 cout << "==============================================\n";
                 cout <<"There are "<< dataset.numStudentsRegisteredInNUcs(n) << " students in at least " << n << " Ucs"<< "\n";
@@ -366,6 +396,11 @@ void AllMenus::menu_occupations(){
                     string classCode;
                     cout << "Class: ";
                     cin >> classCode;
+                    while(!check_classCode(classCode)){
+                        cout << "INVALID INPUT" << '\n';
+                        cout << "Class: ";
+                        cin >> classCode;
+                    }
                     cout << code << ':' << dataset.consultClassorUcOccupation(code, "class") << '\n';
                 }
                 break;
@@ -377,7 +412,12 @@ void AllMenus::menu_occupations(){
                     string yearNum;
                     cout << "Year: ";
                     cin >> yearNum;
-                    cout << year << ": " << dataset.consultYearOccupation(year) << '\n';
+                    while(!check_year(yearNum)){
+                        cout << "INVALID INPUT" << '\n';
+                        cout << "Year: ";
+                        cin >> yearNum;
+                    }
+                    cout << yearNum << ": " << dataset.consultYearOccupation(yearNum) << '\n';
                 }
                 break;
             case 2:
@@ -389,6 +429,11 @@ void AllMenus::menu_occupations(){
                     string ucCode;
                     cout << "Uc: ";
                     cin >> ucCode;
+                    while(!check_ucCode(ucCode)){
+                        cout << "INVALID INPUT" << '\n';
+                        cout << "Uc: ";
+                        cin >> ucCode;
+                    }
                     cout << code << ':' << dataset.consultClassorUcOccupation(code, "uc") << '\n';
                 }
                 break;
@@ -522,9 +567,19 @@ void AllMenus::addClassFunction(DataSet &dataset) {
     string classToAdd;
     cout << "Class to Add: ";
     cin >> classToAdd;
+    while(!check_classCode(classToAdd)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Add: ";
+            cin >> classToAdd;
+    }
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
+    while(!check_studentCode(studentCode)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Student code: ";
+            cin >> studentCode;
+    }
 
     Student student = dataset.getStudentByNumber(studentCode);
     Request addClassRequest = Request(CollegeClass(classToAdd, "*",{},Schedule()),
@@ -539,9 +594,19 @@ void AllMenus::removeClassFunction(DataSet &dataset) {
     string classToRemove;
     cout << "Class to Remove: ";
     cin >> classToRemove;
+    while(!check_classCode(classToRemove)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Remove: ";
+            cin >> classToRemove;
+    }
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
+    while(!check_studentCode(studentCode)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Student code: ";
+            cin >> studentCode;
+    }
 
     Student student = dataset.getStudentByNumber(studentCode);
     Request removeClassRequest = Request(CollegeClass(classToRemove, "*", {}, Schedule())
@@ -556,12 +621,27 @@ void AllMenus::switchClassFunction(DataSet &dataset) {
     string classToAdd;
     cout << "Class to Add: ";
     cin >> classToAdd;
+    while(!check_classCode(classToAdd)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Add: ";
+            cin >> classToAdd;
+    }
     string classToRemove;
     cout << "Class to Remove: ";
     cin >> classToRemove;
+    while(!check_classCode(classToRemove)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Remove: ";
+            cin >> classToRemove;
+    }
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
+    while(!check_studentCode(studentCode)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Student code: ";
+            cin >> studentCode;
+    }
 
     CollegeClass collegeClassToRemove = CollegeClass(classToRemove,"*", {}, Schedule());
     CollegeClass collegeClassToAdd = CollegeClass(classToAdd,"*", {}, Schedule());
@@ -577,12 +657,28 @@ void AllMenus::addUcFunction(DataSet& dataset) {
     string ucToAdd;
     cout << "Uc to Add: "; 
     cin >> ucToAdd;
+    while(!check_ucCode(ucToAdd)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Uc to Add: ";
+            cin >> ucToAdd;
+    }
     string classToAdd;
     cout << "Class to Add: ";
     cin >> classToAdd;
+    while(!check_classCode(classToAdd)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Add: ";
+            cin >> classToAdd;
+    }
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
+    while(!check_studentCode(studentCode)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Student code: ";
+            cin >> studentCode;
+    }
+
     CollegeClass collegeClass = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
     Request addUcRequest = Request(collegeClass,student,UC,ADD,dataset);
@@ -596,12 +692,28 @@ void AllMenus::removeUcFunction(DataSet& dataset) {
     string ucToRemove;
     cout << "Uc to Remove: "; 
     cin >> ucToRemove;
+    while(!check_ucCode(ucToRemove)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Uc to Remove: ";
+            cin >> ucToRemove;
+    }
     string classToRemove;
     cout << "Class to Remove: ";
     cin >> classToRemove;
+    while(!check_classCode(classToRemove)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Remove: ";
+            cin >> classToRemove;
+    }
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
+    while(!check_studentCode(studentCode)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Student code: ";
+            cin >> studentCode;
+    }
+
     CollegeClass collegeClass = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
     Request removeUcRequest = Request(collegeClass,student,UC,REMOVE,dataset);
@@ -615,20 +727,45 @@ void AllMenus::switchUcFunction(DataSet& dataset) {
     string ucToRemove;
     cout << "Uc to Remove: ";
     cin >> ucToRemove;
+    while(!check_ucCode(ucToRemove)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Uc to Remove: ";
+            cin >> ucToRemove;
+    }
     string classToRemove;
     cout << "Class to Remove: ";
     cin >> classToRemove;
+    while(!check_classCode(classToRemove)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Remove: ";
+            cin >> classToRemove;
+    }
 
     string ucToAdd;
     cout << "Uc to Add: ";
     cin >> ucToAdd;
+    while(!check_ucCode(ucToAdd)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Uc to Add: ";
+            cin >> ucToAdd;
+    }
     string classToAdd;
     cout << "Class to Add: ";
     cin >> classToAdd;
+    while(!check_classCode(classToAdd)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Class to Add: ";
+            cin >> classToAdd;
+    }
 
     string studentCode;
     cout << "Student code: ";
     cin >> studentCode;
+    while(!check_studentCode(studentCode)){
+            cout << "INVALID INPUT" << '\n';
+            cout << "Student code: ";
+            cin >> studentCode;
+    }
     
     CollegeClass collegeClassToRemove = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
     CollegeClass collegeClassToAdd = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
@@ -639,6 +776,43 @@ void AllMenus::switchUcFunction(DataSet& dataset) {
         this->globalRequests.push(switchUcRequest);
     }else cout << "switch uc FAILED\n"; return;
 
+}
+
+bool AllMenus::check_classCode(string classCode){
+    vector<string> classes = dataset.getClasses();
+    for(string s : classes){
+        if(classCode == s){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AllMenus::check_ucCode(string ucCode){
+    vector<string> ucs = dataset.getUcs();
+    for(string s : ucs){
+        if(ucCode == s){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AllMenus::check_studentCode(string studentCode){
+    vector<string> students = dataset.getStudents();
+    for(string s : students){
+        if(studentCode == s){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool AllMenus::check_year(string year){
+    if(year != "2020" && year != "2019"){
+        return false;
+    }
+    return true;
 }
 
 
