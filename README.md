@@ -1,4 +1,4 @@
-# aed-schedule
+# Student Scheduler (aed-schedule)
 
 ## Table of contents
 * [General info](#general-info)
@@ -46,7 +46,7 @@ $ cmake --build .
 - Try to use it (It doesn't work for some reason):
 
 ```
-$ aed-schedule 
+$ ./aed-schedule 
 ```
 
 - To see documentation:

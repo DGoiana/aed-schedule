@@ -17,7 +17,6 @@ class AllMenus{
     public:
         AllMenus(DataSet &dataset);
         void sortStudentVector(vector<Student>& students);
-        vector<string> showSortOptions(string id);
         void seeGlobalRequestsTop();
         void menu_principal();
         void menu_schedule();
@@ -26,7 +25,6 @@ class AllMenus{
         void menu_occupations();
         void menu_requests();
         void menu_save_state();
-        void draw_rectangle(int width, int height, const std::vector<std::string>& text);
         void undoRequest(DataSet& dataset);
         void addClassFunction(DataSet& dataset);
         void removeClassFunction(DataSet& dataset);

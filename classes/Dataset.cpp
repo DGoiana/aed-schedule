@@ -14,7 +14,12 @@ DataSet::DataSet(){
     sort(this->students.begin(),this->students.end()); // for binary search purposes
     this->collegeClasses = Parser::parseCollegeClasses();
 }
-
+/**
+ * Searches a given Student in the vector of all Student.
+ * Time Complexity: O(log N)
+ * @param classCode classCode of the Student to be found
+ * @return the Student to be found
+ */
 Student DataSet::binarySearchStudentbyNumber(string classCode) {
     int h = students.size() - 1;
     int l = 0;
@@ -26,7 +31,12 @@ Student DataSet::binarySearchStudentbyNumber(string classCode) {
     }
     return Student();
 }
-
+/**
+ * Gets the Schedule of a given Student via Binary Search.
+ * Time Complexity: O(log n)
+ * @param studentCode studentCode of the student to be found
+ * @return the Schedule of a given Student
+ */
 Schedule DataSet::getScheduleByStudent(string studentCode){
     Schedule schedule;
     Student foundStudent = binarySearchStudentbyNumber(studentCode);
@@ -35,7 +45,12 @@ Schedule DataSet::getScheduleByStudent(string studentCode){
     }
     return schedule;
 }
-
+/**
+ * Gets the Schedule of a given Class.
+ * Time Complexity: O(n)
+ * @param classCode classCode of the class to be found
+ * @return the Schedule of a given Class.
+ */
 Schedule DataSet::getScheduleByClass(string classCode){
     Schedule schedule;
     for(CollegeClass c : collegeClasses){
@@ -45,7 +60,14 @@ Schedule DataSet::getScheduleByClass(string classCode){
     }
     return schedule;
 }
-
+/**
+ * Gets all the Students enrolled in either a given Class or a given Uc depending on id.
+ * id is "class" for Class and "uc" for Uc.
+ * Time Complexity: O(n²)
+ * @param code classCode or ucCode of the students
+ * @param id class or uc
+ * @return the student of a class or an Uc
+ */
 vector<Student> DataSet::getStudentsByClassOrUc(string code, string id){
     set<Student> students;
     for(CollegeClass c : collegeClasses){
@@ -105,7 +127,12 @@ vector<Student> DataSet::getStudentsByYear(string year){
     vector<Student> result(students.begin(), students.end());
     return result;
 }
-
+/**
+ * Gets how many students are enrolled in at least num Ucs.
+ * Time Complexity: O(n)
+ * @param num minimum number of Ucs
+ * @return the number of students enrolled in at least num Ucs
+ */
 int DataSet::numStudentsRegisteredInNUcs(int num){
     int count = 0;
     for(Student s : students){
@@ -121,7 +148,13 @@ int DataSet::consultClassorUcOccupation(string code, string id){
 int DataSet::consultYearOccupation(string year){
     return getStudentsByYear(year).size();
 }
-
+/**
+ * Sorts a vector of Students according either to their name or their enrollment year, depending on the input.
+ * Time Complexity: O(nlog n)
+ * @param students vector of Student
+ * @param order "ascending" or "descending"
+ * @param input "name" or "year"
+ */
 void DataSet::sortStudentsByNameOrYear(vector<Student> &students, string order, string input){
     if(input == "name"){
         if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
@@ -140,7 +173,12 @@ void DataSet::sortStudentsByNameOrYear(vector<Student> &students, string order, 
         });
     }
 }
-
+/**
+ * Sorts a vector of classCodes by the number of Student enrolled in that Class.
+ * Time Complexity: O(nlog n)
+ * @param codes vector of classCode
+ * @param order "ascending" or "descending"
+ */
 void DataSet::sortClassesByOccupation(vector<string> &codes, string order){
     if(order == "ascending") sort(codes.begin(), codes.end(), [this](string code1, string code2){
         return consultClassorUcOccupation(code1, "class") < consultClassorUcOccupation(code2, "class");
@@ -149,7 +187,12 @@ void DataSet::sortClassesByOccupation(vector<string> &codes, string order){
         return consultClassorUcOccupation(code1, "class") > consultClassorUcOccupation(code2, "class");
     });
 }
-
+/**
+ * Sorts a vector of ucCodes by the number of Student enrolled in that Uc.
+ * Time Complexity: O(nlog n)
+ * @param codes vector of ucCode
+ * @param order "ascending" or "descending"
+ */
 void DataSet::sortUcsByOccupation(vector<string> &codes, string order){
     if(order == "ascending") sort(codes.begin(), codes.end(), [this](string code1, string code2){
         return consultClassorUcOccupation(code1, "uc") < consultClassorUcOccupation(code2, "uc");
@@ -158,7 +201,12 @@ void DataSet::sortUcsByOccupation(vector<string> &codes, string order){
         return consultClassorUcOccupation(code1, "uc") > consultClassorUcOccupation(code2, "uc");
     });
 }
-
+/**
+ * Sorts a vector of year by the number of Student that started in that year, via studentCode.
+ * Time Complexity: O(nlog n)
+ * @param years vector of the possible years
+ * @param order "ascending" or "descending"
+ */
 void DataSet::sortYearsByOccupation(vector<string> &years, string order){
     if(order == "ascending") sort(years.begin(), years.end(), [this](string year1, string year2){
         return consultYearOccupation(year1) < consultYearOccupation(year2);
@@ -168,6 +216,11 @@ void DataSet::sortYearsByOccupation(vector<string> &years, string order){
     });
 }
 
+/**
+ * Gets the ucCode of the Uc with the most enrolled students.
+ * Time Complexity: O(n)
+ * @return the ucCode of the largest Uc
+ */
 string DataSet::getMostStudentsUC(){
     string result;
     int num = 0;
@@ -180,8 +233,6 @@ string DataSet::getMostStudentsUC(){
     return result;
 }
 
-
-//CHECK
 void DataSet::setStudentClasses(set<CollegeClass> newClasses, Student student) {
     auto it = find(students.begin(), students.end(), student);
     it->set_studentClasses(newClasses);
@@ -206,7 +257,10 @@ list<Student> DataSet::getStudentByName(string studentName)
     }
     return sameNameStudents;
 }
-
+/**
+ * Writes the current state of the Dataset into the CSV file (students_classes.csv).
+ * Time Complexity: O(n²)
+ */
 void DataSet::dumpCurrentState() {
     ofstream output("../schedule/students_classes.csv");
     output << "StudentCode,StudentName,UcCode,ClassCode" << '\n';

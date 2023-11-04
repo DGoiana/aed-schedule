@@ -1,7 +1,6 @@
 #include "Parser.h"
 #include "Student.h"
 #include <fstream>
-#include <iostream>
 #include <map>
 #include <algorithm>
 
@@ -26,7 +25,12 @@ vector<string> Parser::split(std::string line, const string &delimiter) {
     result.push_back(line.substr(0));
     return result;
 }
-
+/**
+ * Reads a given file.
+ * Time Complexity: O(n)
+ * @param path
+ * @return a list of vector of all possible objects
+ */
 list<vector<string>> Parser::readFile(const string &path) {
     ifstream file(path);
     string line;
@@ -48,7 +52,11 @@ map<CollegeClass, list<Lesson>> Parser::mapLessons(){
     }
     return mappedLessons;
 }
-
+/**
+ * Creates a list of all the available lessons.
+ * Time Complexity: O(n)
+ * @return a list of lessons
+ */
 list<Lesson> Parser::parseClassesFile() {
     list<Lesson> lessons;
     for (vector<string> lesson: classes) {
@@ -80,6 +88,11 @@ map<CollegeClass, set<Student>> Parser::studentsFromCollegeClass(){
     return mappedCollegeClass;
 }
 
+/**
+ * Creates a list of all available CollegeClass objects.
+ * Time Complexity: O(n)
+ * @return a list of CollegeClass
+ */
 list<CollegeClass> Parser::parseCollegeClasses(){
     list<CollegeClass> classes;
     for(vector<string> cc : classesPerUc){
@@ -89,7 +102,11 @@ list<CollegeClass> Parser::parseCollegeClasses(){
     }
     return classes;
 }
-
+/**
+ * Creates a list of all current Student.
+ * Time Complexity: O(n)
+ * @return a list of Student
+ */
 vector<Student> Parser::parseStudents(){
     vector<Student> students;
     map<pair<string, string>, set<CollegeClass>> mappedStudents;

@@ -102,7 +102,13 @@ void AllMenus::menu_principal(){
         }
     } while(input !="5");
 }
-
+/**
+ * Converts number to time.
+ * Time Complexity: O(1)
+ * @example 15.5 -> 15:30
+ * @param number number to be converted
+ * @return corresponding time
+ */
 string AllMenus::toTime(float number) {
     string hour = (int)number < 10 ? "0"+ to_string((int)number) : to_string((int)number);
     string minutes = (int)(number*60)%60 == 0 ? "00" : to_string((int)(number*60)%60);
@@ -332,6 +338,11 @@ void AllMenus::menu_uc(){
     } while (input != "1");
 }
 
+/**
+ * Gets user input relating to the type of sort(ascending or descending).
+ * Time Complexity: O(1)
+ * @return "ascending" or "descending"
+ */
 string AllMenus::sortOption() {
     string decision;
     string sortOptions =
@@ -440,7 +451,10 @@ void AllMenus::menu_occupations(){
         }
     } while(whichOccupation != "3");
 }
-
+/**
+ * Shows the last successful Request
+ * Time Complexity: O(1)
+ */
 void AllMenus::seeGlobalRequestsTop() {
     map<OPTION,string> optionToString = {{ADD,"add"},{REMOVE,"remove"}};
     if(this->globalRequests.empty()) cout << "globalRequests empty." << '\n';
@@ -525,6 +539,16 @@ void AllMenus::menu_requests(){
     }while(input != "8");
 }
 
+/*!
+ * Undoes the last successful request and removes them from the stack of globalRequests.
+ * Time Complexity: O(n³)
+ * <ul>
+ * <li>For add Request, calls a remove Request
+ * <li>For remove Request, calls an add Request
+ * <li>For switch Request, calls another switch Request
+ * </ul>
+ * @param dataset dataset to be changed
+ */
 void AllMenus::undoRequest(DataSet &dataset){
     if(this->globalRequests.empty()){
         cout << "UNABLE TO UNDO LAST REQUEST (STACK EMPTY)\n";

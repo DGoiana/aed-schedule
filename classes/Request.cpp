@@ -15,7 +15,13 @@ void Request::setStudent(Student student) {
 Student Request::getStudent() {
     return this->student;
 }
-
+/**
+ * For making a change in the Student Schedule needs to maintain class balance (the difference between the number of
+ * students in all classes is less than 4).
+ * Time complexity: O(n)
+ * @param sizeStudentCompare
+ * @return if change maintains class balance
+ */
 bool Request::maintainsClassBalance(int sizeStudentCompare) {
     string currentUc = this->collegeClass.get_ucCode();
     list<string> classes = Parser::getUcsByClasses()[currentUc];
@@ -26,7 +32,12 @@ bool Request::maintainsClassBalance(int sizeStudentCompare) {
     }
     return true;
 }
-
+/**
+ * For making a change in the Student Schedule any given Uc needs not to conflict with the Student current Schedule.
+ * Time complexity: O(n²)
+ * @param sizeStudentCompare
+ * @return if the current Schedule conflicts with the new Schedule
+ */
 bool Request::isConflictingSchedule(Schedule studentSchedule, list<Lesson> lessonsToCompare) {
     list<Lesson> studentLessons = studentSchedule.get_scheduleLessons();
     for(Lesson lessonToCompare : lessonsToCompare) {
@@ -48,7 +59,14 @@ bool Request::isConflictingSchedule(Schedule studentSchedule, list<Lesson> lesso
     }
     return false;
 }
-
+/**
+ * Request for adding a given class to the Student Schedule by adding each Uc at a time, then calling the dataset object
+ * to set the current state of the program. If request fails the Student Schedule goes back to what it was before.
+ * Time Complexity: O(n³)
+ * @param dataset DataSet object to be changed
+ * @param classToAdd class to be added
+ * @return if request was successful
+ */
 bool Request::addClass(DataSet &dataset, string classToAdd) {
     bool failed = false;
     list<string> classUcs = Parser::getUcsByClasses()[classToAdd]; // get all ucs from class
@@ -63,7 +81,14 @@ bool Request::addClass(DataSet &dataset, string classToAdd) {
     }
     return !failed;
 }
-
+/**
+ * Request for removing a given class to the Student Schedule by removing each Uc at a time, then calling the dataset object
+ * to set the current state of the program. If request fails the Student Schedule goes back to what it was before.
+ * Time Complexity: O(n²)
+ * @param dataset DataSet object to be changed
+ * @param classToRemove class to be removed
+ * @return if request was successful
+ */
 bool Request::removeClass(DataSet &dataset, string classToRemove) {
     bool failed = false;
     list<string> classUcs = Parser::getUcsByClasses()[classToRemove]; // 
@@ -79,6 +104,14 @@ bool Request::removeClass(DataSet &dataset, string classToRemove) {
     return !failed;
 }
 
+/**
+ * Request for adding a combination of Uc and Class to a Student Schedule, then calling the dataset to change its
+ * internal state. If request fails the Student Schedule goes back to what it was before.
+ * Time Complexity: O(n²)
+ * @param dataset DataSet object to be changed
+ * @param collegeClassToAdd collegeClass to be added
+ * @return if the request was successful
+ */
 bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd) {
     int numCurrentStudents = dataset.getNumStudentsInClassAndUc(collegeClassToAdd);
     if(!isConflictingSchedule(dataset.getScheduleByStudent(this->student.get_studentCode()), collegeClassToAdd.get_collegeClassSchedule().get_scheduleLessons()) 
@@ -89,7 +122,14 @@ bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd) {
     }
     return false;
 }
-
+/**
+ * Request for removing a combination of Uc and Class to a Student Schedule, then calling the dataset to change its
+ * internal state.If request fails the Student Schedule goes back to what it was before.
+ * Time Complexity: O(n)
+ * @param dataset DataSet object to be changed
+ * @param collegeClassToRemove collegeClass to be added
+ * @return if the request was successful
+ */
 bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove){
     int numCurrentStudents = dataset.getNumStudentsInClassAndUc(collegeClassToRemove);
     if(maintainsClassBalance(numCurrentStudents)) {
@@ -120,7 +160,15 @@ CollegeClass Request::get_collegeClass(){
 CollegeClass Request::get_newCollegeClass(){
     return this->newCollegeClass;
 }
-
+/**
+ * Request for switching a given combination of Uc and Class to another in a Student Schedule,
+ * then calling the dataset to change its internal state.If request fails the Student Schedule goes back to what it was before.
+ * Time Complexity: O(n³)
+ * @param dataset DataSet object to be changed
+ * @param collegeClassToAdd collegeClass to be added
+ * @param collegeClassToRemove collegeClass to be removed
+ * @return if the request was successful
+ */
 bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, CollegeClass collegeClassToAdd) {
     if(removeUc(dataset, collegeClassToRemove)) {
         if(!addUc(dataset, collegeClassToAdd)){
@@ -131,6 +179,15 @@ bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, Coll
     return false;
 }
 
+/**
+ * Request for switching a given class into another in a Student Schedule by changing each Uc at a time,then calling the dataset object
+ * to set the current state of the program. If request fails the Student Schedule goes back to what it was before.
+ * Time Complexity: O(n³)
+ * @param dataset DataSet object to be changed
+ * @param classToAdd class to be added
+ * @param classToRemove class to be removed
+ * @return if request was successful
+ */
 bool Request::switchClass(DataSet& dataset, string classToRemove, string classToAdd){
     if(removeClass(dataset, classToRemove)){
         if(!addClass(dataset,classToAdd)){
