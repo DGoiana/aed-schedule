@@ -28,23 +28,23 @@ class Request {
         Request(CollegeClass collegeClass,Student& student, TYPE type, OPTION option, DataSet& dataset) : 
         collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH
 
-        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option,DataSet dataset) : 
-        collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option),dataset(dataset) {};
+        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option,DataSet& dataset) : 
+        collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option), dataset(dataset) {};
 
         void setStudent(Student student);
         Student getStudent();
 
-        bool isConflictingSchedule(Schedule studentSchedule, list<Lesson> lessonsToCompare);
+        bool isConflictingSchedule(Schedule studentSchedule, vector<Lesson> lessonsToCompare);
 
-        bool addClass(DataSet& dataset,string classToAdd);
-        bool maintainsClassBalance(int sizeStudentCompare);
-        bool removeClass(DataSet& dataset,string classToRemove);
-        bool switchClass(DataSet& dataset, string classToRemove, string classToAdd);
+        bool addClass(DataSet& dataset,string classToAdd, list<vector<string>> classesPerUc);
+        bool maintainsClassBalance(DataSet& dataset, int sizeStudentCompare, list<vector<string>> classesPerUc);
+        bool removeClass(DataSet& dataset,string classToRemove, list<vector<string>> classesPerUc);
+        bool switchClass(DataSet& dataset, string classToRemove, string classToAdd, list<vector<string>> classesPerUc);
 
 
-        bool addUc(DataSet& dataset,CollegeClass ucToAdd);
-        bool removeUc(DataSet& dataset,CollegeClass UcToRemove);
-        bool switchUc(DataSet& dataset,CollegeClass UcToRemove,CollegeClass UcToAdd);
+        bool addUc(DataSet& dataset,CollegeClass ucToAdd, list<vector<string>> classesPerUc);
+        bool removeUc(DataSet& dataset,CollegeClass UcToRemove, list<vector<string>> classesPerUc);
+        bool switchUc(DataSet& dataset,CollegeClass UcToRemove, CollegeClass UcToAdd, list<vector<string>> classesPerUc);
 
         void addRequestToQueue(Request request);
         void removeRequestFromQueue();

@@ -10,37 +10,24 @@ class DataSet{
     private:
         vector<Student> students;
         list<CollegeClass> collegeClasses;
+        map<CollegeClass, vector<Lesson>> mappedLessons;
+        map<CollegeClass, set<Student>> mappedStudentsFromClass;
     public:
-        DataSet();
+        DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> classes, list<vector<string>> studentsClasses);
 
-        Schedule getScheduleByStudent(string studentCode);
-        Schedule getScheduleByClass(string classCode);
+        vector<Student> get_students() { return students; }
+        list<CollegeClass> get_collegeClasses() { return collegeClasses; }
+
+        vector<Student> populateStudents(list<vector<string>> studentsClasses);
+        list<CollegeClass> populateCollegeClasses(list<vector<string>> classesPerUc);
         
-        vector<Student> getStudentsByClassOrUc(string code, string id);
-        vector<Student> getStudentsByYear(string year);
-  
-        int getNumStudentsInClassAndUc(CollegeClass ucClass);
+        CollegeClass buildObject(string classCode, string ucCode);
 
-        int numStudentsRegisteredInNUcs(int num);
+        map<CollegeClass, vector<Lesson>> mapLessons(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> allClasses);
+        map<CollegeClass, set<Student>> mapStudents(list<vector<string>> studentsClasses);
 
-        void setStudentClasses(set<CollegeClass> newClasses, Student student);
-        void addStudentClass(CollegeClass c, Student student);
+        vector<Lesson> findLesson(std::unordered_multimap<pair<string, string>, Lesson, pair_hash> globalLessons, Lesson lessonToFind);
 
-        int consultClassorUcOccupation(string code, string id);
-        int consultYearOccupation(std::string year);
-
-        void sortStudentsByNameOrYear(vector<Student> &students, string order, string input);
-
-        Student getStudentByNumber(string studentCode);
-        list<Student> getStudentByName(string studentName);
-
-        vector<string> getClasses();
-        vector<string> getUcs();
-
-        void sortClassesByOccupation(vector<string> &codes, string order);
-        void sortUcsByOccupation(vector<string> &codes, string order);
-        void sortYearsByOccupation(vector<string> &years, string order);
-
-        string getMostStudentsUC();
+        map<string, list<string>> getUcsByClasses(list<vector<string>> classesPerUc);
 };
 #endif

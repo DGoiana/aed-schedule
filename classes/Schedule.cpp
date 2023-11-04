@@ -4,19 +4,19 @@
 Schedule::Schedule(){
 }
 
-Schedule::Schedule(list<Lesson> scheduleLessons){
+Schedule::Schedule(vector<Lesson> scheduleLessons){
     this->scheduleLessons = scheduleLessons;
 }
 
-list<Lesson> Schedule::get_scheduleLessons() const{
+vector<Lesson> Schedule::get_scheduleLessons() const{
     return this->scheduleLessons;
 }
 
-void Schedule::set_scheduleLessons(list<Lesson> new_scheduleLessons){
+void Schedule::set_scheduleLessons(vector<Lesson> new_scheduleLessons){
     this->scheduleLessons = new_scheduleLessons;
 }
 
-void Schedule::addLessonsFromList(list<Lesson> lessons){
+void Schedule::addLessonsFromList(vector<Lesson> lessons){
     for(Lesson l : lessons) this->scheduleLessons.push_back(l);
 }
 

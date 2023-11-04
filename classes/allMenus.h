@@ -12,21 +12,25 @@ class AllMenus{
     private:
         DataSet dataset;
     public:
-        AllMenus(DataSet &dataset);
-        vector<string> showSortOptions(string id);
-        void menu_principal();
+        AllMenus(DataSet &dataset, list<vector<string>> classesPerUc);
+        void sortStudentVector(vector<Student>& students);
+        void menu_principal(list<vector<string>> classesPerUc);
         void menu_schedule();
         void menu_students();
         void menu_uc();
         void menu_occupations();
-        void menu_requests();
-        void draw_rectangle(int width, int height, const std::vector<std::string>& text);
-        void addClassFunction(DataSet& dataset);
-        void removeClassFunction(DataSet& dataset);
-        void switchClassFunction(DataSet& dataset);
-        void addUcFunction(DataSet& dataset);
-        void removeUcFunction(DataSet& dataset);
-        void switchUcFunction(DataSet& dataset);
+        void menu_requests(list<vector<string>> classesPerUc);
+        void addClassFunction(list<vector<string>> classesPerUc);
+        void removeClassFunction(list<vector<string>> classesPerUc);
+        void switchClassFunction(list<vector<string>> classesPerUc);
+        void addUcFunction(list<vector<string>> classesPerUc);
+        void removeUcFunction(list<vector<string>> classesPerUc);
+        void switchUcFunction(list<vector<string>> classesPerUc);
+
+        void showSchedule(vector<Lesson> lessons);
+        void showPages(vector<Student> students);
+        string sortOption();
+        string toTime(float number);
 };
 
 #endif 

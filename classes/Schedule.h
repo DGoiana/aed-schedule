@@ -9,13 +9,13 @@ using namespace std;
 
 class Schedule {
     private:
-        list<Lesson> scheduleLessons;
+        vector<Lesson> scheduleLessons;
     public:
         Schedule();
-        Schedule(list<Lesson> scheduleLessons);
-        list<Lesson> get_scheduleLessons() const;
-        void set_scheduleLessons(list<Lesson> new_scheduleLessons);
-        void addLessonsFromList(list<Lesson> lessons);
+        Schedule(vector<Lesson> scheduleLessons);
+        vector<Lesson> get_scheduleLessons() const;
+        void set_scheduleLessons(vector<Lesson> new_scheduleLessons);
+        void addLessonsFromList(vector<Lesson> lessons);
         void addLesson(Lesson lesson);
 };
 

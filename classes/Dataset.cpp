@@ -5,187 +5,83 @@
 #include "Lesson.h"
 #include <iostream>
 #include "Parser.h"
+#include <map>
+#include <set>
+#include <vector>
+#include "CollegeClass.h"
 #include <algorithm>
 
 using namespace std;
 
-DataSet::DataSet(){
-    this->students = Parser::parseStudents();
-    this->collegeClasses = Parser::parseCollegeClasses();
+string trimClassCode(string classCode) {
+    return classCode.substr(0, classCode.length() - 1);
 }
 
-Schedule DataSet::getScheduleByStudent(string studentCode){
-    Schedule schedule;
-    for(Student s : students){
-        if(s.get_studentCode() == studentCode){
-            for(CollegeClass c : s.get_studentClasses()){
-                schedule.addLessonsFromList(c.get_collegeClassSchedule().get_scheduleLessons());
-            }
-        };
+DataSet::DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> allClasses, list<vector<string>> studentsClasses){
+    this->mappedLessons = mapLessons(classesPerUc, allClasses);
+    this->mappedStudentsFromClass = mapStudents(studentsClasses);
+    
+    this->students = populateStudents(studentsClasses);
+    this->collegeClasses = populateCollegeClasses(classesPerUc);
+}
+
+vector<Student> DataSet::populateStudents(list<vector<string>> studentsClasses){
+    vector<Student> students;
+    map<pair<string, string>, set<CollegeClass>> mappedStudents;
+    for(vector<string> student: studentsClasses){
+        mappedStudents[{student[0], student[1]}].insert(buildObject(trimClassCode(student[3]), student[2]));
     }
-    return schedule;
-}
 
-Schedule DataSet::getScheduleByClass(string classCode){
-    Schedule schedule;
-    for(CollegeClass c : collegeClasses){
-        if(c.get_classCode() == classCode){
-            schedule.addLessonsFromList(c.get_collegeClassSchedule().get_scheduleLessons());
-        }
+    for(auto p : mappedStudents){
+        students.push_back(Student(p.first.first, p.first.second, p.second));
     }
-    return schedule;
-}
+    return students;
+} 
 
-vector<Student> DataSet::getStudentsByClassOrUc(string code, string id){
-    set<Student> students;
-    for(CollegeClass c : collegeClasses){
-        if(c.get_classCode() == code && id == "class"){
-            for(Student s : c.get_registeredStudents()){
-                students.insert(s);
-            }
-        }
-        if(c.get_ucCode() == code && id == "uc"){
-            for(Student s : c.get_registeredStudents()){
-                students.insert(s);
-            }
-        }
-    }
-    return vector<Student>(students.begin(), students.end());
-}
-
-vector<string> DataSet::getClasses(){
-    vector<string> classes;
-    for(CollegeClass c : collegeClasses){
-        if(find(classes.begin(), classes.end(), c.get_classCode()) != classes.end()) continue;
-        classes.push_back(c.get_classCode());
+list<CollegeClass> DataSet::populateCollegeClasses(list<vector<string>> classesPerUc){
+    list<CollegeClass> classes;
+    for(vector<string> cc : classesPerUc){
+        classes.push_back(buildObject(trimClassCode(cc[1]), cc[0]));
     }
     return classes;
 }
 
-vector<string> DataSet::getUcs(){
-    vector<string> ucs;
-    for(CollegeClass c : collegeClasses){
-        if(find(ucs.begin(), ucs.end(), c.get_ucCode()) != ucs.end()) continue;
-        ucs.push_back(c.get_ucCode());
-    }
-    return ucs;
+CollegeClass DataSet::buildObject(string classCode, string ucCode) {
+    Schedule schedule = Schedule(mappedLessons[CollegeClass(classCode, ucCode, {}, Schedule())]);
+    set<Student> students = mappedStudentsFromClass[CollegeClass(classCode, ucCode, {}, Schedule())];
+    return CollegeClass(classCode, ucCode, students, schedule);
 }
 
-int DataSet::getNumStudentsInClassAndUc(CollegeClass ucClass)
+map<CollegeClass, vector<Lesson>> DataSet::mapLessons(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> allClasses){
+    map<CollegeClass, vector<Lesson>> mappedLessons;
+    for(vector<string> classAndUc : classesPerUc){
+        mappedLessons[CollegeClass(trimClassCode(classAndUc[1]), classAndUc[0], {}, Schedule())] = findLesson(allClasses, Lesson({trimClassCode(classAndUc[1]), classAndUc[0]}, "*", 0, 0, "*"));
+    }
+    return mappedLessons;
+}
+
+map<CollegeClass, set<Student>> DataSet::mapStudents(list<vector<string>> studentsClasses){
+    map<CollegeClass, set<Student>> mappedCollegeClass;
+    for(vector<string> student: studentsClasses){
+        mappedCollegeClass[CollegeClass(trimClassCode(student[3]), student[2], {}, Schedule())].insert(Student(student[0], student[1], {}));
+    }
+    return mappedCollegeClass;
+}
+
+vector<Lesson> DataSet::findLesson(std::unordered_multimap<pair<string, string>, Lesson, pair_hash> globalLessons, Lesson lessonToFind) {
+    vector<Lesson> lessons;
+    auto range = globalLessons.equal_range({lessonToFind.get_classCode(), lessonToFind.get_ucCode()});
+    for (auto i = range.first; i != range.second; ++i) {
+        lessons.push_back(i->second);
+    }
+    return lessons;
+}
+
+map<string, list<string>> DataSet::getUcsByClasses(list<vector<string>> classesPerUc) // [LEIC01: {L.EIC01, L.EIC02}, ...]
 {
-    for(CollegeClass c : collegeClasses){
-        if(c == ucClass) return c.get_registeredStudents().size();
-    }
-    return 0;
-}
-
-vector<Student> DataSet::getStudentsByYear(string year){
-    set<Student> students;
-    for(Student s : this->students){
-        if(s.get_studentCode().substr(0,4) == year) students.insert(s);
-    }
-    vector<Student> result(students.begin(), students.end());
-    return result;
-}
-
-int DataSet::numStudentsRegisteredInNUcs(int num){
-    int count = 0;
-    for(Student s : students){
-        if(s.get_studentClasses().size() >= num) count++;
-    }
-    return count;
-}
-
-int DataSet::consultClassorUcOccupation(string code, string id){
-    return getStudentsByClassOrUc(code, id).size();
-}
-
-int DataSet::consultYearOccupation(string year){
-    return getStudentsByYear(year).size();
-}
-
-void DataSet::sortStudentsByNameOrYear(vector<Student> &students, string order, string input){
-    if(input == "name"){
-        if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
-            return s1.get_studentName() < s2.get_studentName();
-        });
-        else sort(students.begin(), students.end(), [](Student s1, Student s2){
-            return s1.get_studentName() > s2.get_studentName();
-        });
-    }
-    else{
-        if(order == "ascending") sort(students.begin(), students.end(), [](Student s1, Student s2){
-            return s1.get_studentCode() < s2.get_studentCode();
-        });
-        else sort(students.begin(), students.end(), [](Student s1, Student s2){
-            return s1.get_studentCode() > s2.get_studentCode();
-        });
-    }
-}
-
-void DataSet::sortClassesByOccupation(vector<string> &codes, string order){
-    if(order == "ascending") sort(codes.begin(), codes.end(), [this](string code1, string code2){
-        return consultClassorUcOccupation(code1, "class") < consultClassorUcOccupation(code2, "class");
-    });
-    else sort(codes.begin(), codes.end(), [this](string code1, string code2){
-        return consultClassorUcOccupation(code1, "class") > consultClassorUcOccupation(code2, "class");
-    });
-}
-
-void DataSet::sortUcsByOccupation(vector<string> &codes, string order){
-    if(order == "ascending") sort(codes.begin(), codes.end(), [this](string code1, string code2){
-        return consultClassorUcOccupation(code1, "uc") < consultClassorUcOccupation(code2, "uc");
-    });
-    else sort(codes.begin(), codes.end(), [this](string code1, string code2){
-        return consultClassorUcOccupation(code1, "uc") > consultClassorUcOccupation(code2, "uc");
-    });
-}
-
-void DataSet::sortYearsByOccupation(vector<string> &years, string order){
-    if(order == "ascending") sort(years.begin(), years.end(), [this](string year1, string year2){
-        return consultYearOccupation(year1) < consultYearOccupation(year2);
-    });
-    else sort(years.begin(), years.end(), [this](string year1, string year2){
-        return consultYearOccupation(year1) > consultYearOccupation(year2);
-    });
-}
-
-string DataSet::getMostStudentsUC(){
-    string result;
-    int num = 0;
-    for(string uc: getUcs()){
-        if(consultClassorUcOccupation(uc, "uc") > num){
-            result = uc;
-            num = consultClassorUcOccupation(uc, "uc");
-        }
+    map<string,list<string>> result;
+    for(vector<string> classAndUc : classesPerUc) {
+        result[trimClassCode(classAndUc[1])].push_back(classAndUc[0]);
     }
     return result;
-}
-
-
-//CHECK
-void DataSet::setStudentClasses(set<CollegeClass> newClasses, Student student) {
-    auto it = find(students.begin(), students.end(), student);
-    it->set_studentClasses(newClasses);
-}
-
-void DataSet::addStudentClass(CollegeClass c, Student student){
-   auto it = find(students.begin(), students.end(), student);
-   it->add_studentClass(c);
-}
-
-//CHECK
-Student DataSet::getStudentByNumber(string studentCode)
-{
-    return *find(students.begin(), students.end(), Student(studentCode, "", {}));
-}
-
-list<Student> DataSet::getStudentByName(string studentName)
-{
-    list<Student> sameNameStudents;
-    for(Student student : this->students){
-        if(student.get_studentName() == studentName)
-            sameNameStudents.push_back(student);
-    }
-    return sameNameStudents;
 }

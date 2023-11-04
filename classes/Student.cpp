@@ -1,5 +1,6 @@
 #include "Student.h"
 #include "Schedule.h"
+#include <iostream>
 
 Student::Student(){
     this->studentCode = "";
