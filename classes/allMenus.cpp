@@ -195,7 +195,6 @@ void AllMenus::menu_schedule() {
 
 void AllMenus::showPages(vector<Student> students) {
     int page = 0;
-    int numPages = students.size()%20 == 0 ? students.size()/20 : students.size()/20 + 1;
     string decision;
     int numPages = students.size()%20 == 0 ? students.size()/20 : students.size()/20 + 1;
     do {
