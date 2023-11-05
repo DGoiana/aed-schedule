@@ -1,7 +1,6 @@
 #include "CollegeClass.h"
 #include "Dataset.h"
 #include <list>
-#include <queue>
 #include "Student.h"
 
 enum TYPE {
@@ -20,16 +19,16 @@ class Request {
         DataSet& dataset;
         CollegeClass collegeClass;
         CollegeClass newCollegeClass;
-        string studentCode;
+        Student& student;
         TYPE type;
         OPTION option;
         static list<Request> globalRequests;
     public:
-        Request(CollegeClass collegeClass,string student, TYPE type, OPTION option, DataSet& dataset) : 
-        collegeClass(collegeClass),newCollegeClass(collegeClass),studentCode(student),type(type),option(option),dataset(dataset) {}; // SHHH
+        Request(CollegeClass collegeClass, Student& student, TYPE type, OPTION option, DataSet& dataset) : 
+        collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH
 
-        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,string student, TYPE type, OPTION option,DataSet& dataset) : 
-        collegeClass(collegeClass),newCollegeClass(newCollegeClass),studentCode(student),type(type),option(option), dataset(dataset) {};
+        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option,DataSet& dataset) : 
+        collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option), dataset(dataset) {};
 
         bool isConflictingSchedule(Schedule studentSchedule, vector<Lesson> lessonsToCompare);
 
@@ -43,12 +42,9 @@ class Request {
         bool removeUc(DataSet& dataset,CollegeClass UcToRemove, list<vector<string>> classesPerUc);
         bool switchUc(DataSet& dataset,CollegeClass UcToRemove, CollegeClass UcToAdd, list<vector<string>> classesPerUc);
 
-        void addRequestToQueue(Request request);
-        void removeRequestFromQueue();
-
         OPTION get_option();
         TYPE get_type();
-        string get_student();
+        Student get_student();
         CollegeClass get_collegeClass();
         CollegeClass get_newCollegeClass();
 };

@@ -22,6 +22,7 @@ DataSet::DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair
     this->mappedStudentsFromClass = mapStudents(studentsClasses);
 
     this->students = populateStudents(studentsClasses);
+    sort(this->students.begin(),this->students.end()); // for binary search purposes
     this->collegeClasses = populateCollegeClasses(classesPerUc);
 }
 
@@ -84,4 +85,16 @@ map<string, list<string>> DataSet::getUcsByClasses(list<vector<string>> classesP
         result[trimClassCode(classAndUc[1])].push_back(classAndUc[0]);
     }
     return result;
+}
+
+Student& DataSet::binarySearchStudentbyNumber(string classCode) {
+    int h = students.size() - 1;
+    int l = 0;
+    while(l <= h) {
+        int m = l + (h-l) / 2;
+        if(this->students[m].get_studentCode() == classCode) return students[m];
+        if(this->students[m].get_studentCode() < classCode) l = m + 1;
+        else h = m - 1;
+    }
+    throw std::runtime_error("Student not found");
 }

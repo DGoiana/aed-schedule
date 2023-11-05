@@ -35,6 +35,7 @@ void Student::set_studentName(const string& new_studentName){
 }
 
 void Student::set_studentClasses(const vector<CollegeClass>& new_studentClasses){
+    cout << "Setting student classes" << endl;
     this->studentClasses = new_studentClasses;
 }
 

@@ -1,5 +1,6 @@
 #include "menuFunctions.h"
 #include <iostream>
+#include <fstream>
 
 Schedule getScheduleByStudent(string studentCode, DataSet &dataset){
     Schedule schedule;
@@ -148,21 +149,26 @@ string getMostStudentsUC(DataSet &dataset){
     return result;
 }
 
-void setStudentClasses(vector<CollegeClass> newClasses, string studentCode, DataSet &dataset) {
-    auto it = find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}));
-    it->set_studentClasses(newClasses);
+void setStudentClasses(vector<CollegeClass> newClasses, Student& student) {
+    student.set_studentClasses(newClasses);
 }
 
-void addStudentClass(CollegeClass c, string studentCode, DataSet &dataset){
-   auto it = find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}));
-   it->add_studentClass(c);
+
+void addStudentClass(CollegeClass c, Student& student){
+   student.add_studentClass(c);
 }
 
-// Student getStudentByNumber(string studentCode, DataSet &dataset){
-//     for(Student s : dataset.get_students()){
-//         if(s.get_studentCode() == studentCode) return s;
-//     }
-// }
+Student& getStudentByNumber(string studentCode, DataSet &dataset){
+    return dataset.binarySearchStudentbyNumber(studentCode);
+}
+
+CollegeClass& getCollegeClassByCodes(string classCode, string ucCode, DataSet &dataset){
+    for(CollegeClass& c : dataset.get_collegeClasses()){
+        if(c.get_classCode() == classCode && c.get_ucCode() == ucCode) return c;
+    }
+    throw std::runtime_error("Class not found");
+}
+
 
 list<Student> getStudentByName(string studentName, DataSet &dataset)
 {
@@ -172,4 +178,27 @@ list<Student> getStudentByName(string studentName, DataSet &dataset)
             sameNameStudents.push_back(student);
     }
     return sameNameStudents;
+}
+
+void removeStudentFromCollegeClass(Student studentToErase, DataSet &dataset, CollegeClass collegeClassToErase){
+    auto it = find(dataset.get_collegeClasses().begin(), dataset.get_collegeClasses().end(),collegeClassToErase);
+    vector<Student> newStudents = it->get_registeredStudents();
+    newStudents.erase(remove(newStudents.begin(), newStudents.end(), studentToErase), newStudents.end());
+    it->set_registeredStudents(newStudents);
+}
+void addStudentInCollegeClass(Student studentToAdd, DataSet &dataset, CollegeClass collegeClassToAdd){
+    auto it = find(dataset.get_collegeClasses().begin(), dataset.get_collegeClasses().end(), collegeClassToAdd);
+    vector<Student> newStudents = it->get_registeredStudents();
+    newStudents.push_back(studentToAdd);
+    it->set_registeredStudents(newStudents);
+}
+
+void DataSet::dumpCurrentState() {
+    ofstream output("../schedule/students_classes.csv");
+    output << "StudentCode,StudentName,UcCode,ClassCode" << '\n';
+    for(Student student : this->students) {
+        for(CollegeClass cc : student.get_studentClasses()) {
+            output << student.get_studentCode() <<","<< student.get_studentName() << "," << cc.get_ucCode() << "," << cc.get_classCode() << "\r\n";
+        }
+    }
 }

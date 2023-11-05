@@ -16,7 +16,7 @@ class DataSet{
         DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> classes, list<vector<string>> studentsClasses);
 
         vector<Student> get_students() { return students; }
-        list<CollegeClass> get_collegeClasses() { return collegeClasses; }
+        list<CollegeClass>& get_collegeClasses() { return collegeClasses; }
 
         vector<Student> populateStudents(list<vector<string>> studentsClasses);
         list<CollegeClass> populateCollegeClasses(list<vector<string>> classesPerUc);
@@ -29,5 +29,9 @@ class DataSet{
         vector<Lesson> findLesson(std::unordered_multimap<pair<string, string>, Lesson, pair_hash> globalLessons, Lesson lessonToFind);
 
         map<string, list<string>> getUcsByClasses(list<vector<string>> classesPerUc);
+
+        Student& binarySearchStudentbyNumber(string classCode);
+
+        void dumpCurrentState();
 };
 #endif

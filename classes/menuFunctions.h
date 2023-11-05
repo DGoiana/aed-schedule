@@ -35,12 +35,17 @@ void sortYearsByOccupation(vector<string> &years, string order, DataSet &dataset
 
 string getMostStudentsUC(DataSet &dataset);
 
-void setStudentClasses(vector<CollegeClass> newClasses, string studentCode, DataSet &dataset);
+void setStudentClasses(vector<CollegeClass> newClasses, Student& student);
 
-void addStudentClass(CollegeClass c, string studentCode, DataSet &dataset);
+void addStudentClass(CollegeClass c, Student& student);
 
-// Student getStudentByNumber(string studentCode, DataSet &dataset);
+Student& getStudentByNumber(string studentCode, DataSet &dataset);
 
 list<Student> getStudentByName(string studentName, DataSet &dataset);
+
+CollegeClass& getCollegeClassByCodes(string classCode, string ucCode, DataSet &dataset);
+
+void removeStudentFromCollegeClass(Student studentToErase, DataSet &dataset, CollegeClass collegeClassToErase);
+void addStudentInCollegeClass(Student studentToAdd, DataSet &dataset, CollegeClass collegeClassToAdd);
 
 #endif
