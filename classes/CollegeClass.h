@@ -7,7 +7,14 @@
 
 using namespace std;
 class Student;
-
+/**
+ * This class is a combination of class and Uc. Its attributes are:
+ * <ul>
+ *  <li> Class identifier
+ *  <li> Uc identifier
+ *  <li> a vector of enrolled students
+ *  <li> the combinations Schedule
+ */
 class CollegeClass {
     private:
         string classCode;

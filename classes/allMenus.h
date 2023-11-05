@@ -10,10 +10,14 @@
 #include <vector>
 #include <stack>
 
+/**
+ * This class is responsible for all display functions, interaction with the user and making requests.
+ */
 class AllMenus{
     private:
         DataSet dataset;
         stack<Request> globalRequests;
+        stack<list<string>> previousRemoves;
     public:
         AllMenus(DataSet &dataset, list<vector<string>> classesPerUc);
         void sortStudentVector(vector<Student>& students);

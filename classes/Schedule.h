@@ -8,6 +8,9 @@
 
 using namespace std;
 
+/**
+ * The Schedule class is seen as a list of lessons.
+ */
 class Schedule {
     private:
         vector<Lesson> scheduleLessons;

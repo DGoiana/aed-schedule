@@ -26,6 +26,11 @@ DataSet::DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair
     this->collegeClasses = populateCollegeClasses(classesPerUc);
 }
 
+/**
+ * Populates the Student with their CollegeClass
+ * @param studentsClasses vector of the classes for each Student
+ * @return a vector of all Student with their CollegeClass
+ */
 vector<Student> DataSet::populateStudents(list<vector<string>> studentsClasses){
     vector<Student> students;
     map<pair<string, string>, vector<CollegeClass>> mappedStudents;
@@ -47,6 +52,12 @@ list<CollegeClass> DataSet::populateCollegeClasses(list<vector<string>> classesP
     return classes;
 }
 
+/**
+ * Builds a college class according to their Schedule, vector of Student
+ * @param classCode class identifier
+ * @param ucCode uc identifier
+ * @return an instance of CollegeClass
+ */
 CollegeClass DataSet::buildObject(string classCode, string ucCode) {
     Schedule schedule = Schedule(mappedLessons[CollegeClass(classCode, ucCode, {}, Schedule())]);
     vector<Student> students = mappedStudentsFromClass[CollegeClass(classCode, ucCode, {}, Schedule())];
@@ -87,6 +98,12 @@ map<string, list<string>> DataSet::getUcsByClasses(list<vector<string>> classesP
     return result;
 }
 
+/**
+ * Searches a given Student in the vector of all Student.
+ * Time Complexity: O(log N)
+ * @param classCode classCode of the Student to be found
+ * @return the Student to be found
+ */
 Student& DataSet::binarySearchStudentbyNumber(string classCode) {
     int h = students.size() - 1;
     int l = 0;

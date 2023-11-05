@@ -21,6 +21,12 @@ vector<string> Parser::split(std::string line, const string &delimiter) {
     return result;
 }
 
+/** 
+ * Reads a given file.
+ * Time Complexity: O(n)
+ * @param path
+ * @return a list of vector of the attributes of the objects to be created
+ */
 list<vector<string>> Parser::readFile(const string &path) {
     ifstream file(path);
     string line;
@@ -33,6 +39,11 @@ list<vector<string>> Parser::readFile(const string &path) {
     return result;
 }
 
+/**
+ * Creates a list of all the available lessons.
+ * Time Complexity: O(n)
+ * @return a list of lessons
+ */
 std::unordered_multimap<pair<string, string>, Lesson, pair_hash> Parser::parseClassesFile(list<vector<string>> classes) {
     std::unordered_multimap<pair<string, string>, Lesson, pair_hash> lessons;
     for (vector<string> lesson: classes) {

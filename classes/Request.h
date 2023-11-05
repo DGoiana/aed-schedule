@@ -14,6 +14,17 @@ enum OPTION {
     SWITCH
 };
 
+/**
+ * The request class processes some calls made by the menu. It has:
+ * <ul>
+ *  <li> The dataset to change the programs state
+ *  <li> A collegeClass to add or remove
+ *  <li> A newColleClass for switch requests
+ *  <li> The Student to have its Schedule changed
+ *  <li> Type of the Request (CLASS or UC)
+ *  <li> Option of the Request (ADD or REMOVE or SWITCH)
+ * <ul>
+ */
 class Request {
     private:
         DataSet& dataset;
@@ -22,7 +33,6 @@ class Request {
         Student& student;
         TYPE type;
         OPTION option;
-        static list<Request> globalRequests;
     public:
         Request(CollegeClass collegeClass, Student& student, TYPE type, OPTION option, DataSet& dataset) : 
         collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH
@@ -32,10 +42,10 @@ class Request {
 
         bool isConflictingSchedule(Schedule studentSchedule, vector<Lesson> lessonsToCompare);
 
-        bool addClass(DataSet& dataset,string classToAdd, list<vector<string>> classesPerUc);
+        bool addClass(DataSet& dataset,string classToAdd, list<vector<string>> classesPerUc, list<string> newClassUcs = list<string>(), string undo = "");
         bool maintainsClassBalance(DataSet& dataset, int sizeStudentCompare, list<vector<string>> classesPerUc);
-        bool removeClass(DataSet& dataset,string classToRemove, list<vector<string>> classesPerUc);
-        bool switchClass(DataSet& dataset, string classToRemove, string classToAdd, list<vector<string>> classesPerUc);
+        bool removeClass(DataSet& dataset,string classToRemove, list<vector<string>> classesPerUc, list<string>& removedElements);
+        bool switchClass(DataSet& dataset, string classToRemove, string classToAdd, list<vector<string>> classesPerUc, list<string>& removedElements, string undo="");
 
 
         bool addUc(DataSet& dataset,CollegeClass ucToAdd, list<vector<string>> classesPerUc);
