@@ -12,7 +12,9 @@
  * For making a change in the Student Schedule needs to maintain class balance (the difference between the number of
  * students in all classes is less than 4).
  * Time complexity: O(n)
- * @param sizeStudentCompare
+ * @param dataset dataset to change the programs state
+ * @param sizeStudentCompare size of the CollegeClass to be changed
+ * @param classesPerUc classes of the Uc
  * @return if change maintains class balance
  */
 bool Request::maintainsClassBalance(DataSet &dataset, int sizeStudentCompare, list<vector<string>> classesPerUc) {
@@ -29,7 +31,8 @@ bool Request::maintainsClassBalance(DataSet &dataset, int sizeStudentCompare, li
 /**
  * For making a change in the Student Schedule any given Uc needs not to conflict with the Student current Schedule.
  * Time complexity: O(n²)
- * @param sizeStudentCompare
+ * @param studentSchedule current Student Schedule
+ * @param lessonsToCompare list of lessons to compare
  * @return if the current Schedule conflicts with the new Schedule
  */
 bool Request::isConflictingSchedule(Schedule studentSchedule, vector<Lesson> lessonsToCompare) {
@@ -60,6 +63,8 @@ bool Request::isConflictingSchedule(Schedule studentSchedule, vector<Lesson> les
  * Time Complexity: O(n³)
  * @param dataset DataSet object to be changed
  * @param classToAdd class to be added
+ * @param newClassUcs chosen Ucs to undo
+ * @param undo "undo" if it is an undo request
  * @return if request was successful
  */
 bool Request::addClass(DataSet &dataset, string classToAdd, list<vector<string>> classesPerUc, list<string> newClassUcs, string undo) {
@@ -84,6 +89,7 @@ bool Request::addClass(DataSet &dataset, string classToAdd, list<vector<string>>
  * Time Complexity: O(n²)
  * @param dataset DataSet object to be changed
  * @param classToRemove class to be removed
+ * @param removedElements list that contains removed elements for undo request
  * @return if request was successful
  */
 bool Request::removeClass(DataSet &dataset, string classToRemove, list<vector<string>> classesPerUc, list<string>& removedElements) {
@@ -117,6 +123,7 @@ bool Request::removeClass(DataSet &dataset, string classToRemove, list<vector<st
  * Time Complexity: O(n²)
  * @param dataset DataSet object to be changed
  * @param collegeClassToAdd collegeClass to be added
+ * @param classesPerUc classes of the Uc
  * @return if the request was successful
  */
 bool Request::addUc(DataSet& dataset, CollegeClass collegeClassToAdd, list<vector<string>> classesPerUc) {
@@ -137,6 +144,7 @@ bool Request::addUc(DataSet& dataset, CollegeClass collegeClassToAdd, list<vecto
  * Time Complexity: O(n)
  * @param dataset DataSet object to be changed
  * @param collegeClassToRemove collegeClass to be added
+ * @param classesPerUc classes of the Uc
  * @return if the request was successful
  */
 bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove, list<vector<string>> classesPerUc){
@@ -178,6 +186,7 @@ CollegeClass Request::get_newCollegeClass(){
  * @param dataset DataSet object to be changed
  * @param collegeClassToAdd collegeClass to be added
  * @param collegeClassToRemove collegeClass to be removed
+ * @param classesPerUc classes of the Uc
  * @return if the request was successful
  */
 bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, CollegeClass collegeClassToAdd, list<vector<string>> classesPerUc) {
@@ -197,6 +206,8 @@ bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, Coll
  * @param dataset DataSet object to be changed
  * @param classToAdd class to be added
  * @param classToRemove class to be removed
+ * @param classesPerUc classes of the Uc
+ * @param undo "undo" if it is an undo request
  * @return if request was successful
  */
 bool Request::switchClass(DataSet& dataset, string classToRemove, string classToAdd, list<vector<string>> classesPerUc, list<string>& removedElements, string undo){
