@@ -40,6 +40,9 @@ class DataSet{
         vector<string> getUcs();
         vector<string> getStudents();
 
+        void removeStudentFromCollegeClass(Student studentToErase,CollegeClass collegeClassToErase);
+        void addStudentInCollegeClass(Student studentToAdd,CollegeClass collegeClassToAdd);
+
         void sortClassesByOccupation(vector<string> &codes, string order);
         void sortUcsByOccupation(vector<string> &codes, string order);
         void sortYearsByOccupation(vector<string> &years, string order);

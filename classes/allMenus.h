@@ -14,6 +14,7 @@ class AllMenus{
     private:
         DataSet dataset;
         stack<Request> globalRequests;
+        stack<list<string>> previousRemoves;
     public:
         AllMenus(DataSet &dataset);
         void sortStudentVector(vector<Student>& students);

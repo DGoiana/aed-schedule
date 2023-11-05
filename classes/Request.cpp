@@ -4,17 +4,12 @@
 #include "Request.h"
 #include "Dataset.h"
 #include "Parser.h"
+#include <algorithm>
 
 #define CLASS_CAP 25
 
 
-void Request::setStudent(Student student) {
-    this->student = student;
-}
 
-Student Request::getStudent() {
-    return this->student;
-}
 /**
  * For making a change in the Student Schedule needs to maintain class balance (the difference between the number of
  * students in all classes is less than 4).
@@ -67,10 +62,11 @@ bool Request::isConflictingSchedule(Schedule studentSchedule, list<Lesson> lesso
  * @param classToAdd class to be added
  * @return if request was successful
  */
-bool Request::addClass(DataSet &dataset, string classToAdd) {
+bool Request::addClass(DataSet &dataset, string classToAdd,list<string> newClassUcs) {
     bool failed = false;
     list<string> classUcs = Parser::getUcsByClasses()[classToAdd]; // get all ucs from class
     set<CollegeClass> oldClasses = this->student.get_studentClasses();
+    if(!newClassUcs.empty()) classUcs = newClassUcs;
     for(string uc : classUcs) {
         CollegeClass currentCC = CollegeClass(classToAdd, uc, Parser::studentsFromCollegeClass()[CollegeClass(classToAdd, uc, {}, Schedule())], Schedule(Parser::mapLessons()[CollegeClass(classToAdd, uc, {}, Schedule())]));
         Request request = Request(currentCC, this->student, UC, ADD, dataset);
@@ -89,7 +85,7 @@ bool Request::addClass(DataSet &dataset, string classToAdd) {
  * @param classToRemove class to be removed
  * @return if request was successful
  */
-bool Request::removeClass(DataSet &dataset, string classToRemove) {
+bool Request::removeClass(DataSet &dataset, string classToRemove,list<string>& removedElements) {
     bool failed = false;
     list<string> classUcs = Parser::getUcsByClasses()[classToRemove]; // 
     set<CollegeClass> oldClasses = this->student.get_studentClasses();
@@ -97,9 +93,13 @@ bool Request::removeClass(DataSet &dataset, string classToRemove) {
         CollegeClass currentCC = CollegeClass(classToRemove, uc, {}, Schedule());
         Request request = Request(currentCC, this->student, UC, REMOVE, dataset);
         if (!request.removeUc(dataset, currentCC)) failed = true;
+        for(CollegeClass cc : this->student.get_studentClasses()){
+            if(cc == currentCC) removedElements.push_back(uc);
+        }
     }
     if(failed) {
         dataset.setStudentClasses(oldClasses, this->student);
+        removedElements.clear();
     }
     return !failed;
 }
@@ -114,10 +114,11 @@ bool Request::removeClass(DataSet &dataset, string classToRemove) {
  */
 bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd) {
     int numCurrentStudents = dataset.getNumStudentsInClassAndUc(collegeClassToAdd);
-    if(!isConflictingSchedule(dataset.getScheduleByStudent(this->student.get_studentCode()), collegeClassToAdd.get_collegeClassSchedule().get_scheduleLessons()) 
+    if(!isConflictingSchedule(dataset.getScheduleByStudent(this->student.get_studentCode()), collegeClassToAdd.get_collegeClassSchedule().get_scheduleLessons())
     && numCurrentStudents < CLASS_CAP
     && maintainsClassBalance(numCurrentStudents)) {
         dataset.addStudentClass(collegeClassToAdd, this->student);
+        dataset.addStudentInCollegeClass(this->student,collegeClassToAdd);
         return true;
     }
     return false;
@@ -136,6 +137,7 @@ bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove){
         set<CollegeClass> toRemove = dataset.getStudentByNumber(this->student.get_studentCode()).get_studentClasses();
         toRemove.erase(collegeClassToRemove);
         dataset.setStudentClasses(toRemove, this->student);
+        dataset.removeStudentFromCollegeClass(this->student,collegeClassToRemove);
         return true;
       }
      return false;
@@ -171,12 +173,12 @@ CollegeClass Request::get_newCollegeClass(){
  */
 bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, CollegeClass collegeClassToAdd) {
     if(removeUc(dataset, collegeClassToRemove)) {
-        if(!addUc(dataset, collegeClassToAdd)){
-            addUc(dataset, collegeClassToRemove);
+        if(!addClass(dataset, collegeClassToAdd.get_classCode(),{collegeClassToAdd.get_ucCode()})){
+            addClass(dataset, collegeClassToRemove.get_classCode(),{collegeClassToRemove.get_ucCode()});
             return false;
         }
     }
-    return false;
+    return true;
 }
 
 /**
@@ -188,9 +190,9 @@ bool Request::switchUc(DataSet& dataset, CollegeClass collegeClassToRemove, Coll
  * @param classToRemove class to be removed
  * @return if request was successful
  */
-bool Request::switchClass(DataSet& dataset, string classToRemove, string classToAdd){
-    if(removeClass(dataset, classToRemove)){
-        if(!addClass(dataset,classToAdd)){
+bool Request::switchClass(DataSet& dataset, string classToRemove, string classToAdd,list<string>& removedElements){
+    if(removeClass(dataset, classToRemove,removedElements)){
+        if(!addClass(dataset,classToAdd,removedElements)){
             addClass(dataset,classToRemove);
             return false;
         }

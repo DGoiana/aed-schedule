@@ -42,6 +42,7 @@ void AllMenus::sortStudentVector(vector<Student>& students){
 AllMenus::AllMenus(DataSet &dataset) {
     this->dataset = dataset;
     this->globalRequests = stack<Request>();
+    this->previousRemoves = stack<list<string>>();
     menu_principal();
 }
 
@@ -471,11 +472,12 @@ void AllMenus::seeGlobalRequestsTop() {
                 break;
             case UC:
                 if(request.get_option() == SWITCH)
-                    cout << request.get_collegeClass().get_classCode() << " to " << request.get_newCollegeClass().get_ucCode()
+                    cout << request.get_collegeClass().get_ucCode() << " in "<< request.get_collegeClass().get_classCode()
+                    << " to " << request.get_newCollegeClass().get_ucCode() << " in " << request.get_newCollegeClass().get_classCode()
                          << " for " << request.getStudent().get_studentCode() << '\n';
                 else
                     cout << optionToString[request.get_option()] <<" "<< request.get_collegeClass().get_ucCode()
-                         <<" class for " <<  request.get_student().get_studentCode() << '\n';
+                         <<" UC for " <<  request.get_student().get_studentCode() << '\n';
                 break;
         }
     }
@@ -556,22 +558,30 @@ void AllMenus::undoRequest(DataSet &dataset){
     }
     bool success = false;
     Request lastRequest = this->globalRequests.top();
+    list<string> removedElements;
+    if(!this->previousRemoves.empty()) removedElements= this->previousRemoves.top();
+    else removedElements = list<string>();
+    list<string> placeHolder;
     switch (lastRequest.get_option()) {
         case ADD:
             if(lastRequest.get_type() == CLASS)
-                success = lastRequest.removeClass(dataset,lastRequest.get_collegeClass().get_classCode());
+                success = lastRequest.removeClass(dataset,lastRequest.get_collegeClass().get_classCode(),placeHolder);
             if(lastRequest.get_type() == UC)
                 success = lastRequest.removeUc(dataset,lastRequest.get_collegeClass());
             break;
         case REMOVE:
-            if(lastRequest.get_type() == CLASS)
-                success =lastRequest.addClass(dataset,lastRequest.get_collegeClass().get_classCode());
+            if(lastRequest.get_type() == CLASS){
+                success = lastRequest.addClass(dataset,lastRequest.get_collegeClass().get_classCode(),removedElements);
+            }
             if(lastRequest.get_type() == UC)
-                success = lastRequest.addUc(dataset,lastRequest.get_collegeClass());
+                success = lastRequest.addClass(dataset,lastRequest.get_collegeClass().get_classCode(),
+                                               {lastRequest.get_collegeClass().get_ucCode()});
             break;
         case SWITCH:
-            if(lastRequest.get_type() == CLASS)
-                success = lastRequest.switchClass(dataset,lastRequest.get_newCollegeClass().get_classCode(),lastRequest.get_collegeClass().get_classCode());
+            if(lastRequest.get_type() == CLASS){
+                success = lastRequest.switchClass(dataset,lastRequest.get_newCollegeClass().get_classCode(),
+                                                  lastRequest.get_collegeClass().get_classCode(),removedElements);
+            }
             if(lastRequest.get_type() == UC)
                 success = lastRequest.switchUc(dataset,lastRequest.get_newCollegeClass(),lastRequest.get_collegeClass());
             break;
@@ -580,6 +590,7 @@ void AllMenus::undoRequest(DataSet &dataset){
         cout << "undo request SUCCESS" << '\n';
         cout << "last request: "; seeGlobalRequestsTop();
         this->globalRequests.pop();
+        if(!this->previousRemoves.empty()) this->previousRemoves.pop();
         cout << "new last request: "; seeGlobalRequestsTop();
     } else {
         cout << "undo request FAILED" << '\n';
@@ -615,6 +626,7 @@ void AllMenus::addClassFunction(DataSet &dataset) {
 }
 
 void AllMenus::removeClassFunction(DataSet &dataset) {
+    list<string> removedElements;
     string classToRemove;
     cout << "Class to Remove: ";
     cin >> classToRemove;
@@ -635,14 +647,16 @@ void AllMenus::removeClassFunction(DataSet &dataset) {
     Student student = dataset.getStudentByNumber(studentCode);
     Request removeClassRequest = Request(CollegeClass(classToRemove, "*", {}, Schedule())
             ,student,CLASS,REMOVE,dataset);
-    if(removeClassRequest.removeClass(dataset,classToRemove)){
+    if(removeClassRequest.removeClass(dataset,classToRemove,removedElements)){
         cout << "remove class SUCCESS" << '\n';
         this->globalRequests.push(removeClassRequest);
+        this->previousRemoves.push(removedElements);
     }else cout << "remove class FAILED" << '\n';
 }
 
 void AllMenus::switchClassFunction(DataSet &dataset) {
     string classToAdd;
+    list<string> removedElements;
     cout << "Class to Add: ";
     cin >> classToAdd;
     while(!check_classCode(classToAdd)){
@@ -671,11 +685,13 @@ void AllMenus::switchClassFunction(DataSet &dataset) {
     CollegeClass collegeClassToAdd = CollegeClass(classToAdd,"*", {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
     Request switchClassRequest = Request(collegeClassToRemove,collegeClassToAdd, student, CLASS, SWITCH, dataset);
-    if(switchClassRequest.switchClass(dataset, classToRemove, classToAdd)){
+    if(switchClassRequest.switchClass(dataset, classToRemove, classToAdd,removedElements)){
         cout << "switch class SUCCESS" << '\n';
         this->globalRequests.push(switchClassRequest);
+        this->previousRemoves.push(removedElements);
     }else cout << "switch class FAILED" << '\n';
 }
+
 
 void AllMenus::addUcFunction(DataSet& dataset) {
     string ucToAdd;
@@ -702,11 +718,10 @@ void AllMenus::addUcFunction(DataSet& dataset) {
             cout << "Student code: ";
             cin >> studentCode;
     }
-
     CollegeClass collegeClass = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
     Student student = dataset.getStudentByNumber(studentCode);
     Request addUcRequest = Request(collegeClass,student,UC,ADD,dataset);
-    if(addUcRequest.addUc(dataset,collegeClass)){
+    if(addUcRequest.addClass(dataset,classToAdd,{ucToAdd})){
         cout << "add uc SUCCESS" << '\n';
         this->globalRequests.push(addUcRequest);
     }else cout << "add uc FAILED" << '\n';

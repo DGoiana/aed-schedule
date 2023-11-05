@@ -34,23 +34,17 @@ class Request {
         Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option,DataSet dataset) : 
         collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option),dataset(dataset) {};
 
-        void setStudent(Student student);
-        Student getStudent();
-
         bool isConflictingSchedule(Schedule studentSchedule, list<Lesson> lessonsToCompare);
 
-        bool addClass(DataSet& dataset,string classToAdd);
+        bool addClass(DataSet& dataset,string classToAdd, list<string> newClassUcs = list<string>());
         bool maintainsClassBalance(int sizeStudentCompare);
-        bool removeClass(DataSet& dataset,string classToRemove);
-        bool switchClass(DataSet& dataset, string classToRemove, string classToAdd);
+        bool removeClass(DataSet& dataset,string classToRemove,list<string>& removedElements);
+        bool switchClass(DataSet& dataset, string classToRemove, string classToAdd,list<string>& removedElements);
 
 
         bool addUc(DataSet& dataset,CollegeClass ucToAdd);
         bool removeUc(DataSet& dataset,CollegeClass UcToRemove);
         bool switchUc(DataSet& dataset,CollegeClass UcToRemove,CollegeClass UcToAdd);
-
-        void addRequestToQueue(Request request);
-        void removeRequestFromQueue();
 
         OPTION get_option();
         TYPE get_type();

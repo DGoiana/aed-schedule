@@ -243,6 +243,19 @@ void DataSet::addStudentClass(CollegeClass c, Student student){
    it->add_studentClass(c);
 }
 
+void DataSet::removeStudentFromCollegeClass(Student studentToErase,CollegeClass collegeClassToErase){
+    auto it = find(this->collegeClasses.begin(),this->collegeClasses.end(),collegeClassToErase);
+    set<Student> newStudents = it->get_registeredStudents();
+    newStudents.erase(studentToErase);
+    it->set_registeredStudents(newStudents);
+}
+void DataSet::addStudentInCollegeClass(Student studentToAdd,CollegeClass collegeClassToAdd){
+    auto it = find(this->collegeClasses.begin(),this->collegeClasses.end(),collegeClassToAdd);
+    set<Student> newStudents = it->get_registeredStudents();
+    newStudents.insert(studentToAdd);
+    it->set_registeredStudents(newStudents);
+}
+
 Student DataSet::getStudentByNumber(string studentCode)
 {
     return binarySearchStudentbyNumber(studentCode);
