@@ -6,46 +6,41 @@
 #include "Student.h"
 #include "Lesson.h"
 
+/**
+ * This class is responsible for handling the programs state. It has:
+ * <ul>
+ *  <li> a vector of Student
+ *  <li> a list of CollegeClass
+ *  <li> a map of Lesson of a given CollegeClass
+ *  <li> a map of students enrolled in a given CollegeClass
+ * <ul>
+ */
 class DataSet{
     private:
         vector<Student> students;
         list<CollegeClass> collegeClasses;
+        map<CollegeClass, vector<Lesson>> mappedLessons;
+        map<CollegeClass, vector<Student>> mappedStudentsFromClass;
     public:
-        DataSet();
+        DataSet(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> classes, list<vector<string>> studentsClasses);
 
-        Schedule getScheduleByStudent(string studentCode);
-        Schedule getScheduleByClass(string classCode);
+        vector<Student> get_students() { return students; }
+        list<CollegeClass>& get_collegeClasses() { return collegeClasses; }
 
-        Student binarySearchStudentbyNumber(string classCode);
+        vector<Student> populateStudents(list<vector<string>> studentsClasses);
+        list<CollegeClass> populateCollegeClasses(list<vector<string>> classesPerUc);
+        
+        CollegeClass buildObject(string classCode, string ucCode);
 
-        vector<Student> getStudentsByClassOrUc(string code, string id);
-        vector<Student> getStudentsByYear(string year);
-  
-        int getNumStudentsInClassAndUc(CollegeClass ucClass);
+        map<CollegeClass, vector<Lesson>> mapLessons(list<vector<string>> classesPerUc, std::unordered_multimap<pair<string, string>, Lesson, pair_hash> allClasses);
+        map<CollegeClass, vector<Student>> mapStudents(list<vector<string>> studentsClasses);
 
-        int numStudentsRegisteredInNUcs(int num);
+        vector<Lesson> findLesson(std::unordered_multimap<pair<string, string>, Lesson, pair_hash> globalLessons, Lesson lessonToFind);
 
-        void setStudentClasses(set<CollegeClass> newClasses, Student student);
-        void addStudentClass(CollegeClass c, Student student);
+        map<string, list<string>> getUcsByClasses(list<vector<string>> classesPerUc);
 
-        int consultClassorUcOccupation(string code, string id);
-        int consultYearOccupation(std::string year);
-
-        void sortStudentsByNameOrYear(vector<Student> &students, string order, string input);
-
-        Student getStudentByNumber(string studentCode);
-        list<Student> getStudentByName(string studentName);
-
-        vector<string> getClasses();
-        vector<string> getUcs();
-        vector<string> getStudents();
-
-        void sortClassesByOccupation(vector<string> &codes, string order);
-        void sortUcsByOccupation(vector<string> &codes, string order);
-        void sortYearsByOccupation(vector<string> &years, string order);
+        Student& binarySearchStudentbyNumber(string classCode);
 
         void dumpCurrentState();
-
-        string getMostStudentsUC();
 };
 #endif

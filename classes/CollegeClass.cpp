@@ -7,7 +7,7 @@ CollegeClass::CollegeClass(){
     this->collegeClassSchedule = Schedule();
 }
 
-CollegeClass::CollegeClass(string classCode, string ucCode, set<Student> registeredStudents, Schedule collegeClassSchedule){
+CollegeClass::CollegeClass(string classCode, string ucCode, vector<Student> registeredStudents, Schedule collegeClassSchedule){
     this->ucCode = ucCode;
     this->classCode = classCode;
     this->collegeClassSchedule = collegeClassSchedule;
@@ -22,7 +22,7 @@ string CollegeClass::get_ucCode() const{
     return this->ucCode;
 }
 
-set<Student> CollegeClass::get_registeredStudents() const {
+vector<Student> CollegeClass::get_registeredStudents() const {
     return this->registeredStudents;
 }
 
@@ -42,7 +42,7 @@ void CollegeClass::set_collegeClassSchedule(const Schedule& new_collegeClassSche
     this->collegeClassSchedule = new_collegeClassSchedule;
 }
 
-void CollegeClass::set_registeredStudents(const set<Student>& new_registeredStudents) {
+void CollegeClass::set_registeredStudents(const vector<Student>& new_registeredStudents) {
     this->registeredStudents = new_registeredStudents;
 }
 
