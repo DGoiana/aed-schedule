@@ -1,6 +1,7 @@
 #include "menuFunctions.h"
 #include <iostream>
 #include <fstream>
+#include <algorithm>
 
 Schedule getScheduleByStudent(string studentCode, DataSet &dataset){
     Schedule schedule;

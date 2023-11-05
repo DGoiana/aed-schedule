@@ -2,6 +2,7 @@
 #include <list>
 #include "Student.h"
 #include <iostream>
+#include <algorithm>
 #include "Request.h"
 #include "Dataset.h"
 #include "Parser.h"
@@ -98,28 +99,8 @@ bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove, list
         setStudentClasses(toRemove, student);
         removeStudentFromCollegeClass(student, dataset, collegeClassToRemove);
         return true;
-      }
-     return false;
-}
-
-OPTION Request::get_option(){
-    return this->option;
-}
-
-TYPE Request::get_type(){
-    return this->type;
-}
-
-Student Request::get_student(){
-    return this->student;
-}
-
-CollegeClass Request::get_collegeClass(){
-    return this->collegeClass;
-}
-
-CollegeClass Request::get_newCollegeClass(){
-    return this->newCollegeClass;
+    } 
+    return false;
 }
 
 OPTION Request::get_option(){
