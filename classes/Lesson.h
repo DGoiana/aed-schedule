@@ -5,7 +5,16 @@
 #include <list>
 
 using namespace std;
-
+/**
+ * This class represents a given lesson, which has:
+ * <ul>
+ *  <li> a week day
+ *  <li> a start hour
+ *  <li> a duration
+ *  <li> a type
+ *  <li> an identifier of the combination of Class and Uc.
+ * <ul>
+ */
 class Lesson{
     private:
         string lessonWeekday;

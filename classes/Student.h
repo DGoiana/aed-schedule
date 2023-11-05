@@ -8,6 +8,9 @@
 using namespace std;
 class CollegeClass;
 
+/**
+ * Struct used to define the map hash function
+ */
 struct pair_hash {
     template <class T1, class T2>
     std::size_t operator () (const std::pair<T1,T2> &p) const {
@@ -19,7 +22,14 @@ struct pair_hash {
         return h1 ^ h2;  
     }
 };
-
+/**
+ * A class that resepresents a given student. A student has:
+ * <ul>
+ *  <li> a number that identifies the Student
+ *  <li> the name of the Student
+ *  <li> a vector of the students Ucs and Classes
+ * <ul>
+ */
 class Student {
     private:
         string studentCode;

@@ -3,49 +3,54 @@
 
 #include "Schedule.h"
 #include "Dataset.h"
+/**
+ * The menu functions class processes almost all calls made by the menu.
+ */
+class MenuFunctions {
+public:
+    static Schedule getScheduleByStudent(string studentCode, DataSet &dataset);
 
+    static Schedule getScheduleByClass(string classCode, DataSet &dataset);
 
-Schedule getScheduleByStudent(string studentCode, DataSet &dataset);
+    static vector<Student> getStudentsByClassOrUc(string code, string id, DataSet &dataset);
 
-Schedule getScheduleByClass(string classCode, DataSet &dataset);
+    static vector<string> getClasses(DataSet &dataset);
 
-vector<Student> getStudentsByClassOrUc(string code, string id, DataSet &dataset);
+    static vector<string> getUcs(DataSet &dataset);
 
-vector<string> getClasses(DataSet &dataset);
+    static int getNumStudentsInClassAndUc(CollegeClass ucClass, DataSet &dataset);
 
-vector<string> getUcs(DataSet &dataset);
+    static vector<Student> getStudentsByYear(string year, DataSet &dataset);
 
-int getNumStudentsInClassAndUc(CollegeClass ucClass, DataSet &dataset);
+    static int numStudentsRegisteredInNUcs(int num, DataSet &dataset);
 
-vector<Student> getStudentsByYear(string year, DataSet &dataset);
+    static int consultClassorUcOccupation(string code, string id, DataSet &dataset);
 
-int numStudentsRegisteredInNUcs(int num, DataSet &dataset);
+    static int consultYearOccupation(string year, DataSet &dataset);
 
-int consultClassorUcOccupation(string code, string id, DataSet &dataset);
+    static void sortStudentsByNameOrYear(vector<Student> &students, string order, string input);
 
-int consultYearOccupation(string year, DataSet &dataset);
+    static void sortClassesByOccupation(vector<string> &codes, string order, DataSet &dataset);
 
-void sortStudentsByNameOrYear(vector<Student> &students, string order, string input);
+    static void sortUcsByOccupation(vector<string> &codes, string order, DataSet &dataset);
 
-void sortClassesByOccupation(vector<string> &codes, string order, DataSet &dataset);
+    static void sortYearsByOccupation(vector<string> &years, string order, DataSet &dataset);
 
-void sortUcsByOccupation(vector<string> &codes, string order, DataSet &dataset);
+    static string getMostStudentsUC(DataSet &dataset);
 
-void sortYearsByOccupation(vector<string> &years, string order, DataSet &dataset);
+    static void setStudentClasses(vector<CollegeClass> newClasses, Student &student);
 
-string getMostStudentsUC(DataSet &dataset);
+    static void addStudentClass(CollegeClass c, Student &student);
 
-void setStudentClasses(vector<CollegeClass> newClasses, Student& student);
+    static Student &getStudentByNumber(string studentCode, DataSet &dataset);
 
-void addStudentClass(CollegeClass c, Student& student);
+    static list<Student> getStudentByName(string studentName, DataSet &dataset);
 
-Student& getStudentByNumber(string studentCode, DataSet &dataset);
+    static CollegeClass &getCollegeClassByCodes(string classCode, string ucCode, DataSet &dataset);
 
-list<Student> getStudentByName(string studentName, DataSet &dataset);
+    static void removeStudentFromCollegeClass(Student studentToErase, DataSet &dataset, CollegeClass collegeClassToErase);
 
-CollegeClass& getCollegeClassByCodes(string classCode, string ucCode, DataSet &dataset);
+    static void addStudentInCollegeClass(Student studentToAdd, DataSet &dataset, CollegeClass collegeClassToAdd);
 
-void removeStudentFromCollegeClass(Student studentToErase, DataSet &dataset, CollegeClass collegeClassToErase);
-void addStudentInCollegeClass(Student studentToAdd, DataSet &dataset, CollegeClass collegeClassToAdd);
-
+};
 #endif

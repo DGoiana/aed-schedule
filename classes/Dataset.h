@@ -5,7 +5,15 @@
 #include "Parser.h"
 #include "Student.h"
 #include "Lesson.h"
-
+/**
+ * This class is responsible for handling the programs state. It has:
+ * <ul>
+ *  <li> a vector of Student
+ *  <li> a list of CollegeClass
+ *  <li> a map of Lesson of a given CollegeClass
+ *  <li> a map of students enrolled in a given CollegeClass
+ * <ul>
+ */
 class DataSet{
     private:
         vector<Student> students;

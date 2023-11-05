@@ -13,7 +13,17 @@ enum OPTION {
     REMOVE,
     SWITCH
 };
-
+/**
+ * The request class processes some calls made by the menu. It has:
+ * <ul>
+ *  <li> The dataset to change the programs state
+ *  <li> A collegeClass to add or remove
+ *  <li> A newColleClass for switch requests
+ *  <li> The Student to have its Schedule changed
+ *  <li> Type of the Request (CLASS or UC)
+ *  <li> Option of the Request (ADD or REMOVE or SWITCH)
+ * <ul>
+ */
 class Request {
     private:
         DataSet& dataset;
@@ -22,7 +32,6 @@ class Request {
         Student& student;
         TYPE type;
         OPTION option;
-        static list<Request> globalRequests;
     public:
         Request(CollegeClass collegeClass, Student& student, TYPE type, OPTION option, DataSet& dataset) : 
         collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH

@@ -9,7 +9,9 @@
 #include <string>
 #include <vector>
 #include <stack>
-
+/**
+ * This class is responsible for all display functions, interaction with the user and making requests.
+ */
 class AllMenus{
     private:
         DataSet dataset;

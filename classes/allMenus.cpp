@@ -3,7 +3,6 @@
 #include "Dataset.h"
 #include "Lesson.h"
 #include "Student.h"
-#include "Parser.h"
 #include "CollegeClass.h"
 #include "menuFunctions.h"
 #include <vector>
@@ -14,7 +13,6 @@
 #include <cmath>
 
 using namespace std;
-class Request;
 
 void AllMenus::sortStudentVector(vector<Student>& students){
     string decision;
@@ -34,10 +32,10 @@ void AllMenus::sortStudentVector(vector<Student>& students){
         cin >> decision;
     }
     switch (stoi(decision)) {
-        case 0: sortStudentsByNameOrYear(students,"ascending","name"); break;
-        case 1: sortStudentsByNameOrYear(students,"descending","name"); break;
-        case 2: sortStudentsByNameOrYear(students,"ascending","year"); break;
-        case 3: sortStudentsByNameOrYear(students,"descending","year"); break;
+        case 0: MenuFunctions::sortStudentsByNameOrYear(students,"ascending","name"); break;
+        case 1: MenuFunctions::sortStudentsByNameOrYear(students,"descending","name"); break;
+        case 2: MenuFunctions::sortStudentsByNameOrYear(students,"ascending","year"); break;
+        case 3: MenuFunctions::sortStudentsByNameOrYear(students,"descending","year"); break;
     }
 }
 
@@ -103,7 +101,12 @@ void AllMenus::menu_principal(list<vector<string>> classesPerUc){
         }
     } while(input !="5");
 }
-
+/**
+ * Converts number to time.
+ * Time Complexity: O(1)
+ * @param number number to be converted
+ * @return corresponding time
+ */
 string AllMenus::toTime(float number) {
     string hour = (int)number < 10 ? "0"+ to_string((int)number) : to_string((int)number);
     string minutes = (int)(number*60)%60 == 0 ? "00" : to_string((int)(number*60)%60);
@@ -168,7 +171,7 @@ void AllMenus::menu_schedule() {
                     cout << "studentCode: ";
                     cin >> studentCode;
                 }
-                showSchedule(getScheduleByStudent(studentCode, this->dataset).get_scheduleLessons());
+                showSchedule(MenuFunctions::getScheduleByStudent(studentCode, this->dataset).get_scheduleLessons());
                 break;
             case 1:
                 cout << "classCode: ";
@@ -178,7 +181,7 @@ void AllMenus::menu_schedule() {
                     cout << "classCode: ";
                     cin >> classCode;
                 }
-                showSchedule(getScheduleByClass(classCode, this->dataset).get_scheduleLessons());
+                showSchedule(MenuFunctions::getScheduleByClass(classCode, this->dataset).get_scheduleLessons());
                 break;
             case 2: break;
             default:
@@ -249,7 +252,7 @@ void AllMenus::menu_students(){
                     cin >> classCode;
                 }
 
-                studentsToBeOrdered = getStudentsByClassOrUc(classCode, "class", this->dataset);
+                studentsToBeOrdered = MenuFunctions::getStudentsByClassOrUc(classCode, "class", this->dataset);
                 sortStudentVector(studentsToBeOrdered);
                 showPages(studentsToBeOrdered);
                 break;
@@ -262,7 +265,7 @@ void AllMenus::menu_students(){
                     cin >> ucCode;
                 }
 
-                studentsToBeOrdered = getStudentsByClassOrUc(ucCode, "uc", this->dataset);
+                studentsToBeOrdered = MenuFunctions::getStudentsByClassOrUc(ucCode, "uc", this->dataset);
                 sortStudentVector(studentsToBeOrdered);
                 showPages(studentsToBeOrdered);
                 break;
@@ -275,7 +278,7 @@ void AllMenus::menu_students(){
                         cin >> year;
                 };
 
-                studentsToBeOrdered = getStudentsByYear(year, this->dataset);
+                studentsToBeOrdered = MenuFunctions::getStudentsByYear(year, this->dataset);
                 sortStudentVector(studentsToBeOrdered);
                 showPages(studentsToBeOrdered);
                 break;
@@ -289,7 +292,7 @@ void AllMenus::menu_students(){
                 }
 
                 cout << "==============================================\n";
-                cout <<"There are "<< numStudentsRegisteredInNUcs(n, this->dataset) << " students in at least " << n << " Ucs"<< "\n";
+                cout <<"There are "<< MenuFunctions::numStudentsRegisteredInNUcs(n, this->dataset) << " students in at least " << n << " Ucs"<< "\n";
                 cout << "==============================================\n";
                 break;
             case 4:
@@ -321,8 +324,8 @@ void AllMenus::menu_uc(){
         {
             case 0:
                 cout << "===========================================\n";
-                cout << getMostStudentsUC(this->dataset) << " has "
-                     << consultClassorUcOccupation(getMostStudentsUC(this->dataset),"uc", this->dataset) << " students"<<"\n";
+                cout << MenuFunctions::getMostStudentsUC(this->dataset) << " has "
+                     << MenuFunctions::consultClassorUcOccupation(MenuFunctions::getMostStudentsUC(this->dataset),"uc", this->dataset) << " students"<<"\n";
                 cout << "===========================================\n";
                 cout << '\n';
                 break;
@@ -332,7 +335,11 @@ void AllMenus::menu_uc(){
         }
     } while (input != "1");
 }
-
+/**
+ * Gets user input relating to the type of sort(ascending or descending).
+ * Time Complexity: O(1)
+ * @return "ascending" or "descending"
+ */
 string AllMenus::sortOption() {
     string decision;
     string sortOptions =
@@ -390,9 +397,9 @@ void AllMenus::menu_occupations(){
         switch (stoi(whichOccupation)) {
             case 0:
                 if(SpecificOrFullConsult == "0") {
-                    vector<string> classesToBeOrdered = getClasses(this->dataset);
-                    sortClassesByOccupation(classesToBeOrdered, sortOption(), this->dataset);
-                    for(string c: classesToBeOrdered) cout << c << ": " << consultClassorUcOccupation(c, "class", this->dataset) << '\n';
+                    vector<string> classesToBeOrdered = MenuFunctions::getClasses(this->dataset);
+                    MenuFunctions::sortClassesByOccupation(classesToBeOrdered, sortOption(), this->dataset);
+                    for(string c: classesToBeOrdered) cout << c << ": " << MenuFunctions::consultClassorUcOccupation(c, "class", this->dataset) << '\n';
                 } else if (SpecificOrFullConsult == "1") {
                     string classCode;
                     cout << "Class: ";
@@ -402,13 +409,13 @@ void AllMenus::menu_occupations(){
                         cout << "Class: ";
                         cin >> classCode;
                     }
-                    cout << classCode << ':' << consultClassorUcOccupation(classCode, "class", this->dataset) << '\n';
+                    cout << classCode << ':' << MenuFunctions::consultClassorUcOccupation(classCode, "class", this->dataset) << '\n';
                 }
                 break;
             case 1:
                 if(SpecificOrFullConsult == "0"){
-                    cout << "2020: " << consultYearOccupation("2020", this->dataset) << '\n';
-                    cout << "2019: " << consultYearOccupation("2019", this->dataset) << '\n';
+                    cout << "2020: " << MenuFunctions::consultYearOccupation("2020", this->dataset) << '\n';
+                    cout << "2019: " << MenuFunctions::consultYearOccupation("2019", this->dataset) << '\n';
                 } else if(SpecificOrFullConsult == "1"){
                     string yearNum;
                     cout << "Year: ";
@@ -418,14 +425,14 @@ void AllMenus::menu_occupations(){
                         cout << "Year: ";
                         cin >> yearNum;
                     }
-                    cout << yearNum << ": " << consultYearOccupation(yearNum, this->dataset) << '\n';
+                    cout << yearNum << ": " << MenuFunctions::consultYearOccupation(yearNum, this->dataset) << '\n';
                 }
                 break;
             case 2:
                 if(SpecificOrFullConsult == "0") {
-                    vector<string> ucsToBeOrdered = getUcs(this->dataset);
-                    sortUcsByOccupation(ucsToBeOrdered, sortOption(), this->dataset);
-                    for(string c: ucsToBeOrdered) cout << c << ": " << consultClassorUcOccupation(c, "uc", this->dataset) << '\n';
+                    vector<string> ucsToBeOrdered = MenuFunctions::getUcs(this->dataset);
+                    MenuFunctions::sortUcsByOccupation(ucsToBeOrdered, sortOption(), this->dataset);
+                    for(string c: ucsToBeOrdered) cout << c << ": " << MenuFunctions::consultClassorUcOccupation(c, "uc", this->dataset) << '\n';
                 } else if (SpecificOrFullConsult == "1") {
                     string ucCode;
                     cout << "Uc: ";
@@ -435,13 +442,16 @@ void AllMenus::menu_occupations(){
                         cout << "Uc: ";
                         cin >> ucCode;
                     }
-                    cout << ucCode << ':' << consultClassorUcOccupation(ucCode, "uc", this->dataset) << '\n';
+                    cout << ucCode << ':' << MenuFunctions::consultClassorUcOccupation(ucCode, "uc", this->dataset) << '\n';
                 }
                 break;
         }
     } while(whichOccupation != "3");
 }
-
+/**
+ * Shows the last successful Request
+ * Time Complexity: O(1)
+ */
 void AllMenus::seeGlobalRequestsTop() {
     map<OPTION,string> optionToString = {{ADD,"add"},{REMOVE,"remove"}};
     if(this->globalRequests.empty()) cout << "globalRequests empty." << '\n';
@@ -526,7 +536,16 @@ void AllMenus::menu_requests(list<vector<string>> classesPerUc){
         }
     }while(input != "8");
 }
-
+/*!
+ * Undoes the last successful request and removes them from the stack of globalRequests.
+ * Time Complexity: O(n³)
+ * <ul>
+ * <li>For add Request, calls a remove Request
+ * <li>For remove Request, calls an add Request
+ * <li>For switch Request, calls another switch Request
+ * </ul>
+ * @param dataset dataset to be changed
+ */
 void AllMenus::undoRequest(list<vector<string>> classesPerUc){
     if(this->globalRequests.empty()){
         cout << "UNABLE TO UNDO LAST REQUEST (STACK EMPTY)\n";
@@ -583,7 +602,7 @@ void AllMenus::addClassFunction(list<vector<string>> classesPerUc) {
             cin >> studentCode;
     }
 
-    Student& student = getStudentByNumber(studentCode, this->dataset);
+    Student& student = MenuFunctions::getStudentByNumber(studentCode, this->dataset);
     Request request = Request(CollegeClass(classToAdd, "*", {}, Schedule()), student, CLASS, ADD, this->dataset);
     if(request.addClass(dataset,classToAdd, classesPerUc)){
         cout << "add class SUCCESS" << '\n';
@@ -614,7 +633,7 @@ void AllMenus::removeClassFunction(list<vector<string>> classesPerUc) {
         return;
     }
 
-    Student& student = getStudentByNumber(studentCode, this->dataset);
+    Student& student = MenuFunctions::getStudentByNumber(studentCode, this->dataset);
     Request request = Request(CollegeClass(classToRemove, "*", {}, Schedule()),student,CLASS,REMOVE,this->dataset);
     if(request.removeClass(dataset,classToRemove, classesPerUc)){
         cout << "remove class SUCCESS" << '\n';
@@ -655,7 +674,7 @@ void AllMenus::switchClassFunction(list<vector<string>> classesPerUc) {
 
     CollegeClass collegeClassToRemove = CollegeClass(classToRemove,"*", {}, Schedule());
     CollegeClass collegeClassToAdd = CollegeClass(classToAdd,"*", {}, Schedule());
-    Student& student = getStudentByNumber(studentCode, this->dataset);
+    Student& student = MenuFunctions::getStudentByNumber(studentCode, this->dataset);
 
     Request request = Request(collegeClassToRemove,collegeClassToAdd, student, CLASS, SWITCH, this->dataset);
     if(request.switchClass(dataset, classToRemove, classToAdd, classesPerUc)){
@@ -691,7 +710,7 @@ void AllMenus::addUcFunction(list<vector<string>> classesPerUc) {
     }
 
     CollegeClass collegeClass = dataset.buildObject(classToAdd, ucToAdd);
-    Student& student = getStudentByNumber(studentCode, this->dataset);
+    Student& student = MenuFunctions::getStudentByNumber(studentCode, this->dataset);
 
     Request request = Request(collegeClass,student,UC,ADD,this->dataset);
     if(request.addUc(dataset,collegeClass, classesPerUc)){
@@ -732,7 +751,7 @@ void AllMenus::removeUcFunction(list<vector<string>> classesPerUc) {
     }
 
     CollegeClass collegeClass = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
-    Student& student = getStudentByNumber(studentCode, this->dataset);
+    Student& student = MenuFunctions::getStudentByNumber(studentCode, this->dataset);
 
     Request request = Request(collegeClass,student,UC,REMOVE,this->dataset);
     if(request.removeUc(dataset,collegeClass, classesPerUc)){
@@ -792,7 +811,7 @@ void AllMenus::switchUcFunction(list<vector<string>> classesPerUc) {
     
     CollegeClass collegeClassToRemove = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
     CollegeClass collegeClassToAdd = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
-    Student& student = getStudentByNumber(studentCode, this->dataset);
+    Student& student = MenuFunctions::getStudentByNumber(studentCode, this->dataset);
 
     Request request = Request(collegeClassToRemove, collegeClassToAdd, student, UC, SWITCH,this->dataset);
     if(request.switchUc(dataset,collegeClassToRemove,collegeClassToAdd, classesPerUc)){
@@ -803,7 +822,7 @@ void AllMenus::switchUcFunction(list<vector<string>> classesPerUc) {
 }
 
 bool AllMenus::check_classCode(string classCode){
-    vector<string> classes = getClasses(dataset);
+    vector<string> classes = MenuFunctions::getClasses(dataset);
     for(string s : classes){
         if(classCode == s){
             return true;
@@ -813,7 +832,7 @@ bool AllMenus::check_classCode(string classCode){
 }
 
 bool AllMenus::check_ucCode(string ucCode){
-    vector<string> ucs = getUcs(dataset);
+    vector<string> ucs = MenuFunctions::getUcs(dataset);
     for(string s : ucs){
         if(ucCode == s){
             return true;
@@ -840,7 +859,7 @@ bool AllMenus::check_year(string year){
 }
 
 bool AllMenus::check_ucInStudent(string studentCode, string code){
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
+    for(Lesson l : MenuFunctions::getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
             if(l.get_ucCode() == code){
                 return true;
             }
@@ -849,7 +868,7 @@ bool AllMenus::check_ucInStudent(string studentCode, string code){
 }
 
 bool AllMenus::check_classInStudent(string studentCode, string code){
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
+    for(Lesson l : MenuFunctions::getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
             if(l.get_classCode() == code){
                 return true;
             }
