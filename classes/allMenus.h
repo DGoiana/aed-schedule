@@ -42,6 +42,8 @@ class AllMenus{
         bool check_ucCode(string ucCode);
         bool check_studentCode(string studentCode);
         bool check_year(string year);
+        bool check_ucInStudent(string studentCode, string code);
+        bool check_classInStudent(string studentCode, string code);
 };
 
 #endif 

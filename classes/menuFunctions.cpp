@@ -5,12 +5,9 @@
 
 Schedule getScheduleByStudent(string studentCode, DataSet &dataset){
     Schedule schedule;
-    for(Student s : dataset.get_students()){
-        if(s.get_studentCode() == studentCode){
-            for(CollegeClass c : s.get_studentClasses()){
-                schedule.addLessonsFromList(c.get_collegeClassSchedule().get_scheduleLessons());
-            }
-        };
+    Student foundStudent = dataset.binarySearchStudentbyNumber(studentCode);
+    for(CollegeClass c : foundStudent.get_studentClasses()) {
+        schedule.addLessonsFromList(c.get_collegeClassSchedule().get_scheduleLessons());
     }
     return schedule;
 }

@@ -609,13 +609,7 @@ void AllMenus::removeClassFunction(list<vector<string>> classesPerUc) {
             cin >> studentCode;
     }
 
-    bool found = false;
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
-        if(l.get_classCode() == classToRemove){
-            found = true;
-        }
-    }
-    if(found == false){
+    if(!check_classInStudent(studentCode, classToRemove)){
         cout << "remove class FAILED" << '\n';
         return;
     }
@@ -654,13 +648,7 @@ void AllMenus::switchClassFunction(list<vector<string>> classesPerUc) {
             cin >> studentCode;
     }
 
-    bool found = false;
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
-        if(l.get_classCode() == classToRemove){
-            found = true;
-        }
-    }
-    if(found == false){
+    if(!check_classInStudent(studentCode, classToRemove)){
         cout << "switch class FAILED" << '\n';
         return;
     }
@@ -738,26 +726,10 @@ void AllMenus::removeUcFunction(list<vector<string>> classesPerUc) {
             cin >> studentCode;
     }
 
-    bool found = false, found1 = false;
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
-        if(l.get_ucCode() == ucToRemove){
-            found = true;
-        }
-    }
-    if(found == false){
+    if(!check_ucInStudent(studentCode, ucToRemove) || !check_classInStudent(studentCode, classToRemove)){
         cout << "remove uc FAILED" << '\n';
         return;
     }
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
-        if(l.get_classCode() == classToRemove){
-            found1 = true;
-        }
-    }
-    if(found1 == false){
-        cout << "remove uc FAILED" << '\n';
-        return;
-    }
-
 
     CollegeClass collegeClass = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
     Student& student = getStudentByNumber(studentCode, this->dataset);
@@ -813,23 +785,8 @@ void AllMenus::switchUcFunction(list<vector<string>> classesPerUc) {
             cin >> studentCode;
     }
 
-    bool found = false, found1 = false;
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
-        if(l.get_ucCode() == ucToRemove){
-            found = true;
-        }
-    }
-    if(found == false){
-        cout << "switch uc FAILED" << '\n';
-        return;
-    }
-    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
-        if(l.get_classCode() == classToRemove){
-            found1 = true;
-        }
-    }
-    if(found1 == false){
-        cout << "switch uc FAILED" << '\n';
+    if(!check_ucInStudent(studentCode, ucToRemove) || !check_classInStudent(studentCode, classToRemove)){
+        cout << "remove uc FAILED" << '\n';
         return;
     }
     
@@ -880,4 +837,22 @@ bool AllMenus::check_year(string year){
         return false;
     }
     return true;
+}
+
+bool AllMenus::check_ucInStudent(string studentCode, string code){
+    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
+            if(l.get_ucCode() == code){
+                return true;
+            }
+    }
+    return false;
+}
+
+bool AllMenus::check_classInStudent(string studentCode, string code){
+    for(Lesson l : getScheduleByStudent(studentCode,dataset).get_scheduleLessons()){
+            if(l.get_classCode() == code){
+                return true;
+            }
+    }
+    return false;
 }
