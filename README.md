@@ -1,4 +1,4 @@
-# aed-schedule
+# Student Scheduler (aed-schedule)
 
 ## Table of contents
 * [General info](#general-info)
@@ -20,21 +20,21 @@ Project is created with:
 To run this project, clone it to your computer in a directory chosen by you:
 
 ```
-$ git remote add origin git@github.com:yourusername/aed-schedule.git
+$ git clone git@github.com:yourusername/aed-schedule.git
 ```
 
 Then, we need to compile the project using CMAKE File:
 
-- Go to schedule-build directory:
+- For first compile generate a native build system into a build folder:
 
 ```
-$ cd schedule-build
+$ cmake -Bbuild .
 ```
 
-- For first compile generate a native build system:
+- Go to the build directory:
 
 ```
-$ cmake ../
+$ cd build
 ```
 
 - Compile/link the project (also in the schedule-build directory):
@@ -46,7 +46,7 @@ $ cmake --build .
 - Try to use it (It doesn't work for some reason):
 
 ```
-$ aed-schedule 
+$ ./aed-schedule 
 ```
 
 - To see documentation:
