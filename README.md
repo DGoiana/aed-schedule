@@ -3,7 +3,8 @@
 ## Table of contents
 * [General info](#general-info)
 * [Technologies](#technologies)
-* [Setup](#setup)
+* [Setup (via .zip file)](#setup-via-zip-file)
+* [Setup (via GitHub)](#setup-via-github)
 
 ## General info
 The main purpose of this project is to manage schedules after they have been elaborated.
@@ -16,7 +17,44 @@ Project is created with:
 * Doxygen: 1.9.1
 * Visual studio code: 1.83.1
 	
-## Setup
+## Setup (via .zip file)
+To run this project:
+
+Then, we need to compile the project using CMAKE File:
+
+- For first compile generate a native build system into a build folder:
+
+```
+$ cmake -Bbuild .
+```
+
+- Go to the build directory:
+
+```
+$ cd build
+```
+
+- Compile/link the project:
+
+```
+$ cmake --build .
+```
+
+- Execute it:
+
+```
+$ ./aed_schedule_project
+```
+
+- To see documentation:
+
+```
+$ cd html
+$ open index.html
+```
+
+
+## Setup (via GitHub)
 To run this project, clone it to your computer in a directory chosen by you:
 
 ```
@@ -37,16 +75,16 @@ $ cmake -Bbuild .
 $ cd build
 ```
 
-- Compile/link the project (also in the schedule-build directory):
+- Compile/link the project:
 
 ```
 $ cmake --build .
 ```
 
-- Try to use it (It doesn't work for some reason):
+- Execute it:
 
 ```
-$ ./aed-schedule 
+$ ./aed_schedule_project
 ```
 
 - To see documentation:
