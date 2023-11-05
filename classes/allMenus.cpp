@@ -442,8 +442,7 @@ void AllMenus::addClassFunction(list<vector<string>> classesPerUc) {
     cout << "Student code: ";
     cin >> studentCode;
 
-    Student student = getStudentByNumber(studentCode, this->dataset);
-    Request addRequest = Request(CollegeClass(classToAdd, "*", {}, Schedule()), student, CLASS, ADD, this->dataset);
+    Request addRequest = Request(CollegeClass(classToAdd, "*", {}, Schedule()), studentCode, CLASS, ADD, this->dataset);
     if(!addRequest.addClass(this->dataset, classToAdd, classesPerUc)) cout << "add class failed" << '\n';
 }
 
@@ -455,8 +454,7 @@ void AllMenus::removeClassFunction(list<vector<string>> classesPerUc) {
     cout << "Student code: ";
     cin >> studentCode;
 
-    Student student = getStudentByNumber(studentCode, this->dataset);
-    Request addRequest = Request(CollegeClass(classToRemove, "*", {}, Schedule()),student,CLASS,REMOVE,this->dataset);
+    Request addRequest = Request(CollegeClass(classToRemove, "*", {}, Schedule()),studentCode,CLASS,REMOVE,this->dataset);
     if(!addRequest.removeClass(this->dataset,classToRemove, classesPerUc)) cout << "remove class failed" << '\n';
 }
 
@@ -473,8 +471,7 @@ void AllMenus::switchClassFunction(list<vector<string>> classesPerUc) {
 
     CollegeClass collegeClassToRemove = CollegeClass(classToRemove,"*", {}, Schedule());
     CollegeClass collegeClassToAdd = CollegeClass(classToAdd,"*", {}, Schedule());
-    Student student = getStudentByNumber(studentCode, this->dataset);
-    Request request = Request(collegeClassToRemove,collegeClassToAdd, student, CLASS, SWITCH, this->dataset);
+    Request request = Request(collegeClassToRemove,collegeClassToAdd, studentCode, CLASS, SWITCH, this->dataset);
     if(!request.switchClass(this->dataset, classToRemove, classToAdd, classesPerUc)) cout << "switch class failed" << '\n';
 }
 
@@ -489,8 +486,7 @@ void AllMenus::addUcFunction(list<vector<string>> classesPerUc) {
     cout << "Student code: ";
     cin >> studentCode;
     CollegeClass collegeClass = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
-    Student student = getStudentByNumber(studentCode, this->dataset);
-    Request request = Request(collegeClass,student,UC,ADD,this->dataset);
+    Request request = Request(collegeClass,studentCode,UC,ADD,this->dataset);
     if(!request.addUc(this->dataset,collegeClass,classesPerUc)) cout << "add uc failed" << '\n';
 }
 
@@ -506,8 +502,7 @@ void AllMenus::removeUcFunction(list<vector<string>> classesPerUc) {
     cout << "Student code: ";
     cin >> studentCode;
     CollegeClass collegeClass = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
-    Student student = getStudentByNumber(studentCode, this->dataset);
-    Request request = Request(collegeClass,student,UC,REMOVE,this->dataset);
+    Request request = Request(collegeClass,studentCode,UC,REMOVE,this->dataset);
     if(!request.removeUc(this->dataset,collegeClass, classesPerUc)) cout << "uc remove failed";
 }
 
@@ -532,8 +527,7 @@ void AllMenus::switchUcFunction(list<vector<string>> classesPerUc) {
     
     CollegeClass collegeClassToRemove = CollegeClass(classToRemove, ucToRemove, {}, Schedule());
     CollegeClass collegeClassToAdd = CollegeClass(classToAdd, ucToAdd, {}, Schedule());
-    Student student = getStudentByNumber(studentCode, this->dataset);
-    Request request = Request(collegeClassToRemove,collegeClassToAdd,student,UC,SWITCH,this->dataset);
+    Request request = Request(collegeClassToRemove,collegeClassToAdd,studentCode,UC,SWITCH,this->dataset);
     if(!request.switchUc(this->dataset,collegeClassToRemove,collegeClassToAdd, classesPerUc))
         cout << "switch uc failed"; return;
 }

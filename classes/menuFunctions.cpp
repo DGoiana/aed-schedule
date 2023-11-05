@@ -148,19 +148,21 @@ string getMostStudentsUC(DataSet &dataset){
     return result;
 }
 
-void setStudentClasses(vector<CollegeClass> newClasses, Student student, DataSet &dataset) {
-    auto it = find(dataset.get_students().begin(), dataset.get_students().end(), student);
+void setStudentClasses(vector<CollegeClass> newClasses, string studentCode, DataSet &dataset) {
+    auto it = find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}));
     it->set_studentClasses(newClasses);
 }
 
-void addStudentClass(CollegeClass c, Student student, DataSet &dataset){
-   auto it = find(dataset.get_students().begin(), dataset.get_students().end(), student);
+void addStudentClass(CollegeClass c, string studentCode, DataSet &dataset){
+   auto it = find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}));
    it->add_studentClass(c);
 }
 
-Student getStudentByNumber(string studentCode, DataSet &dataset){
-    return *find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}));
-}
+// Student getStudentByNumber(string studentCode, DataSet &dataset){
+//     for(Student s : dataset.get_students()){
+//         if(s.get_studentCode() == studentCode) return s;
+//     }
+// }
 
 list<Student> getStudentByName(string studentName, DataSet &dataset)
 {

@@ -10,15 +10,6 @@
 
 #define CLASS_CAP 25
 
-
-void Request::setStudent(Student student) {
-    this->student = student;
-}
-
-Student Request::getStudent() {
-    return this->student;
-}
-
 bool Request::maintainsClassBalance(DataSet &dataset, int sizeStudentCompare, list<vector<string>> classesPerUc) {
     string currentUc = this->collegeClass.get_ucCode();
     list<string> classes = dataset.getUcsByClasses(classesPerUc)[currentUc];
@@ -55,14 +46,14 @@ bool Request::isConflictingSchedule(Schedule studentSchedule, vector<Lesson> les
 bool Request::addClass(DataSet &dataset, string classToAdd, list<vector<string>> classesPerUc) {
     bool failed = false;
     list<string> classUcs = dataset.getUcsByClasses(classesPerUc)[classToAdd]; // get all ucs from class
-    vector<CollegeClass> oldClasses = this->student.get_studentClasses();
+    vector<CollegeClass> oldClasses = find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}))->get_studentClasses();
     for(string uc : classUcs) {
         CollegeClass currentCC = dataset.buildObject(classToAdd, uc);
-        Request request = Request(currentCC, this->student, UC, ADD, dataset);
+        Request request = Request(currentCC, studentCode, UC, ADD, dataset);
         if (!request.addUc(dataset, currentCC, classesPerUc)) failed = true;
     }
     if(failed) {
-        setStudentClasses(oldClasses, this->student, dataset);
+        setStudentClasses(oldClasses, studentCode, dataset);
     }
     return !failed;
 }
@@ -70,24 +61,24 @@ bool Request::addClass(DataSet &dataset, string classToAdd, list<vector<string>>
 bool Request::removeClass(DataSet &dataset, string classToRemove, list<vector<string>> classesPerUc) {
     bool failed = false;
     list<string> classUcs = dataset.getUcsByClasses(classesPerUc)[classToRemove]; // 
-    vector<CollegeClass> oldClasses = this->student.get_studentClasses();
+    vector<CollegeClass> oldClasses = find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}))->get_studentClasses();
     for(string uc : classUcs) {
         CollegeClass currentCC = CollegeClass(classToRemove, uc, {}, Schedule());
-        Request request = Request(currentCC, this->student, UC, REMOVE, dataset);
+        Request request = Request(currentCC, studentCode, UC, REMOVE, dataset);
         if (!request.removeUc(dataset, currentCC, classesPerUc)) failed = true;
     }
     if(failed) {
-        setStudentClasses(oldClasses, this->student, dataset);
+        setStudentClasses(oldClasses, studentCode, dataset);
     }
     return !failed;
 }
 
 bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd, list<vector<string>> classesPerUc) {
     int numCurrentStudents = getNumStudentsInClassAndUc(collegeClassToAdd, dataset);
-    if(!isConflictingSchedule(getScheduleByStudent(this->student.get_studentCode(), dataset), collegeClassToAdd.get_collegeClassSchedule().get_scheduleLessons()) 
+    if(!isConflictingSchedule(getScheduleByStudent(studentCode, dataset), collegeClassToAdd.get_collegeClassSchedule().get_scheduleLessons()) 
     && numCurrentStudents < CLASS_CAP
     && maintainsClassBalance(dataset, numCurrentStudents, classesPerUc)) {
-        addStudentClass(collegeClassToAdd, this->student, dataset);
+        addStudentClass(collegeClassToAdd, studentCode, dataset);
         return true;
     }
     return false;
@@ -96,9 +87,9 @@ bool Request::addUc(DataSet& dataset,CollegeClass collegeClassToAdd, list<vector
 bool Request::removeUc(DataSet& dataset, CollegeClass collegeClassToRemove, list<vector<string>> classesPerUc){
     int numCurrentStudents = getNumStudentsInClassAndUc(collegeClassToRemove, dataset);
     if(maintainsClassBalance(dataset, numCurrentStudents, classesPerUc)) {
-        vector<CollegeClass> toRemove = getStudentByNumber(this->student.get_studentCode(), dataset).get_studentClasses();
+        vector<CollegeClass> toRemove = find(dataset.get_students().begin(), dataset.get_students().end(), Student(studentCode, "", {}))->get_studentClasses();;
         toRemove.erase(find(toRemove.begin(), toRemove.end(), collegeClassToRemove));
-        setStudentClasses(toRemove, this->student, dataset);
+        setStudentClasses(toRemove, studentCode, dataset);
         return true;
       }
      return false;
@@ -143,8 +134,8 @@ TYPE Request::get_type(){
     return this->type;
 }
 
-Student Request::get_student(){
-    return this->student;
+string Request::get_student(){
+    return this->studentCode;
 }
 
 CollegeClass Request::get_collegeClass(){

@@ -20,19 +20,16 @@ class Request {
         DataSet& dataset;
         CollegeClass collegeClass;
         CollegeClass newCollegeClass;
-        Student student;
+        string studentCode;
         TYPE type;
         OPTION option;
         static list<Request> globalRequests;
     public:
-        Request(CollegeClass collegeClass,Student& student, TYPE type, OPTION option, DataSet& dataset) : 
-        collegeClass(collegeClass),newCollegeClass(collegeClass),student(student),type(type),option(option),dataset(dataset) {}; // SHHH
+        Request(CollegeClass collegeClass,string student, TYPE type, OPTION option, DataSet& dataset) : 
+        collegeClass(collegeClass),newCollegeClass(collegeClass),studentCode(student),type(type),option(option),dataset(dataset) {}; // SHHH
 
-        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,Student& student, TYPE type, OPTION option,DataSet& dataset) : 
-        collegeClass(collegeClass),newCollegeClass(newCollegeClass),student(student),type(type),option(option), dataset(dataset) {};
-
-        void setStudent(Student student);
-        Student getStudent();
+        Request(CollegeClass collegeClass,CollegeClass newCollegeClass,string student, TYPE type, OPTION option,DataSet& dataset) : 
+        collegeClass(collegeClass),newCollegeClass(newCollegeClass),studentCode(student),type(type),option(option), dataset(dataset) {};
 
         bool isConflictingSchedule(Schedule studentSchedule, vector<Lesson> lessonsToCompare);
 
@@ -51,7 +48,7 @@ class Request {
 
         OPTION get_option();
         TYPE get_type();
-        Student get_student();
+        string get_student();
         CollegeClass get_collegeClass();
         CollegeClass get_newCollegeClass();
 };
