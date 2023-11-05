@@ -20,7 +20,7 @@ Project is created with:
 To run this project, clone it to your computer in a directory chosen by you:
 
 ```
-$ git clone git@github.com:yourusername/aed-schedule.git
+$ git clone git@github.com:DGoiana/aed-schedule.git
 ```
 
 Then, we need to compile the project using CMAKE File:
